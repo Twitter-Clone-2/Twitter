@@ -1,0 +1,66 @@
+#profilePage {
+  display: flex;
+}
+#profilePageUser {
+  flex: 6.5;
+}
+
+#profilePageHeader {
+  display: flex;
+}
+#tempImage {
+  height: 250px;
+  background-color: #7bc2f8;
+  border: 4px solid grey;
+}
+#userPic {
+  position: relative;
+  left: 0px;
+  top: -60px;
+}
+#bottomOfPicture {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* MY WORK BELOW */
+#profilePage {
+  display: flex;
+}
+#profilePageUser {
+  flex: 6.5;
+}
+.flex {
+  display: flex;
+}
+#profilePageHeader {
+  display: flex;
+}
+#tempImage {
+  height: 250px;
+}
+#userPic {
+  position: relative;
+  left: 0px;
+  top: -60px;
+}
+#bottomOfPicture {
+  display: flex;
+  justify-content: space-between;
+}
+#follows {
+  gap: 20px;
+}
+.tweet {
+  border: 1px solid gray;
+}
+
+.buttonsTweet {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0 10px 0;
+}
+.rightTweetHeader {
+  display: flex;
+  gap: 5px;
+}
