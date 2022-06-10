@@ -22,6 +22,7 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/profile/page" element={<Profile />} />
       </Routes>
+      <div>Hello QT</div>
     </BrowserRouter>
   );
 }
