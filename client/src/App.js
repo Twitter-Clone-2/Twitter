@@ -21,6 +21,7 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/profile/page" element={<Profile />} />
+        <Route exact path="/main/feed" element={<Feed />} />
       </Routes>
       <div>Hello QT</div>
     </BrowserRouter>

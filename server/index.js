@@ -7,7 +7,13 @@ const port = 8080;
 app.use(cors());
 app.use(express.json());
 
-const { getAllUsers, getOneUser, register, login } = require("./controllers");
+const {
+  getAllUsers,
+  getOneUser,
+  register,
+  login,
+  deleteUser,
+} = require("./controllers");
 //important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
 
 //get all users
@@ -27,6 +33,8 @@ app.post("/api/register", register);
 
 //reply
 
+//delete an account
+app.delete("/api/delete/account", deleteUser);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
