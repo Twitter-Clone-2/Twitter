@@ -19,8 +19,20 @@ const FormUserName = ({
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(email);
+
+    axios.post("http://localhost:8080/api/register", {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: password,
+      username: userName,
+      bio: bio,
+      location: location,
+    });
   };
   return (
     <form className="accountDetails" onSubmit={handleSubmit}>

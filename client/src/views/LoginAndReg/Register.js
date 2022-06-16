@@ -11,19 +11,53 @@ import FormUserName from "../../components/FormUserName";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(0);
+
   const [firstName, setFirstName] = useState("");
+  const [firstNameError, setFirstNameError] = useState(true);
+
   const [lastName, setLastName] = useState("");
+  const [lastNameError, setLastNameError] = useState(true);
+
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(true);
+
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [passwordError, setPasswordError] = useState(true);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(true);
+
   const [userName, setUserName] = useState("");
 
   function handleButton() {
-    // if step is < 2
-    // increment step
-    // else submit form
+    if (firstName.length >= 2) {
+      setFirstNameError(false);
+      // return;
+    }
+
+    if (lastName.length > 2) setLastNameError(false);
+
+    if (/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email)) setEmailError(false);
+
+    if (password == confirm) setConfirmPasswordError(false);
+
+    if (password.length >= 8) setPasswordError(false);
+    console.log(`Everything checked out
+    first name error = ${firstNameError}
+    last name error = ${lastNameError}
+    email error = ${emailError}
+    password error = ${passwordError}
+    confirm error = ${confirmPasswordError}
+    `);
+    if (
+      firstNameError == false &&
+      lastNameError == false &&
+      emailError == false &&
+      passwordError == false &&
+      confirmPasswordError == false
+    ) {
+      setCurrentStep((prev) => prev + 1);
+    }
   }
-  console.log(firstName);
 
   const steps = ["Account Details", "User Name"];
   return (
@@ -40,6 +74,8 @@ const Register = () => {
         <FormAccountInfo
           firstName={firstName}
           setFirstName={setFirstName}
+          firstNameError={firstNameError}
+          setFirstNameError={setFirstNameError}
           lastName={lastName}
           setLastName={setLastName}
           email={email}
@@ -64,10 +100,7 @@ const Register = () => {
           setConfirm={setConfirm}
         />
       )}
-      <Button
-        variant="contained"
-        onClick={() => setCurrentStep((prev) => prev + 1)}
-      >
+      <Button variant="contained" onClick={() => handleButton()}>
         {currentStep === 1 ? "Completed" : "Next"}
       </Button>
     </>
