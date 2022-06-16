@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import "../CSS/Register.css";
-//VALIDATIONS STILL NEED TO BE ADDED
+//VALIDATIONS STILL NEED TO BE ADDED FOR EVERYTHING
 const FormAccountInfo = ({
   firstName,
   setFirstName,
