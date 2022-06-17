@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import "../CSS/Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 //import axios from "axios";
 const FormLogin = () => {
+  const navigate = useNavigate();
   const [emailOrUserName, setEmailOrUserName] = useState("");
   const [password, setPassword] = useState("");
-
+  //Needs Validations
+  //Forgot password button will hopefully be a later feature added
   const handleLogin = (e) => {
     e.preventDefault();
+    axios
+      .post("http://localhost:8080/api/login", {
+        email: emailOrUserName,
+        password,
+      })
+      .then((res) => {
+        if (res.data) {
+          navigate("/main/feed");
+        }
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div id="backgroundBody">
