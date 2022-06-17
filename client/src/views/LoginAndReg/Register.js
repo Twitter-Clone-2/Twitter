@@ -11,36 +11,52 @@ import FormUserName from "../../components/FormUserName";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(0);
-
   const [firstName, setFirstName] = useState("");
   const [firstNameError, setFirstNameError] = useState(true);
-
   const [lastName, setLastName] = useState("");
-  const [lastNameError, setLastNameError] = useState(true);
-
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(true);
-
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [passwordError, setPasswordError] = useState(true);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(true);
-
-  const [userName, setUserName] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
 
   function handleButton() {
-    const meetsAllReq = true;
-    if (firstName.length < 2) return;
+    let meetsAllReq = true;
+    const tempErrorMessage = [];
 
-    if (lastName.length < 2) return;
+    if (firstName.length < 2) {
+      tempErrorMessage.push('First name needs to be at least 2 characters.')
+      meetsAllReq = false;
+    }
+
+    if (lastName.length < 2) {
+      tempErrorMessage.push(
+        "First name needs to be at least 2 characters."
+      );
+      meetsAllReq = false;
+    }
 
     // if (/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email)) setEmailError(false);
 
-    if (password !== confirm) return;
+    if (password !== confirm) {
+      tempErrorMessage.push(
+        "First name needs to be at least 2 characters."
+      );
+      meetsAllReq = false;
+    }
 
-    if (password.length < 8) return;
+    if (password.length < 8) {
+      tempErrorMessage.push(
+        "First name needs to be at least 2 characters."
+      );
+      meetsAllReq = false;
+    }
 
+    if (meetsAllReq) {
       setCurrentStep((prev) => prev + 1);
+    } else {
+      setErrorMessages(tempErrorMessage);
+    }
+
   }
 
   const steps = ["Account Details", "User Name"];
