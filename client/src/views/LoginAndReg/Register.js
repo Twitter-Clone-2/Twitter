@@ -30,34 +30,17 @@ const Register = () => {
 
   function handleButton() {
     const meetsAllReq = true;
-    if (firstName.length >= 2) {
-      setFirstNameError(false);
-      // return;
-    }
+    if (firstName.length < 2) return;
 
-    if (lastName.length > 2) setLastNameError(false);
+    if (lastName.length < 2) return;
 
-    if (/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email)) setEmailError(false);
+    // if (/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email)) setEmailError(false);
 
-    if (password == confirm) setConfirmPasswordError(false);
+    if (password !== confirm) return;
 
-    if (password.length >= 8) setPasswordError(false);
-    console.log(`Everything checked out
-    first name error = ${firstNameError}
-    last name error = ${lastNameError}
-    email error = ${emailError}
-    password error = ${passwordError}
-    confirm error = ${confirmPasswordError}
-    `);
-    if (
-      firstNameError == false &&
-      lastNameError == false &&
-      emailError == false &&
-      passwordError == false &&
-      confirmPasswordError == false
-    ) {
+    if (password.length < 8) return;
+
       setCurrentStep((prev) => prev + 1);
-    }
   }
 
   const steps = ["Account Details", "User Name"];
