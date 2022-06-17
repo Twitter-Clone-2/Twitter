@@ -29,6 +29,7 @@ const Register = () => {
   const [userName, setUserName] = useState("");
 
   function handleButton() {
+    const meetsAllReq = true;
     if (firstName.length >= 2) {
       setFirstNameError(false);
       // return;
