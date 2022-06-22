@@ -23,7 +23,7 @@ app.get("/api/users", getAllUsers);
 //id
 app.get("/api/user", getOneUser);
 //email
-app.get("/api/user/email", getOneUserByEmail);
+app.post("/api/user/email", getOneUserByEmail);
 //login
 app.post("/api/login", login);
 //register

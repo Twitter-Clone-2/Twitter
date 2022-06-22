@@ -36,13 +36,13 @@ const FormUserName = ({
       })
       .then(() => {
         axios
-          .get("http://localhost:8080/api/user/email", {
+          .post("http://localhost:8080/api/user/email", {
             email: email,
           })
           .then((res) => {
             console.log(email);
-            console.log(res);
-            localStorage.setItem("id", res.data.id);
+            console.log(res.data.id);
+            localStorage.setItem("id", res.data[0].id);
             navigate("/main/feed");
           });
       })

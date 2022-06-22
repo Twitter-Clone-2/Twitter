@@ -28,6 +28,7 @@ async function getOneUser(req, res) {
 async function getOneUserByEmail(req, res) {
   let { email } = req.body;
   console.log(email);
+  console.log(req.body);
   const query = `SELECT * FROM accounts WHERE email = '${email}'`;
 
   try {
