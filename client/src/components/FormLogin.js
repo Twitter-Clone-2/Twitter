@@ -20,6 +20,9 @@ const FormLogin = () => {
       .then((res) => {
         if (res.data) {
           navigate("/main/feed");
+          console.log(res.data.id);
+          localStorage.setItem("id", res.data.id);
+          console.log(localStorage.getItem("id"));
         }
       })
       .catch((err) => console.log(err));

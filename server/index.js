@@ -13,14 +13,17 @@ const {
   register,
   login,
   deleteUser,
+  getOneUserByEmail,
 } = require("./controllers");
 //important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
 
 //get all users
 app.get("/api/users", getAllUsers);
 // get one user
-//probably needs a feature if user id doesnt exist
+//id
 app.get("/api/user", getOneUser);
+//email
+app.post("/api/user/email", getOneUserByEmail);
 //login
 app.post("/api/login", login);
 //register
@@ -28,7 +31,6 @@ app.post("/api/register", register);
 //tweet
 
 //likes
-
 //retweets
 
 //reply

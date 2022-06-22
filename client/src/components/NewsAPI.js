@@ -12,11 +12,7 @@ const NewsAPI = () => {
         "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=new+york+times&page=2&sort=oldest&api-key=Uh8kclNaPnGtLJAhGbU5hTStY36qZz8z"
       )
       .then((res) => {
-        // const {apiData} = res.data;
-        console.log(res.data);
-        // Filtering headlines for shorter than 200 chars
         for (let i = 0, count = 0; count < 8; i++) {
-          // console.log(res.data.response.docs[i].headline.print_headline.length);
           if (res.data.response.docs[i].headline.print_headline.length < 200) {
             newsCatcher.push(res.data.response.docs[i]);
             count++;
