@@ -41,7 +41,6 @@ const FormUserName = ({
           })
           .then((res) => {
             console.log(email);
-            console.log(res.data.id);
             localStorage.setItem("id", res.data[0].id);
             navigate("/main/feed");
           });

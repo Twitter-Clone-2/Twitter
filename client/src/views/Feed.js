@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useReducer } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/HomePage.css";
-//import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import IconNav from "../components/IconNav";
 import NewsAPI from "../components/NewsAPI";
 import axios from "axios";
 import Post from "../components/Post";
 
 const Feed = (props) => {
+  const navigate = useNavigate();
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
-  //const history = useHistory();
   const id = localStorage.getItem("id");
   const [tweet, setTweet] = useState("");
   let allFollowingTweets = [];
@@ -18,6 +18,10 @@ const Feed = (props) => {
 
   const createTweet = () => {
     console.log("hello world");
+  };
+
+  const takeToProfile = () => {
+    navigate("/profile/page");
   };
   return (
     <div id="mainBodyHomePage">
@@ -34,7 +38,10 @@ const Feed = (props) => {
 
         <form onSubmit={createTweet}>
           <p className="flex">
-            <PersonIcon sx={{ fontSize: 100 }} />
+            <PersonIcon
+              onClick={() => takeToProfile()}
+              sx={{ fontSize: 100 }}
+            />
             <input
               placeholder="What's happening?"
               onChange={(e) => setTweet(e.target.value)}
@@ -55,7 +62,7 @@ const Feed = (props) => {
                 <div className="tweet" key={i}>
                   <div className="flex">
                     <div className="leftTweet">
-                      <PersonIcon />
+                      <PersonIcon onClick={() => takeToProfile()} />
                     </div>
                     <div className="rightTweet">
                       <div className="rightTweetHeader">

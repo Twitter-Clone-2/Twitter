@@ -6,21 +6,17 @@ import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import "../CSS/HomePage.css";
-//import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Post from "../components/Post";
 
 const IconNav = (props) => {
-  // const history = useHistory();
+  const navigate = useNavigate();
   const handleHome = () => {
-    //  history.push("/home/feed");
-    console.log("hello");
+    navigate("/main/feed");
   };
-
-  // const [postForm, setPostForm] = useState(false);
-
-  // const renderPost = () => {
-  //   setPostForm(true);
-  // };
+  const takeToProfile = () => {
+    navigate("/profile/page");
+  };
 
   return (
     <div id="icons">
@@ -28,7 +24,7 @@ const IconNav = (props) => {
       <HomeIcon sx={{ fontSize: 100 }} onClick={() => handleHome()} />
       <NotificationsIcon sx={{ fontSize: 100 }} />
       <ChatBubbleIcon sx={{ fontSize: 100 }} />
-      <PersonIcon sx={{ fontSize: 100 }} />
+      <PersonIcon sx={{ fontSize: 100 }} onClick={() => takeToProfile()} />
       <SettingsSuggestIcon sx={{ fontSize: 100 }} />
       <button className="button-15" onClick={() => props.renderPost()}>
         Create Post
