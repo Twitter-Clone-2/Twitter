@@ -25,6 +25,20 @@ async function getOneUser(req, res) {
   }
 }
 
+async function getOneUserByEmail(req, res) {
+  let { email } = req.body;
+  console.log(email);
+  const query = `SELECT * FROM accounts WHERE email = '${email}'`;
+
+  try {
+    const results = await db.query(query);
+    res.send(results.rows);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400);
+  }
+}
+
 async function register(req, res) {
   let { first_name, last_name, email, password, username, bio, location } =
     req.body;
@@ -34,7 +48,9 @@ async function register(req, res) {
     db.query(
       `INSERT INTO accounts (first_name, last_name , email, password, username, bio, location) VALUES ('${first_name}','${last_name}','${email}','${password}','${username}','${bio}','${location}');`
     )
-      .then(() => res.status(200).send("account created"))
+      .then(() => {
+        res.status(200).send("Account created");
+      })
       .catch((err) => {
         console.log(err);
         return res.status(400);
@@ -83,4 +99,11 @@ async function deleteUser(req, res) {
     res.status(400);
   }
 }
-module.exports = { getAllUsers, getOneUser, register, login, deleteUser };
+module.exports = {
+  getAllUsers,
+  getOneUser,
+  register,
+  login,
+  deleteUser,
+  getOneUserByEmail,
+};

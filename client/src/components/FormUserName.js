@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../CSS/Register.css";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-//import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const FormUserName = ({
   firstName,
   setFirstName,
@@ -15,7 +15,7 @@ const FormUserName = ({
   confirm,
   setConfirm,
 }) => {
-  //const history = useHistory();
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
@@ -24,15 +24,29 @@ const FormUserName = ({
     e.preventDefault();
     console.log(email);
 
-    axios.post("http://localhost:8080/api/register", {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      password: password,
-      username: userName,
-      bio: bio,
-      location: location,
-    });
+    axios
+      .post("http://localhost:8080/api/register", {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        username: userName,
+        bio: bio,
+        location: location,
+      })
+      .then(() => {
+        axios
+          .get("http://localhost:8080/api/user/email", {
+            email: email,
+          })
+          .then((res) => {
+            console.log(email);
+            console.log(res);
+            localStorage.setItem("id", res.data.id);
+            navigate("/main/feed");
+          });
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <form className="accountDetails" onSubmit={handleSubmit}>
