@@ -16,18 +16,18 @@ const Feed = (props) => {
   const [render, setRender] = useState();
   const [currUser, setCurrUser] = useState({});
 
-  useEffect(() => {
+  const createTweet = (e) => {
+    e.preventDefault();
+    console.log(tweet);
+    let userId = JSON.parse(localStorage.getItem("currUser"));
+    console.log(userId);
     axios
-      .post("http://localhost:8080/api/user", {
-        id: id,
+      .post("http://localhost:8080/api/create/tweet", {
+        tweet: tweet,
+        id: userId.id,
       })
-      .then((res) => {
-        setCurrUser(res.data[0]);
-      });
-  }, []);
-
-  const createTweet = () => {
-    console.log("hello world");
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   const takeToProfile = () => {

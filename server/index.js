@@ -14,6 +14,7 @@ const {
   login,
   deleteUser,
   getOneUserByEmail,
+  createTweet,
 } = require("./controllers");
 //important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
 
@@ -29,7 +30,7 @@ app.post("/api/login", login);
 //register
 app.post("/api/register", register);
 //tweet
-
+app.post("/api/create/tweet", createTweet);
 //likes
 //retweets
 

@@ -1,6 +1,7 @@
 const db = require("../DataBase/index");
 const bcrypt = require("bcrypt");
 
+//                ALL USER RELATED
 async function getAllUsers(req, res) {
   const query = `SELECT * FROM accounts;`;
   try {
@@ -100,6 +101,20 @@ async function deleteUser(req, res) {
     res.status(400);
   }
 }
+
+//                          ALL TWEET RELATED
+async function createTweet(req, res) {
+  const { tweet, id } = req.body;
+  const query = `INSERT INTO tweets (content, accounts_id) VALUES ('${tweet}', ${id});`;
+  console.log(`Tweet is = ${tweet} and the id = ${id}`);
+  try {
+    const results = await db.query(query);
+    res.status(200).send("Tweet was created succesfully");
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400);
+  }
+}
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -107,4 +122,5 @@ module.exports = {
   login,
   deleteUser,
   getOneUserByEmail,
+  createTweet,
 };
