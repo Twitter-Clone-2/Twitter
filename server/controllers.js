@@ -79,7 +79,7 @@ async function login(req, res) {
     }
     console.log("hello correct user");
     res.json({
-      id: user.id,
+      user: user,
       status: true,
     });
   } catch (e) {

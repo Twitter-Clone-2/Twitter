@@ -21,7 +21,7 @@ const {
 app.get("/api/users", getAllUsers);
 // get one user
 //id
-app.get("/api/user", getOneUser);
+app.post("/api/user", getOneUser);
 //email
 app.post("/api/user/email", getOneUserByEmail);
 //login

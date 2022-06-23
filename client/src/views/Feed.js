@@ -14,7 +14,17 @@ const Feed = (props) => {
   const [tweet, setTweet] = useState("");
   let allFollowingTweets = [];
   const [render, setRender] = useState();
-  //CREATING A TWEET
+  const [currUser, setCurrUser] = useState({});
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:8080/api/user", {
+        id: id,
+      })
+      .then((res) => {
+        setCurrUser(res.data[0]);
+      });
+  }, []);
 
   const createTweet = () => {
     console.log("hello world");
@@ -35,7 +45,6 @@ const Feed = (props) => {
       {/* Middle */}
       <div id="allContent">
         <h2>Home</h2>
-
         <form onSubmit={createTweet}>
           <p className="flex">
             <PersonIcon
