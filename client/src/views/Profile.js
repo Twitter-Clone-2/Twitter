@@ -9,26 +9,26 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
 const Profile = () => {
+  const user = JSON.parse(localStorage.getItem("currUser"));
   const [currUser, setCurrUser] = useState({
     user: {
-      firstName: "gvergrfgrghrgbrgdgrgd",
-      lastName: "Account",
-      userName: "drgvsgvrfg",
-      email: "Test@gmail.com",
-      password: "$2b$10$tP3y6EfpGL0JJ8TqR3cHB.W8WFJDDEHaiSo1SRgttp9XExMvrpW7G",
-      bio: "",
-      location: "",
+      firstName: user.first_name,
+      lastName: user.last_name,
+      userName: user.username,
+      email: user.email,
+      password: user.password,
+      bio: user.bio,
+      location: user.location,
     },
     followers: [],
     following: [],
-    _id: "628ea1b3412dd7517b01fa69",
+    id: user.id,
     post: [],
     likes: [],
     retweets: [],
     messages: [],
     tweets: [],
-    createdAt: 2022,
-    updatedAt: 2022,
+    createdAt: user.created_at,
   });
   let arrow = "<-";
   const [editProfile, setEditProfile] = useState(false);
