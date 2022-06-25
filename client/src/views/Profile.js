@@ -9,26 +9,17 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
 const Profile = () => {
+  const user = JSON.parse(localStorage.getItem("currUser"));
   const [currUser, setCurrUser] = useState({
-    user: {
-      firstName: "gvergrfgrghrgbrgdgrgd",
-      lastName: "Account",
-      userName: "drgvsgvrfg",
-      email: "Test@gmail.com",
-      password: "$2b$10$tP3y6EfpGL0JJ8TqR3cHB.W8WFJDDEHaiSo1SRgttp9XExMvrpW7G",
-      bio: "",
-      location: "",
-    },
-    followers: [],
-    following: [],
-    _id: "628ea1b3412dd7517b01fa69",
-    post: [],
-    likes: [],
-    retweets: [],
-    messages: [],
-    tweets: [],
-    createdAt: 2022,
-    updatedAt: 2022,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    userName: user.username,
+    email: user.email,
+    password: user.password,
+    bio: user.bio,
+    location: user.location,
+    id: user.id,
+    createdAt: user.created_at,
   });
   let arrow = "<-";
   const [editProfile, setEditProfile] = useState(false);
@@ -44,9 +35,9 @@ const Profile = () => {
         <div id="profilePageHeader">
           <div>
             <h3>
-              {currUser.user.firstName} {currUser.user.lastName}
+              {currUser.firstName} {currUser.lastName}
             </h3>
-            <p>{currUser.tweets.length} tweets</p>
+            <p>0 tweets</p>
             <Logout />
           </div>
         </div>
@@ -64,14 +55,14 @@ const Profile = () => {
             </p>
           </div>
           <h2>
-            {currUser.user.firstName} {currUser.user.lastName}
+            {currUser.firstName} {currUser.lastName}
           </h2>
-          <p>{currUser.user.bio}</p>
-          <p>@{currUser.user.userName}</p>
+          <p>{currUser.bio}</p>
+          <p>@{currUser.userName}</p>
           <p>joined , {currUser.createdAt}</p>
           <div className="flex" id="follows">
-            <p>{currUser.following.length} :Following</p>
-            <p>{currUser.followers.length} :Followers</p>
+            <p>0 :Following</p>
+            <p>0 :Followers</p>
           </div>
           {editProfile ? (
             <EditProfile
