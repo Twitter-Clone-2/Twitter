@@ -11,23 +11,14 @@ import Settings from "../components/Settings";
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem("currUser"));
   const [currUser, setCurrUser] = useState({
-    user: {
-      firstName: user.first_name,
-      lastName: user.last_name,
-      userName: user.username,
-      email: user.email,
-      password: user.password,
-      bio: user.bio,
-      location: user.location,
-    },
-    followers: [],
-    following: [],
+    firstName: user.first_name,
+    lastName: user.last_name,
+    userName: user.username,
+    email: user.email,
+    password: user.password,
+    bio: user.bio,
+    location: user.location,
     id: user.id,
-    post: [],
-    likes: [],
-    retweets: [],
-    messages: [],
-    tweets: [],
     createdAt: user.created_at,
   });
   let arrow = "<-";
@@ -44,9 +35,9 @@ const Profile = () => {
         <div id="profilePageHeader">
           <div>
             <h3>
-              {currUser.user.firstName} {currUser.user.lastName}
+              {currUser.firstName} {currUser.lastName}
             </h3>
-            <p>{currUser.tweets.length} tweets</p>
+            <p>0 tweets</p>
             <Logout />
           </div>
         </div>
@@ -64,14 +55,14 @@ const Profile = () => {
             </p>
           </div>
           <h2>
-            {currUser.user.firstName} {currUser.user.lastName}
+            {currUser.firstName} {currUser.lastName}
           </h2>
-          <p>{currUser.user.bio}</p>
-          <p>@{currUser.user.userName}</p>
+          <p>{currUser.bio}</p>
+          <p>@{currUser.userName}</p>
           <p>joined , {currUser.createdAt}</p>
           <div className="flex" id="follows">
-            <p>{currUser.following.length} :Following</p>
-            <p>{currUser.followers.length} :Followers</p>
+            <p>0 :Following</p>
+            <p>0 :Followers</p>
           </div>
           {editProfile ? (
             <EditProfile
