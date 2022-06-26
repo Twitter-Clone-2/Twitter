@@ -29,8 +29,8 @@ const Profile = () => {
         id: user.id,
       })
       .then((res) => {
-        console.log(res.data.rows);
-        setAllTweets(res.data.rows);
+        const tweets = res.data.rows;
+        setAllTweets(tweets.reverse());
       });
   }, []);
 
