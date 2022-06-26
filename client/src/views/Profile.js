@@ -22,8 +22,21 @@ const Profile = () => {
     createdAt: user.created_at,
   });
   let arrow = "<-";
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:8080/api/findAllTweetsFromOneUser", {
+        id: user.id,
+      })
+      .then((res) => {
+        const tweets = res.data.rows;
+        setAllTweets(tweets.reverse());
+      });
+  }, []);
+
   const [editProfile, setEditProfile] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [allTweets, setAllTweets] = useState([]);
 
   return (
     <div id="profilePage">
@@ -75,7 +88,7 @@ const Profile = () => {
           {settings ? <Settings setSettings={setSettings} /> : ""}
           <h1>Tweets</h1>
           <hr />
-          {/* {sortedTweets.map((tweet, i) => {
+          {allTweets.map((tweet, i) => {
             return (
               <div className="tweet" key={i}>
                 <div className="flex">
@@ -85,12 +98,12 @@ const Profile = () => {
                   <div className="rightTweet">
                     <div className="rightTweetHeader">
                       <p>
-                        {currUser.user.firstName} {currUser.user.lastName}
+                        {currUser.firstName} {currUser.lastName}
                       </p>
-                      <p>@{currUser.user.userName}</p>
-                      <p>{tweet.time}</p>
+                      <p>@{currUser.userName}</p>
+                      <p>{tweet.created_at}</p>
                     </div>
-                    <h3>{tweet.tweet}</h3>
+                    <h3>{tweet.content}</h3>
                   </div>
                 </div>
 
@@ -101,7 +114,7 @@ const Profile = () => {
                 </div>
               </div>
             );
-          })} */}
+          })}
         </div>
       </div>
       {/* NEW SIDE OF CONTENT */}
