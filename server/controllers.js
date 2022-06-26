@@ -1,4 +1,4 @@
-const db = require("../DataBase/index");
+const db = require("./dataBase/index");
 const bcrypt = require("bcrypt");
 
 //                ALL USER RELATED
