@@ -106,10 +106,22 @@ async function deleteUser(req, res) {
 async function createTweet(req, res) {
   const { tweet, id } = req.body;
   const query = `INSERT INTO tweets (content, accounts_id) VALUES ('${tweet}', ${id});`;
-  console.log(`Tweet is = ${tweet} and the id = ${id}`);
   try {
     const results = await db.query(query);
     res.status(200).send("Tweet was created succesfully");
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400);
+  }
+}
+
+async function findAllTweetsFromOneUser(req, res) {
+  const { id } = req.body;
+  const query = `SELECT content, created_at FROM tweets WHERE accounts_id = ${id};`;
+
+  try {
+    const results = await db.query(query);
+    res.status(200).send(results);
   } catch (e) {
     console.error(e.stack);
     res.status(400);
@@ -123,4 +135,5 @@ module.exports = {
   deleteUser,
   getOneUserByEmail,
   createTweet,
+  findAllTweetsFromOneUser,
 };
