@@ -8,6 +8,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// AWS important info
+// Access key id = AKIAWUDQ5NFXQ4XJDYKC
+//Secret Access key = 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
 const {
   getAllUsers,
   getOneUser,

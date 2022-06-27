@@ -127,6 +127,20 @@ async function findAllTweetsFromOneUser(req, res) {
     res.status(400);
   }
 }
+
+//                            FOLLOWING
+async function followAnotherUser(req, res) {
+  const { follower, following } = req.body;
+  const query = `INSERT INTO relationship (follower, following) VALUES (${follower}, ${following});`;
+
+  try {
+    const results = await db.query(query);
+    res.status(200).send(true);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400).send(false);
+  }
+}
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -136,4 +150,5 @@ module.exports = {
   getOneUserByEmail,
   createTweet,
   findAllTweetsFromOneUser,
+  followAnotherUser,
 };
