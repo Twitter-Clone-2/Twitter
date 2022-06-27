@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const serverless = require("serverless-http");
 const port = 8080;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const {
   getAllUsers,
@@ -42,3 +44,5 @@ app.delete("/api/delete/account", deleteUser);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+module.exports.handler = serverless(app);
