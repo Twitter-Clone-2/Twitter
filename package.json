@@ -1,0 +1,22 @@
+{
+  "name": "mock-twiiter-2",
+  "version": "1.0.0",
+  "description": "## Steps to run locally: ### Start server - cd server - npm install - npm run dev",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-prebuild": "cd server && npm install",
+    "start": "cd server && npm start"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RezaAmraei/Twitter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RezaAmraei/Twitter/issues"
+  },
+  "homepage": "https://github.com/RezaAmraei/Twitter#readme"
+}
