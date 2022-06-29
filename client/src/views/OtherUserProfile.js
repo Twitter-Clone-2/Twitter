@@ -8,7 +8,18 @@ import Logout from "../components/Logout";
 import { useParams } from "react-router-dom";
 const OtherUserProfile = () => {
   const [following, setFollowing] = useState(true);
-  // testing with id : 628ea1b3412dd7517b01fa69
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:8080/api/findAllTweetsFromOneUser", {
+        id: 1,
+      })
+      .then((res) => {
+        const tweets = res.data.rows;
+      });
+  }, []);
+  // testing with id :
+
   let currUser = {
     user: {
       firstName: "reza",
