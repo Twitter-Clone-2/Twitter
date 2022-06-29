@@ -8,10 +8,11 @@ import Logout from "../components/Logout";
 import { useParams } from "react-router-dom";
 const OtherUserProfile = () => {
   const [following, setFollowing] = useState(true);
+  const route = require("../utils/server_router");
 
   useEffect(() => {
     axios
-      .post("http://localhost:8080/api/findAllTweetsFromOneUser", {
+      .post(route + "/api/findAllTweetsFromOneUser", {
         id: 1,
       })
       .then((res) => {

@@ -3,17 +3,20 @@ import TextField from "@mui/material/TextField";
 import "../CSS/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
 //import axios from "axios";
 const FormLogin = () => {
   const navigate = useNavigate();
+  const route = require("../utils/server_router");
   const [emailOrUserName, setEmailOrUserName] = useState("");
   const [password, setPassword] = useState("");
+  console.log(route);
   //Needs Validations
   //Forgot password button will hopefully be a later feature added
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8080/api/login", {
+      .post(route + "/api/login", {
         email: emailOrUserName,
         password,
       })

@@ -9,6 +9,7 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
 const Profile = () => {
+  const route = require("../utils/server_router");
   const user = JSON.parse(localStorage.getItem("currUser"));
   const [currUser, setCurrUser] = useState({
     firstName: user.first_name,
@@ -25,7 +26,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .post("http://localhost:8080/api/findAllTweetsFromOneUser", {
+      .post(route + "/api/findAllTweetsFromOneUser", {
         id: user.id,
       })
       .then((res) => {
