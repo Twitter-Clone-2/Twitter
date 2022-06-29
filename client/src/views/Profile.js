@@ -51,7 +51,7 @@ const Profile = () => {
             <h3>
               {currUser.firstName} {currUser.lastName}
             </h3>
-            <p>0 tweets</p>
+            <p>{allTweets.length} tweets</p>
             <Logout />
           </div>
         </div>

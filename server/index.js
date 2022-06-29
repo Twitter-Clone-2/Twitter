@@ -17,6 +17,8 @@ const {
   getOneUserByEmail,
   createTweet,
   findAllTweetsFromOneUser,
+  unFollowAnotherUser,
+  followAnotherUser,
 } = require("./controllers");
 //important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
 

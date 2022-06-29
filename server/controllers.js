@@ -141,6 +141,19 @@ async function followAnotherUser(req, res) {
     res.status(400).send(false);
   }
 }
+async function unFollowAnotherUser(req, res) {
+  const { follower, following } = req.body;
+  const query = `DELETE FROM relationship WHERE follower = ${follower} AND following = ${following};`;
+
+  try {
+    const result = await db.query(query);
+    res.status(200).send(true);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400).send(false);
+  }
+}
+
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -151,4 +164,5 @@ module.exports = {
   createTweet,
   findAllTweetsFromOneUser,
   followAnotherUser,
+  unFollowAnotherUser,
 };

@@ -5,40 +5,65 @@ import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/ProfilePage.css";
 import axios from "axios";
 import Logout from "../components/Logout";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 const OtherUserProfile = () => {
-  const [following, setFollowing] = useState(true);
+  const [following, setFollowing] = useState(false);
   const route = require("../utils/server_router");
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [allTweets, setAllTweets] = useState([]);
+
+  let user = {
+    firstName: "loading",
+    lastName: "loading",
+    userName: "loading",
+    email: "loading",
+    password: "loading",
+    bio: "loading",
+    location: "loading",
+    id: "loading",
+    createdAt: "loading",
+  };
+  useEffect(() => {
+    axios
+      .post(route + "/api/user", {
+        id: id,
+      })
+      .then((res) => {
+        setCurrUser(res.data[0]);
+      });
+  }, []);
 
   useEffect(() => {
     axios
       .post(route + "/api/findAllTweetsFromOneUser", {
-        id: 1,
+        id: id,
       })
       .then((res) => {
         const tweets = res.data.rows;
+        setAllTweets(tweets.reverse());
       });
   }, []);
-  // testing with id :
 
-  let currUser = {
-    user: {
-      firstName: "reza",
-      lastName: "Amraei",
-      email: "amraeireza@gmail.com",
-      userName: "GucciGuwop645",
-      bio: "This is Reza",
-      location: "CA",
-    },
-    _id: 1,
-    followers: [2],
-    following: [2],
-    createdAt: "now",
-    tweets: [],
-  };
+  console.log(allTweets);
+
+  const [currUser, setCurrUser] = useState({
+    first_name: user.first_name,
+    last_name: user.last_name,
+    username: user.username,
+    email: user.email,
+    bio: user.bio,
+    location: user.location,
+    id: user.id,
+    created_at: user.created_at,
+  });
   const followButton = (id) => {
     console.log(id);
   };
+  //if user looks up his own profile he will be redirected to his link for his own profile page
+  if (currUser.id === JSON.parse(localStorage.getItem("currUser")).id) {
+    navigate("/profile/page");
+  }
   return (
     <div id="profilePage">
       {/* ICON NAV BAR */}
@@ -50,9 +75,9 @@ const OtherUserProfile = () => {
           <button> Back </button>
           <div>
             <h3>
-              {currUser.user.firstName} {currUser.user.lastName}
+              {currUser.first_name} {currUser.last_name}
             </h3>
-            <p>{currUser.tweets.length} tweets</p>
+            <p>{allTweets.length} tweets</p>
             <Logout />
           </div>
         </div>
@@ -70,18 +95,18 @@ const OtherUserProfile = () => {
             </button>
           </div>
           <h2>
-            {currUser.user.firstName} {currUser.user.lastName}
+            {currUser.first_name} {currUser.last_name}
           </h2>
-          <p>{currUser.user.bio}</p>
-          <p>@{currUser.user.userName}</p>
-          <p>joined , {currUser.createdAt}</p>
+          <p>{currUser.bio}</p>
+          <p>@{currUser.username}</p>
+          <p>joined , {currUser.created_at}</p>
           <div className="flex" id="follows">
-            <p>{currUser.following.length} :Following</p>
-            <p>{currUser.followers.length} :Followers</p>
+            <p>0 :Following</p>
+            <p>0 :Followers</p>
           </div>
           <h1>Tweets</h1>
           <hr />
-          {/* {sortedTweets.map((tweet, i) => {
+          {allTweets.map((tweet, i) => {
             return (
               <div className="tweet" key={i}>
                 <div className="flex">
@@ -91,12 +116,12 @@ const OtherUserProfile = () => {
                   <div className="rightTweet">
                     <div className="rightTweetHeader">
                       <p>
-                        {currUser.user.firstName} {currUser.user.lastName}
+                        {currUser.first_name} {currUser.last_name}
                       </p>
-                      <p>@{currUser.user.userName}</p>
-                      <p>{tweet.time}</p>
+                      <p>@{currUser.username}</p>
+                      <p>{tweet.created_at}</p>
                     </div>
-                    <h3>{tweet.tweet}</h3>
+                    <h3>{tweet.content}</h3>
                   </div>
                 </div>
 
@@ -107,7 +132,7 @@ const OtherUserProfile = () => {
                 </div>
               </div>
             );
-          })} */}
+          })}
         </div>
       </div>
       {/* NEW SIDE OF CONTENT */}
