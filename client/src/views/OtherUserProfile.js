@@ -6,71 +6,82 @@ import "../CSS/ProfilePage.css";
 import axios from "axios";
 import Logout from "../components/Logout";
 import { useParams, useNavigate } from "react-router-dom";
+import route from "../utils/server_router";
+
 const OtherUserProfile = () => {
+  const [allTweets, setAllTweets] = useState([]);
+  const [currUser, setCurrUser] = useState({});
   const [following, setFollowing] = useState(false);
-  const route = require("../utils/server_router");
   const { id } = useParams();
   const navigate = useNavigate();
-  const [allTweets, setAllTweets] = useState([]);
 
-  let user = {
-    firstName: "loading",
-    lastName: "loading",
-    userName: "loading",
-    email: "loading",
-    password: "loading",
-    bio: "loading",
-    location: "loading",
-    id: "loading",
-    createdAt: "loading",
+  const getUsersAndTweets = () => {
+    axios
+      .post(route + "/api/user", {
+        id: id,
+      })
+      .then(({ data }) => {
+        setCurrUser(data[0]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    axios
+      .post(route + "/api/findAllTweetsFromOneUser", {
+        id: id,
+      })
+      .then(({ data }) => {
+        const tweets = data.rows;
+        setAllTweets(tweets.reverse());
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    axios
+      .post(route + "/api/user", {
+        id: id,
+      })
+      .then(({ data }) =>
+        console.log(
+          "Dont waist my time reza............................................................"
+        )
+      )
+      .catch((e) => {
+        console.log(e);
+      });
+
+    axios
+      .post(route + "/api/user", {
+        id: id,
+      })
+      .then(({ data }) =>
+        console.log(
+          "Dont waist my time reza............................................................"
+        )
+      )
+      .catch((e) => {
+        console.log(e);
+      });
+
+    axios
+      .post(route + "/api/user", {
+        id: id,
+      })
+      .then(({ data }) =>
+        console.log(
+          "Dont waist my time reza............................................................"
+        )
+      )
+      .catch((e) => {
+        console.log(e);
+      });
   };
-  //Pulls account infor
-  // useEffect(() => {
-  //   axios
-  //     .post(route + "/api/user", {
-  //       id: id,
-  //     })
-  //     .then((res) => {
-  //       setCurrUser(res.data[0]);
-  //     });
-  // }, []);
-  // //pulls all the tweets from the user
-  // useEffect(() => {
-  //   axios
-  //     .post(route + "/api/findAllTweetsFromOneUser", {
-  //       id: id,
-  //     })
-  //     .then((res) => {
-  //       const tweets = res.data.rows;
-  //       setAllTweets(tweets.reverse());
-  //     });
-  // }, []);
-  //Sees if the current user is following the account
-  // useEffect(() => {
-  //   axios
-  //     .post(route + "/api/user", {
-  //       follower: JSON.parse(localStorage.getItem("currUser")).id,
-  //     })
-  //     .then((res) => console.log(res.data));
-  // }, []);
 
-  axios.post(route + "/api/user", {
-    follower: JSON.parse(localStorage.getItem("currUser")).id,
-  });
-  axios.post(route + "/api/findAllTweetsFromOneUser", {
-    id: id,
-  });
-
-  const [currUser, setCurrUser] = useState({
-    first_name: user.first_name,
-    last_name: user.last_name,
-    username: user.username,
-    email: user.email,
-    bio: user.bio,
-    location: user.location,
-    id: user.id,
-    created_at: user.created_at,
-  });
+  useEffect(() => {
+    getUsersAndTweets();
+  }, []);
 
   const followButton = (id) => {
     console.log(id);
@@ -121,33 +132,32 @@ const OtherUserProfile = () => {
           </div>
           <h1>Tweets</h1>
           <hr />
-          {allTweets.map((tweet, i) => {
-            return (
-              <div className="tweet" key={i}>
-                <div className="flex">
-                  <div className="leftTweet">
-                    <PersonIcon />
-                  </div>
-                  <div className="rightTweet">
-                    <div className="rightTweetHeader">
-                      <p>
-                        {currUser.first_name} {currUser.last_name}
-                      </p>
-                      <p>@{currUser.username}</p>
-                      <p>{tweet.created_at}</p>
-                    </div>
-                    <h3>{tweet.content}</h3>
-                  </div>
+          {allTweets.map((tweet, i) => (
+            // Own component
+            <div className="tweet" key={i}>
+              <div className="flex">
+                <div className="leftTweet">
+                  <PersonIcon />
                 </div>
-
-                <div className="buttonsTweet">
-                  <button>Like</button>
-                  <button>Retweet</button>
-                  <button>Comment</button>
+                <div className="rightTweet">
+                  <div className="rightTweetHeader">
+                    <p>
+                      {currUser.first_name} {currUser.last_name}
+                    </p>
+                    <p>@{currUser.username}</p>
+                    <p>{tweet.created_at}</p>
+                  </div>
+                  <h3>{tweet.content}</h3>
                 </div>
               </div>
-            );
-          })}
+
+              <div className="buttonsTweet">
+                <button>Like</button>
+                <button>Retweet</button>
+                <button>Comment</button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       {/* NEW SIDE OF CONTENT */}
