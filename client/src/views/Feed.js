@@ -9,6 +9,7 @@ import Post from "../components/Post";
 
 const Feed = (props) => {
   const navigate = useNavigate();
+  const route = require("../utils/server_router");
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const id = localStorage.getItem("id");
   const [tweet, setTweet] = useState("");
@@ -22,7 +23,7 @@ const Feed = (props) => {
     let userId = JSON.parse(localStorage.getItem("currUser"));
     console.log(userId);
     axios
-      .post("http://localhost:8080/api/create/tweet", {
+      .post(route + "/api/create/tweet", {
         tweet: tweet,
         id: userId.id,
       })

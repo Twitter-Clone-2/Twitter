@@ -19,13 +19,14 @@ const FormUserName = ({
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
+  const route = require("../utils/server_router");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email);
 
     axios
-      .post("http://localhost:8080/api/register", {
+      .post(route + "/api/register", {
         first_name: firstName,
         last_name: lastName,
         email: email,
@@ -36,7 +37,7 @@ const FormUserName = ({
       })
       .then(() => {
         axios
-          .post("http://localhost:8080/api/user/email", {
+          .post(route + "/api/user/email", {
             email: email,
           })
           .then((res) => {

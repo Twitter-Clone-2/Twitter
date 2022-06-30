@@ -17,6 +17,10 @@ const {
   getOneUserByEmail,
   createTweet,
   findAllTweetsFromOneUser,
+  unFollowAnotherUser,
+  followAnotherUser,
+  findFollowers,
+  findFollowing,
 } = require("./controllers");
 //important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
 
@@ -38,7 +42,11 @@ app.post("/api/findAllTweetsFromOneUser", findAllTweetsFromOneUser);
 //retweets
 
 //reply
-
+//follow status
+app.post("/api/findFollowers", findFollowers);
+app.post("/api/findFollowing", findFollowing);
+app.post("/api/follow", followAnotherUser);
+app.post("/api/unfollow", unFollowAnotherUser);
 //delete an account
 app.delete("/api/delete/account", deleteUser);
 app.listen(port, () => {
