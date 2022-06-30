@@ -24,28 +24,42 @@ const OtherUserProfile = () => {
     id: "loading",
     createdAt: "loading",
   };
-  useEffect(() => {
-    axios
-      .post(route + "/api/user", {
-        id: id,
-      })
-      .then((res) => {
-        setCurrUser(res.data[0]);
-      });
-  }, []);
+  //Pulls account infor
+  // useEffect(() => {
+  //   axios
+  //     .post(route + "/api/user", {
+  //       id: id,
+  //     })
+  //     .then((res) => {
+  //       setCurrUser(res.data[0]);
+  //     });
+  // }, []);
+  // //pulls all the tweets from the user
+  // useEffect(() => {
+  //   axios
+  //     .post(route + "/api/findAllTweetsFromOneUser", {
+  //       id: id,
+  //     })
+  //     .then((res) => {
+  //       const tweets = res.data.rows;
+  //       setAllTweets(tweets.reverse());
+  //     });
+  // }, []);
+  //Sees if the current user is following the account
+  // useEffect(() => {
+  //   axios
+  //     .post(route + "/api/user", {
+  //       follower: JSON.parse(localStorage.getItem("currUser")).id,
+  //     })
+  //     .then((res) => console.log(res.data));
+  // }, []);
 
-  useEffect(() => {
-    axios
-      .post(route + "/api/findAllTweetsFromOneUser", {
-        id: id,
-      })
-      .then((res) => {
-        const tweets = res.data.rows;
-        setAllTweets(tweets.reverse());
-      });
-  }, []);
-
-  console.log(allTweets);
+  axios.post(route + "/api/user", {
+    follower: JSON.parse(localStorage.getItem("currUser")).id,
+  });
+  axios.post(route + "/api/findAllTweetsFromOneUser", {
+    id: id,
+  });
 
   const [currUser, setCurrUser] = useState({
     first_name: user.first_name,
@@ -57,6 +71,7 @@ const OtherUserProfile = () => {
     id: user.id,
     created_at: user.created_at,
   });
+
   const followButton = (id) => {
     console.log(id);
   };

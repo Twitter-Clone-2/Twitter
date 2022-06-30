@@ -1,6 +1,6 @@
-const db = require("./dataBase/index");
 const bcrypt = require("bcrypt");
-
+const pool = require("./dataBase/index");
+const { endPool, startPool } = require("./dataBase/index");
 //                ALL USER RELATED
 async function getAllUsers(req, res) {
   const query = `SELECT * FROM accounts;`;
@@ -16,10 +16,12 @@ async function getAllUsers(req, res) {
 async function getOneUser(req, res) {
   let { id } = req.body;
   const query = `SELECT * FROM accounts WHERE id = ${id}`;
-
+  const db = await startPool();
+  console.log("-----------------" + db);
   try {
     const results = await db.query(query);
     res.send(results.rows);
+    endPool(db);
   } catch (e) {
     console.error(e.stack);
     res.status(400);
@@ -35,6 +37,7 @@ async function getOneUserByEmail(req, res) {
   try {
     const results = await db.query(query);
     res.send(results.rows);
+    pool.end();
   } catch (e) {
     console.error(e.stack);
     res.status(400);
@@ -116,11 +119,13 @@ async function createTweet(req, res) {
 }
 
 async function findAllTweetsFromOneUser(req, res) {
+  const db = await startPool();
   const { id } = req.body;
   const query = `SELECT content, created_at FROM tweets WHERE accounts_id = ${id};`;
 
   try {
     const results = await db.query(query);
+
     res.status(200).send(results);
   } catch (e) {
     console.error(e.stack);
@@ -128,7 +133,35 @@ async function findAllTweetsFromOneUser(req, res) {
   }
 }
 
-//                            FOLLOWING
+//                            Follow or Following status
+async function findFollowers(req, res) {
+  const { following } = req.body;
+  const query = `SELECT * FROM relationship WHERE following = ${following};`;
+
+  try {
+    results = db.query(query);
+    res.status(200).send(results);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400).send(false);
+  }
+}
+
+async function findFollowing(req, res) {
+  const db = await startPool();
+  const { follower } = req.body;
+  console.log(follower);
+  const query = `SELECT * FROM relationship WHERE follower = ${follower};`;
+
+  try {
+    results = db.query(query);
+    res.status(200).send(results);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400).send(false);
+  }
+}
+
 async function followAnotherUser(req, res) {
   const { follower, following } = req.body;
   const query = `INSERT INTO relationship (follower, following) VALUES (${follower}, ${following});`;
@@ -165,4 +198,6 @@ module.exports = {
   findAllTweetsFromOneUser,
   followAnotherUser,
   unFollowAnotherUser,
+  findFollowers,
+  findFollowing,
 };
