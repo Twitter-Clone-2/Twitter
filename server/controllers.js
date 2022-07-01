@@ -285,6 +285,7 @@ async function followAnotherUser(req, res) {
     endPool(db);
   }
 }
+//test
 async function unFollowAnotherUser(req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", true);
