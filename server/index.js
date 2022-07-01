@@ -4,7 +4,11 @@ const app = express();
 const serverless = require("serverless-http");
 const port = process.env.PORT || 8080;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://twitter-clone-project-2.herokuapp.com",
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
