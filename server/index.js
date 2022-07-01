@@ -1,6 +1,6 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
+const app = express();
 const serverless = require("serverless-http");
 const port = process.env.PORT || 8080;
 
@@ -25,7 +25,7 @@ const {
 //important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
 
 //get all users
-app.get("/api/users", getAllUsers);
+app.get("/api/users", cors(), getAllUsers);
 // get one user
 //id
 app.post("/api/user", getOneUser);
