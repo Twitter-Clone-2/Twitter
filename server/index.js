@@ -1,14 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const serverless = require("serverless-http");
+// const serverless = require("serverless-http");
 const port = process.env.PORT || 8080;
 
-app.use(
-  cors({
-    origin: "https://twitter-clone-project-2.herokuapp.com",
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,29 +28,29 @@ app.options("*", cors()); // include before other routes
 app.get("/api/users", cors(), getAllUsers);
 // get one user
 //id
-app.post("/api/user", getOneUser);
+app.post("/api/user", cors(), getOneUser);
 //email
-app.post("/api/user/email", getOneUserByEmail);
+app.post("/api/user/email", cors(), getOneUserByEmail);
 //login
-app.post("/api/login", login);
+app.post("/api/login", cors(), login);
 //register
-app.post("/api/register", register);
+app.post("/api/register", cors(), register);
 //tweet
-app.post("/api/create/tweet", createTweet);
-app.post("/api/findAllTweetsFromOneUser", findAllTweetsFromOneUser);
+app.post("/api/create/tweet", cors(), createTweet);
+app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
 //likes
 //retweets
 
 //reply
 //follow status
-app.post("/api/findFollowers", findFollowers);
-app.post("/api/findFollowing", findFollowing);
-app.post("/api/follow", followAnotherUser);
-app.post("/api/unfollow", unFollowAnotherUser);
+app.post("/api/findFollowers", cors(), findFollowers);
+app.post("/api/findFollowing", cors(), findFollowing);
+app.post("/api/follow", cors(), followAnotherUser);
+app.post("/api/unfollow", cors(), unFollowAnotherUser);
 //delete an account
-app.delete("/api/delete/account", deleteUser);
+app.delete("/api/delete/account", cors(), deleteUser);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-module.exports.handler = serverless(app);
+// module.exports.handler = serverless(app);
