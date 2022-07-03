@@ -38,7 +38,7 @@ const OtherUserProfile = () => {
       .catch((e) => {
         console.log(e);
       });
-
+    //restart
     axios
       .post(route + "/api/user", {
         id: id,

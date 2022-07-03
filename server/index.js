@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 // const serverless = require("serverless-http");
-const port = process.env.PORT || 8080;
+//const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
@@ -49,7 +49,7 @@ app.post("/api/follow", cors(), followAnotherUser);
 app.post("/api/unfollow", cors(), unFollowAnotherUser);
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
-app.listen(port, () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
