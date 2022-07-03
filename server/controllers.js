@@ -115,25 +115,19 @@ async function login(req, res) {
 
   try {
     const results = await db.query(queryForUser);
-
     let user = results.rows[0];
     endPool(db);
-
-    console.log(user);
-
     if (!user) {
       endPool(db);
-
       return res.send(false);
     }
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) {
       console.log("passwords dont match");
       endPool(db);
-
       return res.send(false);
     }
-    console.log("hello correct user");
+
     res.json({
       user: user,
       status: true,
@@ -142,7 +136,6 @@ async function login(req, res) {
   } catch (e) {
     console.error(e.stack);
     res.status(400);
-    endPool(db);
   }
 }
 
