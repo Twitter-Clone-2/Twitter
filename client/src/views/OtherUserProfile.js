@@ -51,32 +51,6 @@ const OtherUserProfile = () => {
       .catch((e) => {
         console.log(e);
       });
-
-    axios
-      .post(route + "/api/user", {
-        id: id,
-      })
-      .then(({ data }) =>
-        console.log(
-          "Dont waist my time reza............................................................"
-        )
-      )
-      .catch((e) => {
-        console.log(e);
-      });
-
-    axios
-      .post(route + "/api/user", {
-        id: id,
-      })
-      .then(({ data }) =>
-        console.log(
-          "Dont waist my time reza............................................................"
-        )
-      )
-      .catch((e) => {
-        console.log(e);
-      });
   };
 
   useEffect(() => {
