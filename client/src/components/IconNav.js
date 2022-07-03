@@ -29,7 +29,10 @@ const IconNav = (props) => {
         <ChatBubbleIcon className="icon" />
         <div className="buttonLabel">Messages</div>
       </Button>
-      <Button className={"iconButton"} onClick={() => navigate("/profile/page")}>
+      <Button
+        className={"iconButton"}
+        onClick={() => navigate("/profile/page")}
+      >
         <PersonIcon className="icon" />
         <div className="buttonLabel">Profile</div>
       </Button>
