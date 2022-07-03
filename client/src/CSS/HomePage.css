@@ -2,13 +2,10 @@
   display: flex;
   justify-content: space-between;
   width: 90%;
-  /* margin-left: 10%; */
 }
 #allContent {
-  /* border: 3px solid red; */
   flex: 6.5;
   width: 90%;
-  /* margin-left: 10%; */
 }
 .flex {
   display: flex;
@@ -24,13 +21,6 @@ input {
 /* BUTTONS */
 
 #icons {
-  /* display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 40px;
-    border-right: 2px grey solid;
-    height: 100vh; */
-
   display: flex;
   flex-direction: column;
   background-color: #034578;
