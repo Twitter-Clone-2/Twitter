@@ -41,13 +41,12 @@ const OtherUserProfile = () => {
     //restart
     axios
       .post(route + "/api/user", {
-        id: id,
+        follower: JSON.parse(localStorage.getItem("currUser")).id,
       })
-      .then(({ data }) =>
-        console.log(
-          "Dont waist my time reza............................................................"
-        )
-      )
+      .then(({ data }) => {
+        let allFollowing = data;
+        console.log(allFollowing);
+      })
       .catch((e) => {
         console.log(e);
       });

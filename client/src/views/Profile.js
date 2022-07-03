@@ -8,6 +8,7 @@ import Logout from "../components/Logout";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
+
 const Profile = () => {
   const route = require("../utils/server_router");
   const user = JSON.parse(localStorage.getItem("currUser"));
