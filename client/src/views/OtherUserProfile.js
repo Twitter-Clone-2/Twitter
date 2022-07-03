@@ -40,7 +40,7 @@ const OtherUserProfile = () => {
       });
     //restart
     axios
-      .post(route + "/api/user", {
+      .post(route + "/api/findFollowing", {
         follower: JSON.parse(localStorage.getItem("currUser")).id,
       })
       .then(({ data }) => {
