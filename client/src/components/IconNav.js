@@ -11,19 +11,13 @@ import "../CSS/IconNav.css";
 
 const IconNav = (props) => {
   const navigate = useNavigate();
-  const handleHome = () => {
-    navigate("/main/feed");
-  };
-  const takeToProfile = () => {
-    navigate("/profile/page");
-  };
 
   return (
     <div className="iconContainer">
-      <div id="twitterButton" onClick={() => handleHome()}>
+      <div id="twitterButton" onClick={() => navigate("/main/feed")}>
         <TwitterIcon id="twitterIcon" className="icon" />
       </div>
-      <Button className={"iconButton"} onClick={() => handleHome()}>
+      <Button className={"iconButton"} onClick={() => navigate("/main/feed")}>
         <HomeIcon className="icon" />
         <div className="buttonLabel">Home</div>
       </Button>
@@ -35,7 +29,10 @@ const IconNav = (props) => {
         <ChatBubbleIcon className="icon" />
         <div className="buttonLabel">Messages</div>
       </Button>
-      <Button className={"iconButton"} onClick={() => takeToProfile()}>
+      <Button
+        className={"iconButton"}
+        onClick={() => navigate("/profile/page")}
+      >
         <PersonIcon className="icon" />
         <div className="buttonLabel">Profile</div>
       </Button>
