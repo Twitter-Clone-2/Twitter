@@ -1,12 +1,10 @@
-#mainBodyHomePage {
+#feed {
   display: flex;
   justify-content: space-between;
   width: 90%;
+  flex-grow: 1;
 }
-#allContent {
-  flex: 6.5;
-  width: 90%;
-}
+
 .flex {
   display: flex;
 }
@@ -55,6 +53,8 @@ input {
   outline: 0;
   font-size: 40px;
 }
+
+/* Todo: Move this to its own news css */
 
 #news {
   /* border: 3px solid black; */

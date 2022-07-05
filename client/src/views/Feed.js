@@ -2,15 +2,12 @@ import React, { useState, useEffect, useReducer } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/HomePage.css";
 import { useNavigate } from "react-router-dom";
-import IconNav from "../components/IconNav";
-import NewsAPI from "../components/NewsAPI";
 import axios from "axios";
 import Post from "../components/Post";
 
 const Feed = (props) => {
   const navigate = useNavigate();
   const route = require("../utils/server_router");
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const id = localStorage.getItem("id");
   const [tweet, setTweet] = useState("");
   let allFollowingTweets = [];
@@ -19,9 +16,7 @@ const Feed = (props) => {
 
   const createTweet = (e) => {
     e.preventDefault();
-    console.log(tweet);
     let userId = JSON.parse(localStorage.getItem("currUser"));
-    console.log(userId);
     axios
       .post(route + "/api/create/tweet", {
         tweet: tweet,
@@ -35,14 +30,7 @@ const Feed = (props) => {
     navigate("/profile/page");
   };
   return (
-    <div id="mainBodyHomePage">
-      {/* LEFT SIDE */}
-      <IconNav
-        setPostForm={props.setPostForm}
-        postForm={props.PostForm}
-        renderPost={props.renderPost}
-      />
-
+    <div id="feed">
       {/* Middle */}
       <div id="allContent">
         <h2>Home</h2>
@@ -53,6 +41,7 @@ const Feed = (props) => {
               sx={{ fontSize: 100 }}
             />
             <input
+              style={{flexGrow: 1}}
               placeholder="What's happening?"
               onChange={(e) => setTweet(e.target.value)}
               value={tweet}
@@ -96,8 +85,6 @@ const Feed = (props) => {
             })}
         </div>
       </div>
-      {/* RIGHT SIDE */}
-      <NewsAPI />
     </div>
   );
 };

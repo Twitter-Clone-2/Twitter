@@ -9,11 +9,14 @@ import EditProfile from "./components/EditProfile";
 import OtherUserProfile from "./views/OtherUserProfile";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import IconNav from "./components/IconNav";
+import NewsAPI from "./components/NewsAPI";
 
 function App() {
   return (
     <div className={"mainContainer"}>
       <BrowserRouter>
+      <IconNav/>
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route exact path="/login" element={<Login />} />
@@ -26,6 +29,7 @@ function App() {
           />
           <Route exact path="/main/feed" element={<Feed />} />
         </Routes>
+        <NewsAPI/>
       </BrowserRouter>
     </div>
   );

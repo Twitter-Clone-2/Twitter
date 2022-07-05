@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import IconNav from "../components/IconNav";
-import NewsAPI from "../components/NewsAPI";
+
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/ProfilePage.css";
 import axios from "axios";
@@ -65,9 +64,6 @@ const OtherUserProfile = () => {
   }
   return (
     <div id="profilePage">
-      {/* ICON NAV BAR */}
-      <IconNav />
-      {/* MAIN CONTENT OF PROFILE PAGE */}
       <div id="profilePageUser">
         {/* HEADER OF USER PROFILE */}
         <div id="profilePageHeader">
@@ -133,8 +129,6 @@ const OtherUserProfile = () => {
           ))}
         </div>
       </div>
-      {/* NEW SIDE OF CONTENT */}
-      <NewsAPI />
     </div>
   );
 };
