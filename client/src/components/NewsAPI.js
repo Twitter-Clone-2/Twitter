@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "../CSS/HomePage.css";
 const NewsAPI = () => {
   const [news, setNews] = useState([]);
+  const { pathname } = useLocation();
+  const displayNews =
+    pathname !== "/" && pathname !== "/login" && pathname !== "/register";
 
   // Retrieving NY times news from api
   const axiosNews = () => {
@@ -29,19 +33,23 @@ const NewsAPI = () => {
   }, []);
 
   return (
-    <div id="news">
-      {news.map((headline, idx) => {
-        return (
-          <div className="news-box" key={idx}>
-            <h2 className="news-title">
-              {" "}
-              {news[idx].headline.print_headline}{" "}
-            </h2>
-            <h5 className="news-feed"> {news[idx].headline.main} </h5>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      {displayNews && (
+        <div id="news">
+          {news.map((headline, idx) => {
+            return (
+              <div className="news-box" key={idx}>
+                <h2 className="news-title">
+                  {" "}
+                  {news[idx].headline.print_headline}{" "}
+                </h2>
+                <h5 className="news-feed"> {news[idx].headline.main} </h5>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 };
 
