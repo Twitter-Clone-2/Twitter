@@ -42,8 +42,9 @@ const OtherUserProfile = () => {
       .post(route + "/api/findFollowing", {
         follower: JSON.parse(localStorage.getItem("currUser")).id,
       })
-      .then(({ data }) => {
-        let allFollowing = data;
+      .then((res) => {
+        let allFollowing = res;
+        
         console.log(allFollowing);
       })
       .catch((e) => {

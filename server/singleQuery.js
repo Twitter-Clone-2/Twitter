@@ -143,7 +143,9 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
 
 const selectRelationships = `SELECT * FROM relationship;`;
-runQuery(selectRelationships);
+
+const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES (1,2);`;
+//runQuery(followAnotherUser);
 
 /*
 
