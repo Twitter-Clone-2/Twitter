@@ -1,18 +1,18 @@
 const { Pool } = require("pg");
+require("dotenv").config();
 
 const credentials = {
-  user: "xomllrqn",
-  host: "heffalump.db.elephantsql.com",
-  database: "xomllrqn",
-  password: "kTfz0mBGRigsvHG76TSz1mAMhAWl0R4K",
-  port: 5432,
-  allowExitOnIdle: true,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 };
 
 async function startPool() {
   const pool = new Pool(credentials);
   return await pool.connect();
 }
+
 function endPool(db) {
   db.release();
 }
