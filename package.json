@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-prebuild": "cd server && npm install",
-    "start": "cd server && npm start"
+    "start": "cd server && npm start",
+    "format": "cd client && npx prettier --check ./src",
+    "lint": "cd client && npx eslint ./src"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,9 @@
   "homepage": "https://github.com/RezaAmraei/Twitter#readme",
   "dependencies": {
     "prettier": "^2.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-plugin-react": "^7.30.1"
   }
 }
