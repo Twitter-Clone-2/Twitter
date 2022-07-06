@@ -246,7 +246,7 @@ async function findFollowing(req, res) {
   const query = `SELECT * FROM relationship WHERE follower = ${follower};`;
 
   try {
-    results = db.query(query);
+    results = await db.query(query);
     res.status(200).send(results);
     endPool(db);
   } catch (e) {
