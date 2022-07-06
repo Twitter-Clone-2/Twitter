@@ -13,6 +13,7 @@ import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
 
 function App() {
+
   return (
     <div className={"mainContainer"}>
       <BrowserRouter>
