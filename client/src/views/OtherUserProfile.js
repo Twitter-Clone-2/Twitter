@@ -39,11 +39,12 @@ const OtherUserProfile = () => {
       });
     //restart
     axios
-      .post(route + "/api/findFollowing", {
+      .post(route + "/api/checkFollowStatus", {
         follower: JSON.parse(localStorage.getItem("currUser")).id,
+        following : id
       })
       .then((res) => {
-        let allFollowing = res;
+        let allFollowing = res.data.rows;
         
         console.log(allFollowing);
       })

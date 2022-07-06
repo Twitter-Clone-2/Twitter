@@ -21,6 +21,7 @@ const {
   followAnotherUser,
   findFollowers,
   findFollowing,
+  checkFollowStatus,
 } = require("./controllers");
 //important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
 app.options("*", cors()); // include before other routes
@@ -38,6 +39,7 @@ app.post("/api/register", cors(), register);
 //tweet
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
+app.post("api/checkFollowStatus", cors(), checkFollowStatus);
 //likes
 //retweets
 
