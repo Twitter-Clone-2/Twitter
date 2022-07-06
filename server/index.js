@@ -39,7 +39,7 @@ app.post("/api/register", cors(), register);
 //tweet
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
-app.post("api/checkFollowStatus", cors(), checkFollowStatus);
+app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
 //likes
 //retweets
 
