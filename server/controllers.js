@@ -315,11 +315,13 @@ async function checkFollowStatus(req, res) {
 
   try {
     results = await db.query(query);
-    if(results.rows.length > 0){
-      res.status(200).send(true);
-    }else{
-      res.status(200).send(false);
-    }
+    // if(results.rows.length > 0){
+    //   res.status(200).send(true);
+    // }else{
+    //   res.status(200).send(false);
+    // }
+    const followStatus = results.rows.length > 0
+    res.status(200).send(followStatus)
     endPool(db);
   } catch (e) {
     console.error(e.stack);
