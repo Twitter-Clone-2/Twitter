@@ -185,6 +185,21 @@ async function findFollowing(req, res) {
   }
 }
 
+async function findAllRelationshipStatus(req,res){
+  const db = await startPool();
+  const {follower, following} = req.body;
+  const query = `SELECT * FROM relationship WHERE follower = ${follower} or following = ${following};`;
+
+  try{
+   const results = await db.query(query);
+   res.status(200).send(results);
+   endPool(db);
+  }catch(e){
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
+
 async function followAnotherUser(req, res) {
   const db = await startPool();
   const { follower, following } = req.body;
@@ -247,4 +262,5 @@ module.exports = {
   findFollowers,
   findFollowing,
   checkFollowStatus,
+  findAllRelationshipStatus,
 };
