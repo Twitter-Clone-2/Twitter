@@ -10,7 +10,7 @@ const FormLogin = () => {
   const route = require("../utils/server_router");
   const [emailOrUserName, setEmailOrUserName] = useState("");
   const [password, setPassword] = useState("");
-  console.log(route);
+
   //Needs Validations
   //Forgot password button will hopefully be a later feature added
   const handleLogin = (e) => {

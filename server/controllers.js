@@ -242,11 +242,10 @@ async function findFollowing(req, res) {
   );
   const db = await startPool();
   const { follower } = req.body;
-  console.log(follower);
   const query = `SELECT * FROM relationship WHERE follower = ${follower};`;
 
   try {
-    results = db.query(query);
+    results = await db.query(query);
     res.status(200).send(results);
     endPool(db);
   } catch (e) {
@@ -302,6 +301,32 @@ async function unFollowAnotherUser(req, res) {
   }
 }
 
+async function checkFollowStatus(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
+  );
+  const db = await startPool();
+  const { follower, following } = req.body;
+  const query = `SELECT * FROM relationship WHERE follower = ${follower} AND following = ${following};`;
+
+  try {
+    results = await db.query(query);
+    if(results.rows.length > 0){
+      res.status(200).send(true);
+    }else{
+      res.status(200).send(false);
+    }
+    endPool(db);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -315,4 +340,5 @@ module.exports = {
   unFollowAnotherUser,
   findFollowers,
   findFollowing,
+  checkFollowStatus,
 };

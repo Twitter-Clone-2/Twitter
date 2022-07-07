@@ -10,7 +10,7 @@ import route from "../utils/server_router";
 const OtherUserProfile = () => {
   const [allTweets, setAllTweets] = useState([]);
   const [currUser, setCurrUser] = useState({});
-  const [following, setFollowing] = useState(false);
+  const [followingStatus, setFollowingStatus] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -39,12 +39,13 @@ const OtherUserProfile = () => {
       });
     //restart
     axios
-      .post(route + "/api/findFollowing", {
+      .post(route + "/api/checkFollowStatus", {
         follower: JSON.parse(localStorage.getItem("currUser")).id,
+        following : id
       })
-      .then(({ data }) => {
-        let allFollowing = data;
-        console.log(allFollowing);
+      .then((res) => {
+        const relationshipStatus = res.data;
+        if(relationshipStatus) setFollowingStatus(true)
       })
       .catch((e) => {
         console.log(e);
@@ -55,8 +56,19 @@ const OtherUserProfile = () => {
     getUsersAndTweets();
   }, []);
 
-  const followButton = (id) => {
-    console.log(id);
+  const followButton = () => {
+    //unfollow
+    if(followingStatus){
+      axios.post(route + "/api/unfollow", {
+        follower: JSON.parse(localStorage.getItem("currUser")).id,
+        following : id
+      }).then(()=> setFollowingStatus(false)).catch(e=>console.log(e))
+    }else{
+      axios.post(route + "/api/follow", {
+        follower: JSON.parse(localStorage.getItem("currUser")).id,
+        following : id
+      }).then(()=> setFollowingStatus(true)).catch(e=>console.log(e))
+    }
   };
   //if user looks up his own profile he will be redirected to his link for his own profile page
   if (currUser.id === JSON.parse(localStorage.getItem("currUser")).id) {
@@ -85,8 +97,8 @@ const OtherUserProfile = () => {
           {/* SMALL IMAGE HERE */}
           <div id="bottomOfPicture">
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
-            <button onClick={() => followButton(currUser._id)}>
-              {following ? "Unfollow" : "Follow"}
+            <button onClick={() => followButton()}>
+              {followingStatus ? "Unfollow" : "Follow"}
             </button>
           </div>
           <h2>
