@@ -10,7 +10,7 @@ import route from "../utils/server_router";
 const OtherUserProfile = () => {
   const [allTweets, setAllTweets] = useState([]);
   const [currUser, setCurrUser] = useState({});
-  const [following, setFollowing] = useState(false);
+  const [followingStatus, setFollowingStatus] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -44,9 +44,8 @@ const OtherUserProfile = () => {
         following : id
       })
       .then((res) => {
-        let allFollowing = res.data.rows;
-        
-        console.log(allFollowing);
+        const relationshipStatus = res.data;
+        if(relationshipStatus) setFollowingStatus(true)
       })
       .catch((e) => {
         console.log(e);
@@ -88,7 +87,7 @@ const OtherUserProfile = () => {
           <div id="bottomOfPicture">
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
             <button onClick={() => followButton(currUser._id)}>
-              {following ? "Unfollow" : "Follow"}
+              {followingStatus ? "Unfollow" : "Follow"}
             </button>
           </div>
           <h2>
