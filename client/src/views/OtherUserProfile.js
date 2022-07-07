@@ -56,8 +56,19 @@ const OtherUserProfile = () => {
     getUsersAndTweets();
   }, []);
 
-  const followButton = (id) => {
-    console.log(id);
+  const followButton = () => {
+    //unfollow
+    if(followingStatus){
+      axios.post(route + "/api/unfollow", {
+        follower: JSON.parse(localStorage.getItem("currUser")).id,
+        following : id
+      }).then(()=> setFollowingStatus(false)).catch(e=>console.log(e))
+    }else{
+      axios.post(route + "/api/follow", {
+        follower: JSON.parse(localStorage.getItem("currUser")).id,
+        following : id
+      }).then(()=> setFollowingStatus(true)).catch(e=>console.log(e))
+    }
   };
   //if user looks up his own profile he will be redirected to his link for his own profile page
   if (currUser.id === JSON.parse(localStorage.getItem("currUser")).id) {
@@ -86,7 +97,7 @@ const OtherUserProfile = () => {
           {/* SMALL IMAGE HERE */}
           <div id="bottomOfPicture">
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
-            <button onClick={() => followButton(currUser._id)}>
+            <button onClick={() => followButton()}>
               {followingStatus ? "Unfollow" : "Follow"}
             </button>
           </div>
