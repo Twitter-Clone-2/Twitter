@@ -315,7 +315,7 @@ async function checkFollowStatus(req, res) {
 
   try {
     results = await db.query(query);
-    console.log("hi")
+    console.log(`--------------- ${results} ---------------------`)
     if(results.data.row.length > 0){
       res.status(200).send(true);
     }else{
