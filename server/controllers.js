@@ -6,13 +6,6 @@ async function getAllUsers(req, res) {
   const db = await startPool();
   const query = `SELECT * FROM accounts;`;
   try {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-    );
     const results = await db.query(query);
     res.send(results.rows);
     endPool(db);
@@ -24,13 +17,6 @@ async function getAllUsers(req, res) {
 }
 
 async function getOneUser(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   let { id } = req.body;
   const query = `SELECT * FROM accounts WHERE id = ${id}`;
   const db = await startPool();
@@ -47,13 +33,6 @@ async function getOneUser(req, res) {
 }
 
 async function getOneUserByEmail(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   let { email } = req.body;
   console.log(email);
@@ -72,13 +51,6 @@ async function getOneUserByEmail(req, res) {
 }
 
 async function register(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   let { first_name, last_name, email, password, username, bio, location } =
     req.body;
@@ -102,13 +74,6 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   let { email, password } = req.body;
   const queryForUser = `SELECT * FROM accounts WHERE email = '${email}';`;
@@ -140,13 +105,6 @@ async function login(req, res) {
 }
 
 async function deleteUser(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { id } = req.body;
   const query = `DELETE FROM accounts WHERE id = ${id};`;
@@ -164,13 +122,6 @@ async function deleteUser(req, res) {
 
 //                          ALL TWEET RELATED
 async function createTweet(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { tweet, id } = req.body;
   const query = `INSERT INTO tweets (content, accounts_id) VALUES ('${tweet}', ${id});`;
@@ -186,13 +137,6 @@ async function createTweet(req, res) {
 }
 
 async function findAllTweetsFromOneUser(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { id } = req.body;
   const query = `SELECT content, created_at FROM tweets WHERE accounts_id = ${id};`;
@@ -210,13 +154,6 @@ async function findAllTweetsFromOneUser(req, res) {
 
 //                            Follow or Following status
 async function findFollowers(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { following } = req.body;
   const query = `SELECT * FROM relationship WHERE following = ${following};`;
@@ -233,13 +170,6 @@ async function findFollowers(req, res) {
 }
 
 async function findFollowing(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { follower } = req.body;
   const query = `SELECT * FROM relationship WHERE follower = ${follower};`;
@@ -256,13 +186,6 @@ async function findFollowing(req, res) {
 }
 
 async function followAnotherUser(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { follower, following } = req.body;
   const query = `INSERT INTO relationship (follower, following) VALUES (${follower}, ${following});`;
@@ -279,13 +202,6 @@ async function followAnotherUser(req, res) {
 }
 
 async function unFollowAnotherUser(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { follower, following } = req.body;
   const query = `DELETE FROM relationship WHERE follower = ${follower} AND following = ${following};`;
@@ -302,24 +218,14 @@ async function unFollowAnotherUser(req, res) {
 }
 
 async function checkFollowStatus(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-  );
   const db = await startPool();
   const { follower, following } = req.body;
   const query = `SELECT * FROM relationship WHERE follower = ${follower} AND following = ${following};`;
 
   try {
     results = await db.query(query);
-    if(results.rows.length > 0){
-      res.status(200).send(true);
-    }else{
-      res.status(200).send(false);
-    }
+    const followStatus = results.rows.length > 0
+    res.status(200).send(followStatus)
     endPool(db);
   } catch (e) {
     console.error(e.stack);
