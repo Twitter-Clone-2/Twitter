@@ -33,6 +33,15 @@ const Profile = () => {
       });
   }, []);
 
+  /*
+  axios.post(route + "/api/findAllRelationships", {
+        follower : JSON.parse(localStorage.getItem("currUser")).id,
+        following : JSON.parse(localStorage.getItem("currUser")).id
+      })
+      .then(res => console.log(res.data.rows))
+      .catch(e=>console.log(e))
+  */
+
   const [editProfile, setEditProfile] = useState(false);
   const [settings, setSettings] = useState(false);
   const [allTweets, setAllTweets] = useState([]);
