@@ -39,7 +39,7 @@ app.post("/api/register", cors(), register);
 //tweet
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
-app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
+
 //likes
 //retweets
 
@@ -49,8 +49,10 @@ app.post("/api/findFollowers", cors(), findFollowers);
 app.post("/api/findFollowing", cors(), findFollowing);
 app.post("/api/follow", cors(), followAnotherUser);
 app.post("/api/unfollow", cors(), unFollowAnotherUser);
+app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
+
 app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${process.env.PORT || 8080}`);
 });
