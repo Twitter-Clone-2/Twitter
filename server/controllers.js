@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const pool = require("./dataBase/index");
 const { endPool, startPool } = require("./dataBase/index");
+
+//important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
+
 //                ALL USER RELATED
 async function getAllUsers(req, res) {
   const db = await startPool();
@@ -248,6 +251,24 @@ async function checkFollowStatus(req, res) {
     endPool(db);
   }
 }
+//important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
+//                                  JOIN QUERIES
+async function selectAllFollowersAndTheirAccounts(req,res){
+  const db = await startPool();
+  const {follower, following} = req.body;
+  const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.following = accounts.id;`
+
+  try{
+    const results = db.query(query);
+    res.status(200).send(results);
+    endPool(db);
+  }catch(e){
+    console.error(e.stack);
+    res.status(400).send(false);
+    endPool(db);
+  }
+
+}
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -263,4 +284,5 @@ module.exports = {
   findFollowing,
   checkFollowStatus,
   findAllRelationshipStatus,
+  selectAllFollowersAndTheirAccounts,
 };

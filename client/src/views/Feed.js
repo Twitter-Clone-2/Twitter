@@ -28,7 +28,7 @@ const Feed = (props) => {
   /* plan for creating fed
     1) create an array to hold all tweets
     2) Have a query to grab all the ID's that the user follows, and store it in an array
-    3) Loop through that array and create a query ex: in each iteration of the loop concat to the string : "SLECT * FROM tweets WHERE id = ${userID}" += "or id = ${id}"
+    3) Loop through that array and create a query ex: in each iteration of the loop concat to the string : "SLECT * FROM tweets WHERE id = ANY(ARRAY[1,2])
     4)Sort the array So that the newest tweets will be in the front
   */
   const takeToProfile = () => {
