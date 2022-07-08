@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const pool = require("./dataBase/index");
 const { endPool, startPool } = require("./dataBase/index");
+
+//important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
+
 //                ALL USER RELATED
 async function getAllUsers(req, res) {
   const db = await startPool();
@@ -144,6 +147,7 @@ async function findAllTweetsFromOneUser(req, res) {
   try {
     const results = await db.query(query);
     res.status(200).send(results);
+    console.log("hello");
     endPool(db);
   } catch (e) {
     console.error(e.stack);
@@ -180,6 +184,21 @@ async function findFollowing(req, res) {
     endPool(db);
   } catch (e) {
     console.error(e.stack);
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
+
+async function findAllRelationshipStatus(req,res){
+  const db = await startPool();
+  const {follower, following} = req.body;
+  const query = `SELECT * FROM relationship WHERE follower = ${follower} or following = ${following};`;
+
+  try{
+   const results = await db.query(query);
+   res.status(200).send(results);
+   endPool(db);
+  }catch(e){
     res.status(400).send(false);
     endPool(db);
   }
@@ -233,6 +252,40 @@ async function checkFollowStatus(req, res) {
     endPool(db);
   }
 }
+//important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
+//                                  JOIN QUERIES
+async function selectAllFollowersAndTheirAccounts(req,res){
+  const db = await startPool();
+  const {following} = req.body;
+  const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.follower = accounts.id WHERE following = ${following};`;
+
+  try{
+    const results = await  db.query(query);
+    res.status(200).send(results);
+    endPool(db);
+  }catch(e){
+    console.error(e.stack);
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
+
+async function selectAllFollowingAndTheirAccounts(req,res){
+  const db = await startPool();
+  const {follower} = req.body;
+  const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.following = accounts.id WHERE follower = ${follower};`;
+
+  try{
+    const results = await  db.query(query);
+    res.status(200).send(results);
+    endPool(db);
+  }catch(e){
+    console.error(e.stack);
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
+
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -247,4 +300,7 @@ module.exports = {
   findFollowers,
   findFollowing,
   checkFollowStatus,
+  findAllRelationshipStatus,
+  selectAllFollowersAndTheirAccounts,
+  selectAllFollowingAndTheirAccounts,
 };

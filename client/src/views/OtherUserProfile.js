@@ -6,11 +6,16 @@ import axios from "axios";
 import Logout from "../components/Logout";
 import { useParams, useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
+import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 
 const OtherUserProfile = () => {
   const [allTweets, setAllTweets] = useState([]);
   const [currUser, setCurrUser] = useState({});
   const [followingStatus, setFollowingStatus] = useState(false);
+  const [numOfFollowers , setNumOfFollowers] = useState(0);
+  const [followersInfo, setFollowersInfo] = useState([])
+  const [numOfFollowing , setNumOfFollowing] = useState(0);
+  const [followingInfo, setFollowingInfo] = useState([])
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -37,37 +42,75 @@ const OtherUserProfile = () => {
       .catch((e) => {
         console.log(e);
       });
-    //restart
-    axios
-      .post(route + "/api/checkFollowStatus", {
-        follower: JSON.parse(localStorage.getItem("currUser")).id,
+    
+      axios.post(route + "/api/findAllRelationships", {
+        follower : id,
         following : id
       })
-      .then((res) => {
-        const relationshipStatus = res.data;
-        if(relationshipStatus) setFollowingStatus(true)
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+      .then(res =>{
+        for(let i = 0; i < res.data.rows.length; i++){
+          if(res.data.rows[i].following == id ){
+            setNumOfFollowers(numOfFollowers + 1);
+          }else if(res.data.rows[i].follower == id){
+            setNumOfFollowing(numOfFollowing + 1);
+          }
 
+          if((res.data.rows[i].following == id && res.data.rows[i].follower == JSON.parse(localStorage.getItem("currUser")).id) ){
+            setFollowingStatus(true);
+          }
+        }
+      })
+      .catch(e=>console.log(e))
+  };
   useEffect(() => {
     getUsersAndTweets();
   }, []);
 
+  const getRelationshipsAndAccountInfo = ()=>{
+    axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
+      following : id
+    }).then(res=>{
+      console.log(`SELECT ALL FOLLOWERS ${JSON.stringify(res.data.rows)}`);
+      setFollowersInfo(res.data.rows)
+    }).catch(e=>{
+      console.log(e);
+    })
+
+    axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
+      follower : id
+    }).then(res=>{
+      console.log(`SELECT ALL FOLLOWING  ${JSON.stringify(res.data.rows)}`);
+      setFollowingInfo(res.data.rows)
+    }).catch(e=>{
+      console.log(e);
+    })
+  }
+
+  const viewFollowing = () =>{
+      getRelationshipsAndAccountInfo();
+  }
   const followButton = () => {
     //unfollow
     if(followingStatus){
       axios.post(route + "/api/unfollow", {
         follower: JSON.parse(localStorage.getItem("currUser")).id,
         following : id
-      }).then(()=> setFollowingStatus(false)).catch(e=>console.log(e))
+      }).then(()=> {
+        setFollowingStatus(false)
+        setNumOfFollowers(numOfFollowers - 1)
+      }).catch(e=>{
+        console.log(e)
+      })
     }else{
       axios.post(route + "/api/follow", {
         follower: JSON.parse(localStorage.getItem("currUser")).id,
         following : id
-      }).then(()=> setFollowingStatus(true)).catch(e=>console.log(e))
+      }).then(()=> {
+        setFollowingStatus(true)
+        setNumOfFollowers(numOfFollowers + 1)
+      }).catch(e=>{
+        console.log(e)
+      })
     }
   };
   //if user looks up his own profile he will be redirected to his link for his own profile page
@@ -108,8 +151,18 @@ const OtherUserProfile = () => {
           <p>@{currUser.username}</p>
           <p>joined , {currUser.created_at}</p>
           <div className="flex" id="follows">
-            <p>0 :Following</p>
-            <p>0 :Followers</p>
+            <div  onClick={() => viewFollowing()}>
+               <FollowersAndFollowingModal 
+               num={`${numOfFollowing} Following`}
+               relationship={followingInfo}
+               />
+               </div>
+            <div  onClick={() => viewFollowing()}>
+              <FollowersAndFollowingModal 
+              num={`${numOfFollowers} Followers`}
+              relationship={followersInfo}
+              />
+              </div>
           </div>
           <h1>Tweets</h1>
           <hr />
@@ -143,6 +196,6 @@ const OtherUserProfile = () => {
       </div>
     </div>
   );
-};
+};  
 
 export default OtherUserProfile;
