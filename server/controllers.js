@@ -259,7 +259,7 @@ async function selectAllFollowersAndTheirAccounts(req,res){
   const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.following = accounts.id;`
 
   try{
-    const results = db.query(query);
+    const results = await  db.query(query);
     res.status(200).send(results);
     endPool(db);
   }catch(e){

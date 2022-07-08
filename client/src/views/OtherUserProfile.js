@@ -40,11 +40,12 @@ const OtherUserProfile = () => {
         console.log(e);
       });
     
-      axios.post(route + "/api/findAllRelationships", {
+      axios.post(route + "/api/selectAllFollowersAndTheirAccounts", {
         follower : id,
         following : id
       })
       .then(res =>{
+        console.log(res.data);
         for(let i = 0; i < res.data.rows.length; i++){
           if(res.data.rows[i].following == id ){
             setNumOfFollowers(numOfFollowers + 1);
