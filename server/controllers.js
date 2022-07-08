@@ -256,7 +256,7 @@ async function checkFollowStatus(req, res) {
 async function selectAllFollowersAndTheirAccounts(req,res){
   const db = await startPool();
   const {following} = req.body;
-  const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.following = accounts.id WHERE following = ${following};`;
+  const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.follower = accounts.id WHERE following = ${following};`;
 
   try{
     const results = await  db.query(query);
@@ -272,7 +272,7 @@ async function selectAllFollowersAndTheirAccounts(req,res){
 async function selectAllFollowingAndTheirAccounts(req,res){
   const db = await startPool();
   const {follower} = req.body;
-  const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.follower = accounts.id WHERE follower = ${follower};`;
+  const query = `SELECT * FROM relationship LEFT JOIN accounts ON relationship.following = accounts.id WHERE follower = ${follower};`;
 
   try{
     const results = await  db.query(query);

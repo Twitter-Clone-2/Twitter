@@ -145,7 +145,9 @@ ON DELETE NO ACTION;`;
 const selectRelationships = `SELECT * FROM relationship;`;
 
 const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES (1,2);`;
-//runQuery(followAnotherUser);
+
+const deleteRelationship = `DELETE FROM relationship WHERE id = 23`;
+//runQuery(deleteRelationship);
 
 /*
 

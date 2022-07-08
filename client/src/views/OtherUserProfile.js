@@ -12,7 +12,9 @@ const OtherUserProfile = () => {
   const [currUser, setCurrUser] = useState({});
   const [followingStatus, setFollowingStatus] = useState(false);
   const [numOfFollowers , setNumOfFollowers] = useState(0);
+  const [followersInfo, setFollowersInfo] = useState([])
   const [numOfFollowing , setNumOfFollowing] = useState(0);
+  const [followingInfo, setFollowingInfo] = useState([])
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -68,7 +70,8 @@ const OtherUserProfile = () => {
     axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
       following : id
     }).then(res=>{
-      console.log(res.data.rows);
+      console.log(`SELECT ALL FOLLOWERS ${JSON.stringify(res.data.rows)}`);
+      setFollowersInfo(res.data.rows)
     }).catch(e=>{
       console.log(e);
     })
@@ -76,7 +79,8 @@ const OtherUserProfile = () => {
     axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
       follower : id
     }).then(res=>{
-      console.log(res.data.rows);
+      console.log(`SELECT ALL FOLLOWING  ${JSON.stringify(res.data.rows)}`);
+      setFollowingInfo(res.data.rows)
     }).catch(e=>{
       console.log(e);
     })
