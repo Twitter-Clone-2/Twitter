@@ -6,6 +6,7 @@ import axios from "axios";
 import Logout from "../components/Logout";
 import { useParams, useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
+import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 
 const OtherUserProfile = () => {
   const [allTweets, setAllTweets] = useState([]);
@@ -47,7 +48,6 @@ const OtherUserProfile = () => {
         following : id
       })
       .then(res =>{
-        console.log(res.data.rows);
         for(let i = 0; i < res.data.rows.length; i++){
           if(res.data.rows[i].following == id ){
             setNumOfFollowers(numOfFollowers + 1);
@@ -151,8 +151,18 @@ const OtherUserProfile = () => {
           <p>@{currUser.username}</p>
           <p>joined , {currUser.created_at}</p>
           <div className="flex" id="follows">
-            <p onClick={() => viewFollowing()}>{numOfFollowing} Following</p>
-            <p>{numOfFollowers} Followers</p>
+            <div  onClick={() => viewFollowing()}>
+               <FollowersAndFollowingModal 
+               num={`${numOfFollowing} Following`}
+               relationship={followingInfo}
+               />
+               </div>
+            <div  onClick={() => viewFollowing()}>
+              <FollowersAndFollowingModal 
+              num={`${numOfFollowers} Followers`}
+              relationship={followersInfo}
+              />
+              </div>
           </div>
           <h1>Tweets</h1>
           <hr />
