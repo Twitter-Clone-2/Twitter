@@ -24,6 +24,7 @@ const {
   checkFollowStatus,
   findAllRelationshipStatus,
   selectAllFollowersAndTheirAccounts,
+  selectAllFollowingAndTheirAccounts,
 } = require("./controllers");
 
 app.options("*", cors()); // include before other routes
@@ -54,6 +55,7 @@ app.post("/api/follow", cors(), followAnotherUser);
 app.post("/api/unfollow", cors(), unFollowAnotherUser);
 app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
 app.post("/api/selectAllFollowersAndTheirAccounts", cors(), selectAllFollowersAndTheirAccounts);
+app.post("/api/selectAllFollowingAndTheirAccounts", cors(), selectAllFollowingAndTheirAccounts);
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
 

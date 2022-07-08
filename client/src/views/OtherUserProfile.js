@@ -40,12 +40,12 @@ const OtherUserProfile = () => {
         console.log(e);
       });
     
-      axios.post(route + "/api/selectAllFollowersAndTheirAccounts", {
+      axios.post(route + "/api/findAllRelationships", {
         follower : id,
         following : id
       })
       .then(res =>{
-        console.log(res.data);
+        console.log(res.data.rows);
         for(let i = 0; i < res.data.rows.length; i++){
           if(res.data.rows[i].following == id ){
             setNumOfFollowers(numOfFollowers + 1);
@@ -64,6 +64,27 @@ const OtherUserProfile = () => {
     getUsersAndTweets();
   }, []);
 
+  const getRelationshipsAndAccountInfo = ()=>{
+    axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
+      following : id
+    }).then(res=>{
+      console.log(res.data.rows);
+    }).catch(e=>{
+      console.log(e);
+    })
+
+    axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
+      follower : id
+    }).then(res=>{
+      console.log(res.data.rows);
+    }).catch(e=>{
+      console.log(e);
+    })
+  }
+
+  const viewFollowing = () =>{
+      getRelationshipsAndAccountInfo();
+  }
   const followButton = () => {
     //unfollow
     if(followingStatus){
@@ -126,8 +147,8 @@ const OtherUserProfile = () => {
           <p>@{currUser.username}</p>
           <p>joined , {currUser.created_at}</p>
           <div className="flex" id="follows">
-            <p>{numOfFollowing} :Following</p>
-            <p>{numOfFollowers} :Followers</p>
+            <p onClick={() => viewFollowing()}>{numOfFollowing} Following</p>
+            <p>{numOfFollowers} Followers</p>
           </div>
           <h1>Tweets</h1>
           <hr />
