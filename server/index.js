@@ -21,8 +21,12 @@ const {
   followAnotherUser,
   findFollowers,
   findFollowing,
+  checkFollowStatus,
+  findAllRelationshipStatus,
+  selectAllFollowersAndTheirAccounts,
+  selectAllFollowingAndTheirAccounts,
 } = require("./controllers");
-//important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
+
 app.options("*", cors()); // include before other routes
 //get all users
 app.get("/api/users", cors(), getAllUsers);
@@ -38,6 +42,7 @@ app.post("/api/register", cors(), register);
 //tweet
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
+
 //likes
 //retweets
 
@@ -45,10 +50,15 @@ app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
 //follow status
 app.post("/api/findFollowers", cors(), findFollowers);
 app.post("/api/findFollowing", cors(), findFollowing);
+app.post("/api/findAllRelationships", cors(), findAllRelationshipStatus);
 app.post("/api/follow", cors(), followAnotherUser);
 app.post("/api/unfollow", cors(), unFollowAnotherUser);
+app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
+app.post("/api/selectAllFollowersAndTheirAccounts", cors(), selectAllFollowersAndTheirAccounts);
+app.post("/api/selectAllFollowingAndTheirAccounts", cors(), selectAllFollowingAndTheirAccounts);
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
+
 app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${process.env.PORT || 8080}`);
 });

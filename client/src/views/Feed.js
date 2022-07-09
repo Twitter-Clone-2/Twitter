@@ -4,10 +4,10 @@ import "../CSS/HomePage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Post from "../components/Post";
+const route = require("../utils/server_router");
 
 const Feed = (props) => {
   const navigate = useNavigate();
-  const route = require("../utils/server_router");
   const id = localStorage.getItem("id");
   const [tweet, setTweet] = useState("");
   let allFollowingTweets = [];
@@ -25,7 +25,12 @@ const Feed = (props) => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
-
+  /* plan for creating fed
+    1) create an array to hold all tweets
+    2) Have a query to grab all the ID's that the user follows, and store it in an array
+    3) Loop through that array and create a query ex: in each iteration of the loop concat to the string : "SLECT * FROM tweets WHERE id = ANY(ARRAY[1,2])
+    4)Sort the array So that the newest tweets will be in the front
+  */
   const takeToProfile = () => {
     navigate("/profile/page");
   };

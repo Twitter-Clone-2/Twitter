@@ -1,0 +1,10 @@
+.account{
+    display: flex;
+    gap: 20px;
+}
+.names{
+    font-size: 20px;
+}
+.accountName{
+    margin-left: 5px;
+}
