@@ -25,6 +25,7 @@ const {
   findAllRelationshipStatus,
   selectAllFollowersAndTheirAccounts,
   selectAllFollowingAndTheirAccounts,
+  findAllTweetsFromFollowing,
 } = require("./controllers");
 
 app.options("*", cors()); // include before other routes
@@ -42,6 +43,7 @@ app.post("/api/register", cors(), register);
 //tweet
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
+app.post("/api/findAllTweetsFromFollowing", cors(), findAllTweetsFromFollowing)
 
 //likes
 //retweets

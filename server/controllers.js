@@ -155,6 +155,22 @@ async function findAllTweetsFromOneUser(req, res) {
   }
 }
 
+async function findAllTweetsFromFollowing(req,res){
+  const db = await startPool();
+  const { id } = req.body;
+  const query = `SELECT * FROM tweets WHERE accounts_id = ANY(ARRAY${id})`;
+
+  try {
+    const results = await db.query(query);
+    res.status(200).send(results);
+    endPool(db);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400);
+    endPool(db);
+  }
+}
+
 //                            Follow or Following status
 async function findFollowers(req, res) {
   const db = await startPool();
@@ -302,4 +318,5 @@ module.exports = {
   findAllRelationshipStatus,
   selectAllFollowersAndTheirAccounts,
   selectAllFollowingAndTheirAccounts,
+  findAllTweetsFromFollowing,
 };
