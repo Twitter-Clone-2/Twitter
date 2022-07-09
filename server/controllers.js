@@ -158,13 +158,12 @@ async function findAllTweetsFromOneUser(req, res) {
 async function findAllTweetsFromFollowing(req,res){
   const db = await startPool();
   const { id } = req.body;
-  const query = `SELECT * FROM tweets WHERE accounts_id = ANY(ARRAY[${id}]);`;
-  console.log('id: ', id, 'query: ', query)
+  const queryToGetFollowingIds = `SELECT following FROM relationship WHERE follower = ${id};`
+  const queryToGetAllTweets = `SELECT * FROM tweets WHERE accounts_id = ANY(ARRAY[${id}]);`;
 
   try {
-    const results = await db.query(query);
-    console.log(results)
-    res.status(200).send(results);
+    const resultOfIds = await db.query(queryToGetFollowingIds);
+    console.log(resultOfIds);
     endPool(db);
   } catch (e) {
     console.error(e.stack);
