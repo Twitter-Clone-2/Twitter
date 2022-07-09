@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import PersonIcon from "@mui/icons-material/Person";
+import "../CSS/followersAndFollowingModal.css";
 
 
 
@@ -36,7 +38,14 @@ const FollowersAndFollowingModal = (props) => {
         {props.relationship.map(item=>{
             return(
                 <Typography key={item.id} id="modal-modal-description" sx={{ mt: 2 }}>
-                <div>{item.first_name} {item.last_name}</div>
+                {/* <div className='account'>{item.first_name} {item.last_name}</div> */}
+                <div className='account'>
+                    <div><PersonIcon sx={{ fontSize: 65 }}/></div>
+                    <div className='names'>
+                        <p className='accountName'>{item.first_name} {item.last_name}</p>
+                        <p>@{item.username}</p>
+                    </div>
+                </div>
               </Typography>
             )
         })}
