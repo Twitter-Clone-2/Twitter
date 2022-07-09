@@ -165,6 +165,7 @@ async function findAllTweetsFromFollowing(req,res){
     const resultOfIds = await db.query(queryToGetFollowingIds);
     const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following)
     const results = await db.query(queryToGetAllTweets);
+    console.log(`query : ${queryToGetAllTweets}`);
     res.status(200).send(results.rows);
     endPool(db);
   } catch (e) {
