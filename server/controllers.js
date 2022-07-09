@@ -159,9 +159,11 @@ async function findAllTweetsFromFollowing(req,res){
   const db = await startPool();
   const { id } = req.body;
   const query = `SELECT * FROM tweets WHERE accounts_id = ANY(ARRAY${id})`;
+  console.log('id: ', id, 'query: ', query)
 
   try {
     const results = await db.query(query);
+    console.log(results)
     res.status(200).send(results);
     endPool(db);
   } catch (e) {
@@ -176,9 +178,10 @@ async function findFollowers(req, res) {
   const db = await startPool();
   const { following } = req.body;
   const query = `SELECT * FROM relationship WHERE following = ${following};`;
+  console.log()
 
   try {
-    results = db.query(query);
+    const results = await db.query(query);
     res.status(200).send(results);
     endPool(db);
   } catch (e) {
@@ -194,7 +197,7 @@ async function findFollowing(req, res) {
   const query = `SELECT * FROM relationship WHERE follower = ${follower};`;
 
   try {
-    results = await db.query(query);
+    const results = await db.query(query);
     res.status(200).send(results);
     endPool(db);
   } catch (e) {
@@ -257,7 +260,7 @@ async function checkFollowStatus(req, res) {
   const query = `SELECT * FROM relationship WHERE follower = ${follower} AND following = ${following};`;
 
   try {
-    results = await db.query(query);
+    const results = await db.query(query);
     const followStatus = results.rows.length > 0
     res.status(200).send(followStatus)
     endPool(db);
