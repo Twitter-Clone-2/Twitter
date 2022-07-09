@@ -147,7 +147,6 @@ async function findAllTweetsFromOneUser(req, res) {
   try {
     const results = await db.query(query);
     res.status(200).send(results);
-    console.log("hello");
     endPool(db);
   } catch (e) {
     console.error(e.stack);

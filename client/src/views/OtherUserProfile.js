@@ -66,7 +66,7 @@ const OtherUserProfile = () => {
     getUsersAndTweets();
   }, []);
 
-  const getRelationshipsAndAccountInfo = ()=>{
+  useEffect(()=>{
     axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
       following : id
     }).then(res=>{
@@ -84,11 +84,8 @@ const OtherUserProfile = () => {
     }).catch(e=>{
       console.log(e);
     })
-  }
+  },[followingStatus])
 
-  const viewFollowing = () =>{
-      getRelationshipsAndAccountInfo();
-  }
   const followButton = () => {
     //unfollow
     if(followingStatus){
@@ -151,13 +148,13 @@ const OtherUserProfile = () => {
           <p>@{currUser.username}</p>
           <p>joined , {currUser.created_at}</p>
           <div className="flex" id="follows">
-            <div  onClick={() => viewFollowing()}>
+            <div>
                <FollowersAndFollowingModal 
                num={`${numOfFollowing} Following`}
                relationship={followingInfo}
                />
                </div>
-            <div  onClick={() => viewFollowing()}>
+            <div>
               <FollowersAndFollowingModal 
               num={`${numOfFollowers} Followers`}
               relationship={followersInfo}
