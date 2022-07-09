@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/HomePage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Post from "../components/Post";
+import Tweet from "../components/Tweet";
 const route = require("../utils/server_router");
 
 const Feed = (props) => {
   const navigate = useNavigate();
-  const id = localStorage.getItem("id");
+  const id = JSON.parse(localStorage.getItem("currUser")).id;
   const [tweet, setTweet] = useState("");
-  let allFollowingTweets = [];
-  const [render, setRender] = useState();
-  const [currUser, setCurrUser] = useState({});
+  const [feed, setFeed] = useState([]);
 
   const createTweet = (e) => {
     e.preventDefault();
@@ -34,10 +33,12 @@ const Feed = (props) => {
 
   useEffect(() => {
     axios
-      .post(route + "/api/findAllTweetsFromFollowing", {
-        id: [1, 2, 3],
+      .post(route + "/api/findAllTweetsFromFollowing", { id })
+      .then(({ data }) => {
+        data.sort((x, y) => x.created_at - y.created_at)
+        data.reverse();
+        setFeed(data)
       })
-      .then(({ data }) => console.log("sadsad", data))
       .catch((e) => console.log(e));
   }, []);
 
@@ -69,35 +70,7 @@ const Feed = (props) => {
         <div id="createTweet"></div>
         {/* ALL TWEETS FROM YOU AND FOLLOWERS */}
         <div id="content">
-          <h1>Hi</h1>
-          {render &&
-            render.map((tweet, i) => {
-              return (
-                <div className="tweet" key={i}>
-                  <div className="flex">
-                    <div className="leftTweet">
-                      <PersonIcon onClick={() => takeToProfile()} />
-                    </div>
-                    <div className="rightTweet">
-                      <div className="rightTweetHeader">
-                        <p>
-                          {tweet.firstName} {tweet.lastName}
-                        </p>
-                        <p>@{tweet.userName}</p>
-                        <p>{tweet.tweetTime}</p>
-                      </div>
-                      <h3>{tweet.tweet}</h3>
-                    </div>
-                  </div>
-
-                  <div className="buttonsTweet">
-                    <button>Like</button>
-                    <button>Retweet</button>
-                    <button>Comment</button>
-                  </div>
-                </div>
-              );
-            })}
+          {feed.map((tweet) => <Tweet tweet={tweet} />)}
         </div>
       </div>
     </div>
