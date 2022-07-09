@@ -31,6 +31,16 @@ const Feed = (props) => {
     3) Loop through that array and create a query ex: in each iteration of the loop concat to the string : "SLECT * FROM tweets WHERE id = ANY(ARRAY[1,2])
     4)Sort the array So that the newest tweets will be in the front
   */
+
+  useEffect(() => {
+    axios
+      .post(route + "/api/findAllTweetsFromFollowing", {
+        id: [1, 2, 3],
+      })
+      .then(({ data }) => console.log("sadsad", data))
+      .catch((e) => console.log(e));
+  }, []);
+
   const takeToProfile = () => {
     navigate("/profile/page");
   };
@@ -46,7 +56,7 @@ const Feed = (props) => {
               sx={{ fontSize: 100 }}
             />
             <input
-              style={{flexGrow: 1}}
+              style={{ flexGrow: 1 }}
               placeholder="What's happening?"
               onChange={(e) => setTweet(e.target.value)}
               value={tweet}
