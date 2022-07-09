@@ -48,11 +48,15 @@ const OtherUserProfile = () => {
         following : id
       })
       .then(res =>{
+        let followerCount = 0;
+        let followingCount = 0;
         for(let i = 0; i < res.data.rows.length; i++){
           if(res.data.rows[i].following == id ){
-            setNumOfFollowers(numOfFollowers + 1);
+            followerCount++;
+            setNumOfFollowers(followerCount);
           }else if(res.data.rows[i].follower == id){
-            setNumOfFollowing(numOfFollowing + 1);
+            followingCount++;
+            setNumOfFollowing(followingCount);
           }
 
           if((res.data.rows[i].following == id && res.data.rows[i].follower == JSON.parse(localStorage.getItem("currUser")).id) ){

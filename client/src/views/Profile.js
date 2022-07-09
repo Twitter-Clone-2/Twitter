@@ -6,10 +6,15 @@ import Logout from "../components/Logout";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
+import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 
 const Profile = () => {
   const route = require("../utils/server_router");
   const user = JSON.parse(localStorage.getItem("currUser"));
+  const [numOfFollowers , setNumOfFollowers] = useState(0);
+  const [followersInfo, setFollowersInfo] = useState([])
+  const [numOfFollowing , setNumOfFollowing] = useState(0);
+  const [followingInfo, setFollowingInfo] = useState([])
   const [currUser, setCurrUser] = useState({
     firstName: user.first_name,
     lastName: user.last_name,
@@ -31,6 +36,43 @@ const Profile = () => {
         const tweets = res.data.rows;
         setAllTweets(tweets.reverse());
       });
+
+      axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
+        following : user.id
+      }).then(res=>{
+        console.log(`SELECT ALL FOLLOWERS ${JSON.stringify(res.data.rows)}`);
+        setFollowersInfo(res.data.rows)
+      }).catch(e=>{
+        console.log(e);
+      })
+  
+      axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
+        follower : user.id
+      }).then(res=>{
+        console.log(`SELECT ALL FOLLOWING  ${JSON.stringify(res.data.rows)}`);
+        setFollowingInfo(res.data.rows)
+      }).catch(e=>{
+        console.log(e);
+      })
+
+      axios.post(route + "/api/findAllRelationships", {
+        follower : user.id,
+        following : user.id
+      })
+      .then(res =>{
+        let followerCount = 0;
+        let followingCount = 0;
+        for(let i = 0; i < res.data.rows.length; i++){
+          if(res.data.rows[i].following == user.id ){
+            followerCount++;
+            setNumOfFollowers(followerCount);
+          }else if(res.data.rows[i].follower == user.id){
+            followingCount++;
+            setNumOfFollowing(followingCount);
+          }
+        }
+      })
+      .catch(e=>console.log(e))
   }, []);
 
   /*
@@ -79,8 +121,18 @@ const Profile = () => {
           <p>@{currUser.userName}</p>
           <p>joined , {currUser.createdAt}</p>
           <div className="flex" id="follows">
-            <p>0 :Following</p>
-            <p>0 :Followers</p>
+            <div>
+               <FollowersAndFollowingModal 
+               num={`${numOfFollowing} Following`}
+               relationship={followingInfo}
+               />
+               </div>
+            <div>
+              <FollowersAndFollowingModal 
+              num={`${numOfFollowers} Followers`}
+              relationship={followersInfo}
+              />
+              </div>
           </div>
           {editProfile ? (
             <EditProfile
