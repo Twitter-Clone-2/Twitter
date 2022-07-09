@@ -35,7 +35,7 @@ const Feed = (props) => {
   useEffect(() => {
     axios
       .post(route + "/api/findAllTweetsFromFollowing", {
-        id: [1, 2, 3],
+        id: JSON.parse(localStorage.getItem("currUser")).id,
       })
       .then(({ data }) => console.log("sadsad", data))
       .catch((e) => console.log(e));
