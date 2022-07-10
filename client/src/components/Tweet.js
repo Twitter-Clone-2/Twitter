@@ -23,7 +23,7 @@ export default function Tweet({ tweet }) {
       </div>
 
       <div className="buttonsTweet">
-        <button>Like</button>
+        <button onClick={()=> likeFunction(tweet.accounts_id, tweet)}>Like</button>
         <button>Retweet</button>
         <button>Comment</button>
       </div>
