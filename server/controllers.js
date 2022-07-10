@@ -155,26 +155,7 @@ async function findAllTweetsFromOneUser(req, res) {
   }
 }
 
-async function findAllTweetsFromFollowing(req,res){
-  const db = await startPool();
-  const { id } = req.body;
-  const queryToGetFollowingIds = `SELECT following FROM relationship WHERE follower = ${id};`
-  
 
-  try {
-    const resultOfIds = await db.query(queryToGetFollowingIds);
-    const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following)
-    const queryToGetAllTweets = `SELECT * FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
-    const results = await db.query(queryToGetAllTweets);
-    console.log(`query : ${queryToGetAllTweets}`);
-    res.status(200).send(results.rows);
-    endPool(db);
-  } catch (e) {
-    console.error(e.stack);
-    res.status(400);
-    endPool(db);
-  }
-}
 
 //                            Follow or Following status
 async function findFollowers(req, res) {
@@ -273,7 +254,14 @@ async function checkFollowStatus(req, res) {
     endPool(db);
   }
 }
-//important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
+//                                  Likes Queries
+async function likeATweet(req,res){
+  const db = await startPool();
+  const {accounts_id, tweets_id} = req.body;
+  const query = `INSERT INTO likes (accounts_id, id, t)`
+}
+//                                  Comments Queries
+//                                  Retweet Queries
 //                                  JOIN QUERIES
 async function selectAllFollowersAndTheirAccounts(req,res){
   const db = await startPool();
@@ -303,6 +291,25 @@ async function selectAllFollowingAndTheirAccounts(req,res){
   }catch(e){
     console.error(e.stack);
     res.status(400).send(false);
+    endPool(db);
+  }
+}
+
+async function findAllTweetsFromFollowing(req,res){
+  const db = await startPool();
+  const { id } = req.body;
+  const queryToGetFollowingIds = `SELECT following FROM relationship WHERE follower = ${id};`
+  
+  try {
+    const resultOfIds = await db.query(queryToGetFollowingIds);
+    const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following)
+    const queryToGetAllTweets = `SELECT * FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
+    const results = await db.query(queryToGetAllTweets);
+    res.status(200).send(results.rows);
+    endPool(db);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400);
     endPool(db);
   }
 }
