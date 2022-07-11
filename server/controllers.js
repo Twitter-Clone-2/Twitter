@@ -258,7 +258,33 @@ async function checkFollowStatus(req, res) {
 async function likeATweet(req,res){
   const db = await startPool();
   const {accounts_id, tweets_id} = req.body;
-  const query = `INSERT INTO likes (accounts_id, id, t)`
+  const query = `INSERT INTO likes (accounts_id, tweets_id) VALUES(${accounts_id}, ${tweets_id});`;
+
+  try{
+    result = await db.query(query);
+    res.status(200).send(result);
+    endPool(db);
+  }catch(e){
+    res.status(400).send(false);
+    console.error(e.stack);
+    endPool(db);
+  }
+}
+
+async function removeLike(req,res){
+  const db = await startPool();
+  const {accounts_id, tweets_id} = req.body;
+  const query = `DELETE FROM likes WHERE accounts_id = ${accounts_id} AND tweets_id = ${tweets_id};`;
+
+  try{
+    const result = await db.query(query);
+    res.status(200).send(true);
+    endPool(db);
+  }catch(e){
+    res.status(400).send(true);
+    console.error(e.stack)
+    endPool(db);
+  }
 }
 //                                  Comments Queries
 //                                  Retweet Queries
@@ -343,4 +369,6 @@ module.exports = {
   selectAllFollowersAndTheirAccounts,
   selectAllFollowingAndTheirAccounts,
   findAllTweetsFromFollowing,
+  likeATweet,
+  removeLike,
 };

@@ -34,11 +34,11 @@ const Feed = (props) => {
   useEffect(() => {
     axios
       .post(route + "/api/findAllTweetsFromFollowing", { id })
-      .then((res) => {
-        console.log(res);
-        // data.sort((x, y) => x.created_at - y.created_at)
-        // data.reverse();
-        // setFeed(data)
+      .then(({ data }) => {
+        console.log(data);
+        data.tweets.sort((x, y) => x.created_at - y.created_at)
+        data.tweets.reverse();
+        setFeed(data.tweets)
       })
       .catch((e) => console.log(e));
   }, []);
