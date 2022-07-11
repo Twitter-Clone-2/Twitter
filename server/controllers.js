@@ -308,7 +308,7 @@ async function findAllTweetsFromFollowing(req,res){
     const resultsOfTweets = await db.query(queryToGetAllTweets);
     const tweetIDArr = resultsOfTweets.rows.map(tweetOBJ=> tweetOBJ.id)
 
-    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY${tweetIDArr});`;
+    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
     const resultsOfLikes = await db.query(queryForLikes);
 
     const finalResult = {
