@@ -10,6 +10,9 @@ import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal
 
 const Profile = () => {
   const route = require("../utils/server_router");
+  const [editProfile, setEditProfile] = useState(false);
+  const [settings, setSettings] = useState(false);
+  const [allTweets, setAllTweets] = useState([]);
   const user = JSON.parse(localStorage.getItem("currUser"));
   const [numOfFollowers , setNumOfFollowers] = useState(0);
   const [followersInfo, setFollowersInfo] = useState([])
@@ -26,7 +29,7 @@ const Profile = () => {
     id: user.id,
     createdAt: user.created_at,
   });
-
+// hi
   useEffect(() => {
     axios
       .post(route + "/api/findAllTweetsFromOneUser", {
@@ -74,19 +77,6 @@ const Profile = () => {
       })
       .catch(e=>console.log(e))
   }, []);
-
-  /*
-  axios.post(route + "/api/findAllRelationships", {
-        follower : JSON.parse(localStorage.getItem("currUser")).id,
-        following : JSON.parse(localStorage.getItem("currUser")).id
-      })
-      .then(res => console.log(res.data.rows))
-      .catch(e=>console.log(e))
-  */
-
-  const [editProfile, setEditProfile] = useState(false);
-  const [settings, setSettings] = useState(false);
-  const [allTweets, setAllTweets] = useState([]);
 
   return (
     <div id="profilePage">

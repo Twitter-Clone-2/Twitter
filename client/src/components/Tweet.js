@@ -1,9 +1,16 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { format } from "date-fns";
 import PersonIcon from "@mui/icons-material/Person";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import CachedIcon from '@mui/icons-material/Cached';
 
 export default function Tweet({ tweet }) {
-  console.log(tweet)
+  const [count, setCount] = useState(0)
+  const likeFunction = (accountId , tweetId) =>{
+    console.log(accountId, tweetId);
+    setCount(prev=> prev + 1)
+  }
   return (
     <div className="tweet">
       <div className="flex">
@@ -23,9 +30,12 @@ export default function Tweet({ tweet }) {
       </div>
 
       <div className="buttonsTweet">
-        <button>Like</button>
-        <button>Retweet</button>
-        <button>Comment</button>
+        {/* <button >Like</button> */}
+        {/* <button>Retweet</button>
+        <button>Comment</button> */}
+        <FavoriteBorderIcon onClick={()=> likeFunction(tweet.accounts_id, tweet.id)}/> {count}
+        <ChatBubbleOutlineIcon/>
+        <CachedIcon/>
       </div>
     </div>
   );
