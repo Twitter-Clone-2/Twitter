@@ -38,6 +38,8 @@ const Feed = (props) => {
         data.sort((x, y) => x.created_at - y.created_at)
         data.reverse();
         setFeed(data)
+        const tweetIDArr = data.map(tweetOBJ=> tweetOBJ.id)
+        console.log(tweetIDArr);
       })
       .catch((e) => console.log(e));
   }, []);
