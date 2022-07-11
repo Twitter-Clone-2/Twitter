@@ -70,7 +70,7 @@ const Feed = (props) => {
         <div id="createTweet"></div>
         {/* ALL TWEETS FROM YOU AND FOLLOWERS */}
         <div id="content">
-          {feed.map((tweet) => <Tweet tweet={tweet} />)}
+          {feed.map((tweet, i) => <Tweet tweet={tweet} key={i} />)}
         </div>
       </div>
     </div>
