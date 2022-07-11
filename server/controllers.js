@@ -305,10 +305,18 @@ async function findAllTweetsFromFollowing(req,res){
     const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following)
     const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
     
-    const results = await db.query(queryToGetAllTweets);
-    const tweetIDArr = results.rows.map(tweetOBJ=> tweetOBJ.id)
-    console.log(tweetIDArr);
-    res.status(200).send(results.rows);
+    const resultsOfTweets = await db.query(queryToGetAllTweets);
+    const tweetIDArr = resultsOfTweets.rows.map(tweetOBJ=> tweetOBJ.id)
+
+    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY${tweetIDArr});`;
+    const resultsOfLikes = await db.query(queryForLikes);
+
+    const finalResult = {
+      tweets : resultsOfTweets.rows,
+      likes : resultsOfLikes.rows
+    }
+
+    res.status(200).send(finalResult);
     endPool(db);
   } catch (e) {
     console.error(e.stack);
