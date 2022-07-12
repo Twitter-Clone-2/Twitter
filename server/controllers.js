@@ -354,11 +354,20 @@ async function findAllTweetsFromFollowing(req,res){
 async function findCurrUserAndTweets(req,res){
   const db = await startPool();
   const {id} = req.body;
-  const query = `SELECT * FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
+  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.usernameFROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
 
   try{
-    const results =  await  db.query(query);
-    res.status(200).send(results.rows);
+    const resultsOfTweets =  await  db.query(queryForTweets);
+    const tweetIDArr = resultsOfTweets.rows.map(tweetOBJ=> tweetOBJ.id)
+
+    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    const resultsOfLikes = await db.query(queryForLikes);
+
+    const results = {
+      tweets : resultsOfTweets.rows,
+      likes : resultsOfLikes.rows
+    }
+    res.status(200).send(results);
     endPool(db);
   }catch(e){
     console.error(e.stack);

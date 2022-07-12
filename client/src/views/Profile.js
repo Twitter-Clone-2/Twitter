@@ -62,7 +62,7 @@ const Profile = () => {
       })
       .catch(e=>console.log(e))
 
-      axios.post(route + "/api/findAllTweetsFromFollowing", { id : user.id })
+      axios.post(route + "/api/currUser/tweets", { id : user.id })
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
