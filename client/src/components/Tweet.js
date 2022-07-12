@@ -8,8 +8,10 @@ import axios from 'axios';
 const route = require("../utils/server_router");
 
 export default function Tweet({ tweet , likes }) {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [replyCount, setReplyCount] = useState(0);
+  const [retweetCount, setRetweetCount] = useState(0);
   let currLikeCount = 0
 
   useEffect(()=>{
@@ -71,9 +73,17 @@ export default function Tweet({ tweet , likes }) {
           <FavoriteBorderIcon onClick={()=> likeFunction(JSON.parse(localStorage.getItem("currUser")).id, tweet.id)} className={`${liked ? "liked" : ""}`}/>
           <p className='likeCount'> {count == 0 ? "" : count} </p> 
         </div>
-        <ChatBubbleOutlineIcon/>
-        <CachedIcon/>
+       
+        <div className='flex replyCol'>
+          <ChatBubbleOutlineIcon/>
+          <p className='replyCount'> {replyCount == 0 ? "" : replyCount} </p> 
+        </div>
+
+        <div className='flex retweetCol'>
+          <CachedIcon/>
+          <p className='retweetCount'> {retweetCount == 0 ? "" : retweetCount} </p>
+        </div>
       </div>
-    </div>
+    </div> 
   );
 }

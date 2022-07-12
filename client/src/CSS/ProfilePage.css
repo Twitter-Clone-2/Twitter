@@ -72,6 +72,31 @@
 .likeCol{
   align-items: center;
 }
+.likeCol:hover{
+  color : red;
+}
+
+.replyCount{
+  font-size: 20px;
+}
+
+.replyCol{
+  align-items: center;
+}
+.replyCol:hover{
+  color : green;
+}
+
+.retweetCount{
+  font-size: 20px;
+}
+
+.retweetCol{
+  align-items: center;
+}
+.retweetCol:hover{
+  color : blue;
+}
 .rightTweetHeader {
   display: flex;
   gap: 5px;
