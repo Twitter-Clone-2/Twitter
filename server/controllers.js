@@ -262,7 +262,7 @@ async function likeATweet(req,res){
 
   try{
     result = await db.query(query);
-    res.status(200).send(result);
+    res.status(200).send(true);
     endPool(db);
   }catch(e){
     res.status(400).send(false);
@@ -351,6 +351,22 @@ async function findAllTweetsFromFollowing(req,res){
   }
 }
 
+async function findCurrUserAndTweets(req,res){
+  const db = await startPool();
+  const {id} = req.body;
+  const query = `SELECT * FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
+
+  try{
+    const results =  await  db.query(query);
+    res.status(200).send(results.rows);
+    endPool(db);
+  }catch(e){
+    console.error(e.stack);
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
+
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -371,4 +387,5 @@ module.exports = {
   findAllTweetsFromFollowing,
   likeATweet,
   removeLike,
+  findCurrUserAndTweets,
 };

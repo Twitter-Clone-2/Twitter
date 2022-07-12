@@ -28,6 +28,7 @@ const {
   findAllTweetsFromFollowing,
   likeATweet,
   removeLike,
+  findCurrUserAndTweets,
 } = require("./controllers");
 
 app.options("*", cors()); // include before other routes
@@ -46,7 +47,7 @@ app.post("/api/register", cors(), register);
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
 app.post("/api/findAllTweetsFromFollowing", cors(), findAllTweetsFromFollowing);
-
+app.post("/api/currUser/tweets", cors(), findCurrUserAndTweets);
 //likes
 app.post("/api/likeTweet", cors(), likeATweet);
 app.post("/api/removeLike", cors(), removeLike);

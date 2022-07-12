@@ -1,15 +1,54 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { format } from "date-fns";
 import PersonIcon from "@mui/icons-material/Person";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import CachedIcon from '@mui/icons-material/Cached';
+import axios from 'axios';
+const route = require("../utils/server_router");
 
-export default function Tweet({ tweet }) {
+export default function Tweet({ tweet , likes }) {
   const [count, setCount] = useState(0)
-  const likeFunction = (accountId , tweetId) =>{
-    console.log(accountId, tweetId);
-    setCount(prev=> prev + 1)
+  const [liked, setLiked] = useState(false);
+  let currLikeCount = 0
+
+  useEffect(()=>{
+    for(let i = 0; i < likes.length; i++){
+      if(likes[i].accounts_id == JSON.parse(localStorage.getItem("currUser")).id && likes[i].tweets_id == tweet.id){
+        setLiked(true);
+      }
+      if(likes[i].tweets_id == tweet.id) currLikeCount++
+    }
+    setCount(currLikeCount)   
+  }, [likes])
+
+  const likeFunction = (accounts_id , tweets_id) =>{
+    console.log(accounts_id, tweets_id);
+    
+    if(liked == false){
+      axios.post(route + "/api/likeTweet", {
+        accounts_id,
+        tweets_id
+      }).then(res =>{
+        setLiked(true)
+        setCount(prev=> prev + 1)
+      }).catch(e=>{
+        console.log(e);
+      })
+    }
+
+    if(liked == true){
+      axios.post(route + "/api/removeLike", {
+        accounts_id,
+        tweets_id
+      }).then(res =>{
+        setLiked(false);
+        setCount(prev=> prev - 1)
+      }).catch(e=>{
+        console.log(e);
+      })
+    }
+    
   }
   return (
     <div className="tweet">
@@ -30,10 +69,10 @@ export default function Tweet({ tweet }) {
       </div>
 
       <div className="buttonsTweet">
-        {/* <button >Like</button> */}
-        {/* <button>Retweet</button>
-        <button>Comment</button> */}
-        <FavoriteBorderIcon onClick={()=> likeFunction(tweet.accounts_id, tweet.id)}/> {count}
+        <div className='flex likeCol'>
+          <FavoriteBorderIcon onClick={()=> likeFunction(JSON.parse(localStorage.getItem("currUser")).id, tweet.id)} className={`${liked ? "liked" : ""}`}/>
+          <p className='likeCount'> {count == 0 ? "" : count} </p> 
+        </div>
         <ChatBubbleOutlineIcon/>
         <CachedIcon/>
       </div>

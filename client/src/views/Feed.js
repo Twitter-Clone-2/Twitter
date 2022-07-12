@@ -12,6 +12,7 @@ const Feed = (props) => {
   const id = JSON.parse(localStorage.getItem("currUser")).id;
   const [tweet, setTweet] = useState("");
   const [feed, setFeed] = useState([]);
+  const [likes, setLikes] = useState([]);
 
   const createTweet = (e) => {
     e.preventDefault();
@@ -35,10 +36,10 @@ const Feed = (props) => {
     axios
       .post(route + "/api/findAllTweetsFromFollowing", { id })
       .then(({ data }) => {
-        console.log(data);
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
-        setFeed(data.tweets)
+        setFeed(data.tweets);
+        setLikes(data.likes);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -71,7 +72,7 @@ const Feed = (props) => {
         <div id="createTweet"></div>
         {/* ALL TWEETS FROM YOU AND FOLLOWERS */}
         <div id="content">
-          {feed.map((tweet, i) => <Tweet tweet={tweet} key={i} />)}
+          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} key={i} />)}
         </div>
       </div>
     </div>
