@@ -22,9 +22,7 @@ export default function Tweet({ tweet , likes }) {
     setCount(currLikeCount)   
   }, [likes])
 
-  const likeFunction = (accounts_id , tweets_id) =>{
-    console.log(accounts_id, tweets_id);
-    
+  const likeFunction = (accounts_id , tweets_id) =>{  
     if(liked == false){
       axios.post(route + "/api/likeTweet", {
         accounts_id,
