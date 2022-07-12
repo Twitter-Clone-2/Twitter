@@ -7,43 +7,27 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
+import Tweet from "../components/Tweet";
 
 const Profile = () => {
   const route = require("../utils/server_router");
   const [editProfile, setEditProfile] = useState(false);
   const [settings, setSettings] = useState(false);
-  const [allTweets, setAllTweets] = useState([]);
+  const [allTweets, setAllTweets] = useState(0);
   const user = JSON.parse(localStorage.getItem("currUser"));
   const [numOfFollowers , setNumOfFollowers] = useState(0);
   const [followersInfo, setFollowersInfo] = useState([])
   const [numOfFollowing , setNumOfFollowing] = useState(0);
   const [followingInfo, setFollowingInfo] = useState([])
-  const [currUser, setCurrUser] = useState({
-    firstName: user.first_name,
-    lastName: user.last_name,
-    userName: user.username,
-    email: user.email,
-    password: user.password,
-    bio: user.bio,
-    location: user.location,
-    id: user.id,
-    createdAt: user.created_at,
-  });
+
+  const [feed, setFeed] = useState([]);
+  const [likes, setLikes] = useState([]);
 // hi
   useEffect(() => {
-    axios
-      .post(route + "/api/findAllTweetsFromOneUser", {
-        id: user.id,
-      })
-      .then((res) => {
-        const tweets = res.data.rows;
-        setAllTweets(tweets.reverse());
-      });
 
       axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
         following : user.id
       }).then(res=>{
-        console.log(`SELECT ALL FOLLOWERS ${JSON.stringify(res.data.rows)}`);
         setFollowersInfo(res.data.rows)
       }).catch(e=>{
         console.log(e);
@@ -52,7 +36,6 @@ const Profile = () => {
       axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
         follower : user.id
       }).then(res=>{
-        console.log(`SELECT ALL FOLLOWING  ${JSON.stringify(res.data.rows)}`);
         setFollowingInfo(res.data.rows)
       }).catch(e=>{
         console.log(e);
@@ -76,6 +59,17 @@ const Profile = () => {
         }
       })
       .catch(e=>console.log(e))
+
+      axios.post(route + "/api/currUser/tweets", { id : user.id })
+      .then(({ data }) => {
+        console.log(data.tweets);
+        data.tweets.sort((x, y) => x.created_at - y.created_at)
+        data.tweets.reverse();
+        setFeed(data.tweets);
+        setLikes(data.likes);
+        setAllTweets(data.tweets.length)
+      })
+      .catch((e) => console.log(e));
   }, []);
 
   return (
@@ -85,9 +79,9 @@ const Profile = () => {
         <div id="profilePageHeader">
           <div>
             <h3>
-              {currUser.firstName} {currUser.lastName}
+              {user.first_name} {user.last_name}
             </h3>
-            <p>{allTweets.length} tweets</p>
+            <p>{allTweets} tweets</p>
             <Logout />
           </div>
         </div>
@@ -105,11 +99,11 @@ const Profile = () => {
             </p>
           </div>
           <h2>
-            {currUser.firstName} {currUser.lastName}
+            {user.first_name} {user.last_name}
           </h2>
-          <p>{currUser.bio}</p>
-          <p>@{currUser.userName}</p>
-          <p>joined , {currUser.createdAt}</p>
+          <p>{user.bio}</p>
+          <p>@{user.username}</p>
+          <p>joined , {user.created_at}</p>
           <div className="flex" id="follows">
             <div>
                <FollowersAndFollowingModal 
@@ -135,33 +129,7 @@ const Profile = () => {
           {settings ? <Settings setSettings={setSettings} /> : ""}
           <h1>Tweets</h1>
           <hr />
-          {allTweets.map((tweet, i) => {
-            return (
-              <div className="tweet" key={i}>
-                <div className="flex">
-                  <div className="leftTweet">
-                    <PersonIcon />
-                  </div>
-                  <div className="rightTweet">
-                    <div className="rightTweetHeader">
-                      <p>
-                        {currUser.firstName} {currUser.lastName}
-                      </p>
-                      <p>@{currUser.userName}</p>
-                      <p>{tweet.created_at}</p>
-                    </div>
-                    <h3>{tweet.content}</h3>
-                  </div>
-                </div>
-
-                <div className="buttonsTweet">
-                  <button>Like</button>
-                  <button>Retweet</button>
-                  <button>Comment</button>
-                </div>
-              </div>
-            );
-          })}
+          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} key={i} />)}
         </div>
       </div>
     </div>

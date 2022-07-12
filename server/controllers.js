@@ -258,7 +258,33 @@ async function checkFollowStatus(req, res) {
 async function likeATweet(req,res){
   const db = await startPool();
   const {accounts_id, tweets_id} = req.body;
-  const query = `INSERT INTO likes (accounts_id, id, t)`
+  const query = `INSERT INTO likes (accounts_id, tweets_id) VALUES(${accounts_id}, ${tweets_id});`;
+
+  try{
+    result = await db.query(query);
+    res.status(200).send(true);
+    endPool(db);
+  }catch(e){
+    res.status(400).send(false);
+    console.error(e.stack);
+    endPool(db);
+  }
+}
+
+async function removeLike(req,res){
+  const db = await startPool();
+  const {accounts_id, tweets_id} = req.body;
+  const query = `DELETE FROM likes WHERE accounts_id = ${accounts_id} AND tweets_id = ${tweets_id};`;
+
+  try{
+    const result = await db.query(query);
+    res.status(200).send(true);
+    endPool(db);
+  }catch(e){
+    res.status(400).send(true);
+    console.error(e.stack)
+    endPool(db);
+  }
 }
 //                                  Comments Queries
 //                                  Retweet Queries
@@ -304,12 +330,48 @@ async function findAllTweetsFromFollowing(req,res){
     const resultOfIds = await db.query(queryToGetFollowingIds);
     const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following)
     const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
-    const results = await db.query(queryToGetAllTweets);
-    res.status(200).send(results.rows);
+    
+    const resultsOfTweets = await db.query(queryToGetAllTweets);
+    const tweetIDArr = resultsOfTweets.rows.map(tweetOBJ=> tweetOBJ.id)
+
+    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    const resultsOfLikes = await db.query(queryForLikes);
+
+    const finalResult = {
+      tweets : resultsOfTweets.rows,
+      likes : resultsOfLikes.rows
+    }
+
+    res.status(200).send(finalResult);
     endPool(db);
   } catch (e) {
     console.error(e.stack);
     res.status(400);
+    endPool(db);
+  }
+}
+
+async function findCurrUserAndTweets(req,res){
+  const db = await startPool();
+  const {id} = req.body;
+  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
+
+  try{
+    const resultsOfTweets =  await  db.query(queryForTweets);
+    const tweetIDArr = resultsOfTweets.rows.map(tweetOBJ=> tweetOBJ.id)
+
+    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    const resultsOfLikes = await db.query(queryForLikes);
+
+    const results = {
+      tweets : resultsOfTweets.rows,
+      likes : resultsOfLikes.rows
+    }
+    res.status(200).send(results);
+    endPool(db);
+  }catch(e){
+    console.error(e.stack);
+    res.status(400).send(false);
     endPool(db);
   }
 }
@@ -332,4 +394,7 @@ module.exports = {
   selectAllFollowersAndTheirAccounts,
   selectAllFollowingAndTheirAccounts,
   findAllTweetsFromFollowing,
+  likeATweet,
+  removeLike,
+  findCurrUserAndTweets,
 };

@@ -7,22 +7,25 @@ import Logout from "../components/Logout";
 import { useParams, useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
+import Tweet from "../components/Tweet";
 
 const OtherUserProfile = () => {
-  const [allTweets, setAllTweets] = useState([]);
+  const [allTweets, setAllTweets] = useState(0);
   const [currUser, setCurrUser] = useState({});
   const [followingStatus, setFollowingStatus] = useState(false);
   const [numOfFollowers , setNumOfFollowers] = useState(0);
   const [followersInfo, setFollowersInfo] = useState([])
   const [numOfFollowing , setNumOfFollowing] = useState(0);
-  const [followingInfo, setFollowingInfo] = useState([])
+  const [followingInfo, setFollowingInfo] = useState([]);
+  const [feed, setFeed] = useState([]);
+  const [likes, setLikes] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
 
   const getUsersAndTweets = () => {
     axios
       .post(route + "/api/user", {
-        id: id,
+        id
       })
       .then(({ data }) => {
         setCurrUser(data[0]);
@@ -31,17 +34,15 @@ const OtherUserProfile = () => {
         console.log(e);
       });
 
-    axios
-      .post(route + "/api/findAllTweetsFromOneUser", {
-        id: id,
-      })
+      axios.post(route + "/api/currUser/tweets", { id })
       .then(({ data }) => {
-        const tweets = data.rows;
-        setAllTweets(tweets.reverse());
+        data.tweets.sort((x, y) => x.created_at - y.created_at)
+        data.tweets.reverse();
+        setFeed(data.tweets);
+        setLikes(data.likes);
+        setAllTweets(data.tweets.length)
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch((e) => console.log(e));
     
       axios.post(route + "/api/findAllRelationships", {
         follower : id,
@@ -128,7 +129,7 @@ const OtherUserProfile = () => {
             <h3>
               {currUser.first_name} {currUser.last_name}
             </h3>
-            <p>{allTweets.length} tweets</p>
+            <p>{allTweets} tweets</p>
             <Logout />
           </div>
         </div>
@@ -167,32 +168,7 @@ const OtherUserProfile = () => {
           </div>
           <h1>Tweets</h1>
           <hr />
-          {allTweets.map((tweet, i) => (
-            // Own component
-            <div className="tweet" key={i}>
-              <div className="flex">
-                <div className="leftTweet">
-                  <PersonIcon />
-                </div>
-                <div className="rightTweet">
-                  <div className="rightTweetHeader">
-                    <p>
-                      {currUser.first_name} {currUser.last_name}
-                    </p>
-                    <p>@{currUser.username}</p>
-                    <p>{tweet.created_at}</p>
-                  </div>
-                  <h3>{tweet.content}</h3>
-                </div>
-              </div>
-
-              <div className="buttonsTweet">
-                <button>Like</button>
-                <button>Retweet</button>
-                <button>Comment</button>
-              </div>
-            </div>
-          ))}
+          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} key={i} />)}
         </div>
       </div>
     </div>

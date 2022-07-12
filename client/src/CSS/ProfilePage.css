@@ -58,7 +58,19 @@
 .buttonsTweet {
   display: flex;
   justify-content: space-around;
-  padding: 10px 0 10px 0;
+  padding: 30px 0 10px 0;
+}
+
+.liked {
+  color : red
+}
+
+.likeCount{
+  font-size: 20px;
+}
+
+.likeCol{
+  align-items: center;
 }
 .rightTweetHeader {
   display: flex;
