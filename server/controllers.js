@@ -392,6 +392,35 @@ async function findCurrUserAndTweets(req,res){
   }
 }
 
+async function getOneTweetAndAllData(req,res){
+  const db = await startPool();
+  const {id} = req.body;
+  const queryForTweet = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE tweets.id = ${id};`;
+
+  const queryForReplies = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE tweets.reply_id = ${id};`;
+
+  const queryForLikes = `SELECT accounts.first_name, accounts.last_name, accounts.username FROM likes LEFT JOIN accounts on accounts.id = likes.accounts_id WHERE likes.tweets_id = ${id};`;
+
+  try{
+    const resultForTweet = await db.query(queryForTweet);
+    const resultForLikes = await db.query(queryForLikes);
+    const resultForReplies = await db.query(queryForReplies);
+    const results ={
+      tweet : resultForTweet.rows,
+      replies : resultForReplies.rows,
+      likes : resultForLikes.rows
+    }
+    res.status(200).send(results);
+    endPool(db)
+    
+  }catch(e){
+    console.error(e.stack)
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
+
+
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -414,4 +443,5 @@ module.exports = {
   removeLike,
   findCurrUserAndTweets,
   createAComment,
+  getOneTweetAndAllData,
 };

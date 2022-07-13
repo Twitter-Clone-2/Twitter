@@ -11,6 +11,7 @@ import OtherUserProfile from "./views/OtherUserProfile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
+import ViewTweet from "./views/ViewTweet";
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             element={<OtherUserProfile />}
           />
           <Route exact path="/main/feed" element={<Feed />} />
+          <Route exact path = "/tweet/:id" element={<ViewTweet/>}/>
         </Routes>
         <NewsAPI/>
       </BrowserRouter>

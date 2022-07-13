@@ -52,15 +52,15 @@ export default function Tweet({ tweet , likes }) {
     }
     
   }
-  const loadTweet = (username, id) =>{
-    console.log(username, id);
+  const loadTweet = (id) =>{
+    navigate(`/tweet/${id}`)
   }
 
   const takeToProfile = (id) =>{
     navigate("/profile/page/" + id);
   }
   return (
-    <div className="tweet" onClick={() => loadTweet(tweet.username, tweet.id)}>
+    <div className="tweet" onClick={() => loadTweet( tweet.id)}>
       <div className="flex">
         <div className="leftTweet">
           <PersonIcon onClick={()=> takeToProfile(tweet.accounts_id)} />
