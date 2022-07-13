@@ -5,6 +5,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import CachedIcon from '@mui/icons-material/Cached';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 const route = require("../utils/server_router");
 
 export default function Tweet({ tweet , likes }) {
@@ -12,7 +13,8 @@ export default function Tweet({ tweet , likes }) {
   const [liked, setLiked] = useState(false);
   const [replyCount, setReplyCount] = useState(0);
   const [retweetCount, setRetweetCount] = useState(0);
-  let currLikeCount = 0
+  const navigate = useNavigate();
+  let currLikeCount = 0;
 
   useEffect(()=>{
     for(let i = 0; i < likes.length; i++){
@@ -50,18 +52,25 @@ export default function Tweet({ tweet , likes }) {
     }
     
   }
+  const loadTweet = (username, id) =>{
+    console.log(username, id);
+  }
+
+  const takeToProfile = (id) =>{
+    navigate("/profile/page/" + id);
+  }
   return (
-    <div className="tweet">
+    <div className="tweet" onClick={() => loadTweet(tweet.username, tweet.id)}>
       <div className="flex">
         <div className="leftTweet">
-          <PersonIcon />
+          <PersonIcon onClick={()=> takeToProfile(tweet.accounts_id)} />
         </div>
         <div className="rightTweet">
           <div className="rightTweetHeader">
-            <p>
+            <p  onClick={()=> takeToProfile(tweet.accounts_id)}>
               {tweet.first_name} {tweet.last_name}
             </p>
-            <p>@{tweet.username}</p>
+            <p  onClick={()=> takeToProfile(tweet.accounts_id)}>@{tweet.username}</p>
             <p>{format(new Date(tweet.created_at), "PPpp")}</p>
           </div>
           <h3>{tweet.content}</h3>

@@ -287,6 +287,21 @@ async function removeLike(req,res){
   }
 }
 //                                  Comments Queries
+async function createAComment(req,res){
+  const db = await startPool();
+  const {content, id, fk} = req.body;
+  const query = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('${content}', ${id}, ${fk});`;
+
+  try{
+    const result = await db.query(query);
+    res.status(200).send(true);
+    endPool(db);
+  }catch(e){
+    res.status(400).send(false);
+    console.error(e.stack);
+    endPool(db);
+  }
+}
 //                                  Retweet Queries
 //                                  JOIN QUERIES
 async function selectAllFollowersAndTheirAccounts(req,res){
@@ -398,4 +413,5 @@ module.exports = {
   likeATweet,
   removeLike,
   findCurrUserAndTweets,
+  createAComment,
 };
