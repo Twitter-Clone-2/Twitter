@@ -9,7 +9,7 @@ const ViewTweet = () => {
   const [tweet, setTweet] = useState({})
   const [replies, setReplies] = useState([])
   useEffect(() => {
-   axios.post(route + "/view/tweet",{
+   axios.post(route + "/api/view/tweet",{
     id
    }).then(({data}) =>{
     console.log(data);

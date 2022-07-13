@@ -405,6 +405,8 @@ async function getOneTweetAndAllData(req,res){
     const resultForTweet = await db.query(queryForTweet);
     const resultForLikes = await db.query(queryForLikes);
     const resultForReplies = await db.query(queryForReplies);
+    console.log(`LIKE = ${resultForLikes}
+    Replies = ${resultForReplies}`);
     const results ={
       tweet : resultForTweet.rows,
       replies : resultForReplies.rows,
