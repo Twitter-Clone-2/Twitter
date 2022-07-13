@@ -57,6 +57,14 @@ const createTweet = `CREATE TABLE IF NOT EXISTS tweets
 
 const selectAllTweets= `SELECT * FROM tweets;`;
 
+const addingFKToTweetsForComments = `ALTER TABLE tweets ADD reply_id integer;`;
+
+const alterFKReplyID = `ALTER TABLE IF EXISTS tweets
+ADD CONSTRAINT fk_tweets FOREIGN KEY (reply_id)
+REFERENCES public.tweets (id) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION;`;
+
 const alterTweetsTable = `ALTER TABLE IF EXISTS tweets
 ADD CONSTRAINT fk_accounts FOREIGN KEY (accounts_id)
 REFERENCES accounts (id) MATCH SIMPLE
@@ -115,6 +123,8 @@ const createRepliesTable = `CREATE TABLE IF NOT EXISTS replies
 
 const selectAllReplies= `SELECT * FROM replies;`;
 
+
+
 const alterRepliesTableFKAccount = `ALTER TABLE IF EXISTS replies
 ADD CONSTRAINT fk_accounts FOREIGN KEY (accounts_id)
 REFERENCES accounts (id) MATCH SIMPLE
@@ -147,7 +157,7 @@ const selectRelationships = `SELECT * FROM relationship;`;
 const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES (1,2);`;
 
 const deleteRelationship = `DELETE FROM relationship WHERE id = 23`;
-//runQuery(deleteRelationship);
+//runQuery(alterFKReplyID);
 
 /*
 

@@ -287,6 +287,21 @@ async function removeLike(req,res){
   }
 }
 //                                  Comments Queries
+async function createAComment(req,res){
+  const db = await startPool();
+  const {content, id, fk} = req.body;
+  const query = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('${content}', ${id}, ${fk});`;
+
+  try{
+    const result = await db.query(query);
+    res.status(200).send(true);
+    endPool(db);
+  }catch(e){
+    res.status(400).send(false);
+    console.error(e.stack);
+    endPool(db);
+  }
+}
 //                                  Retweet Queries
 //                                  JOIN QUERIES
 async function selectAllFollowersAndTheirAccounts(req,res){
@@ -328,7 +343,8 @@ async function findAllTweetsFromFollowing(req,res){
   
   try {
     const resultOfIds = await db.query(queryToGetFollowingIds);
-    const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following)
+    const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following);
+    idArr.push(id);
     const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
     
     const resultsOfTweets = await db.query(queryToGetAllTweets);
@@ -397,4 +413,5 @@ module.exports = {
   likeATweet,
   removeLike,
   findCurrUserAndTweets,
+  createAComment,
 };

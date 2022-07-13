@@ -29,6 +29,7 @@ const {
   likeATweet,
   removeLike,
   findCurrUserAndTweets,
+  createAComment,
 } = require("./controllers");
 
 app.options("*", cors()); // include before other routes
@@ -54,6 +55,7 @@ app.post("/api/removeLike", cors(), removeLike);
 //retweets
 
 //reply
+app.post("/api/reply", cors(), createAComment);
 //follow status
 app.post("/api/findFollowers", cors(), findFollowers);
 app.post("/api/findFollowing", cors(), findFollowing);

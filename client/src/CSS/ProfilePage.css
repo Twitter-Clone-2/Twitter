@@ -52,7 +52,7 @@
   gap: 20px;
 }
 .tweet {
-  border: 1px solid gray;
+  border: 1px solid rgb(239,243,244);
 }
 
 .buttonsTweet {
@@ -67,10 +67,37 @@
 
 .likeCount{
   font-size: 20px;
+  text-align: center;
+  line-height: 100%;
 }
 
 .likeCol{
   align-items: center;
+}
+.likeCol:hover{
+  color : red;
+}
+
+.replyCount{
+  font-size: 20px;
+}
+
+.replyCol{
+  align-items: center;
+}
+.replyCol:hover{
+  color : green;
+}
+
+.retweetCount{
+  font-size: 20px;
+}
+
+.retweetCol{
+  align-items: center;
+}
+.retweetCol:hover{
+  color : rgb(29,155,239);
 }
 .rightTweetHeader {
   display: flex;

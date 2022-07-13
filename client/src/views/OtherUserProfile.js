@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/ProfilePage.css";
 import axios from "axios";
