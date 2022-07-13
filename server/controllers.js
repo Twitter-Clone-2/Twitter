@@ -328,7 +328,8 @@ async function findAllTweetsFromFollowing(req,res){
   
   try {
     const resultOfIds = await db.query(queryToGetFollowingIds);
-    const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following)
+    const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following);
+    idArr.push(id);
     const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
     
     const resultsOfTweets = await db.query(queryToGetAllTweets);

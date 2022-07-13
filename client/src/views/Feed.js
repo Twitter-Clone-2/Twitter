@@ -24,6 +24,8 @@ const Feed = (props) => {
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
+
+      setTweet("");
   };
   /* plan for creating fed
     1) create an array to hold all tweets

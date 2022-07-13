@@ -71,12 +71,12 @@ export default function Tweet({ tweet , likes }) {
       <div className="buttonsTweet">
         <div className='flex likeCol'>
           <FavoriteBorderIcon onClick={()=> likeFunction(JSON.parse(localStorage.getItem("currUser")).id, tweet.id)} className={`${liked ? "liked" : ""}`}/>
-          <p className='likeCount'> {count == 0 ? "" : count} </p> 
+          <div className='likeCount'> {count == 0 ? "" : count} </div> 
         </div>
        
         <div className='flex replyCol'>
           <ChatBubbleOutlineIcon/>
-          <p className='replyCount'> {replyCount == 0 ? "" : replyCount} </p> 
+          <div className='replyCount'> {replyCount == 0 ? "" : replyCount} </div> 
         </div>
 
         <div className='flex retweetCol'>
