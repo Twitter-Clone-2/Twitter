@@ -1,0 +1,100 @@
+.tweet:hover{
+    background-color: rgb(239,243,244) !important;
+  }
+  .tweet {
+    border: 1px solid rgb(239,243,244);
+    flex-grow: 1;
+  }
+
+  .backButton{
+    border-radius: 50%;
+  }
+
+  .backButton:hover{
+    background-color: rgb(239,243,244) !important;
+  }
+
+  .buttonsTweet {
+    display: flex;
+    justify-content: space-around;
+    padding: 30px 0 10px 0;
+  }
+  
+  .liked {
+    color : red
+  }
+  
+  .likeCount{
+    font-size: 20px;
+    text-align: center;
+    line-height: 100%;
+  }
+  
+  .likeCol{
+    align-items: center;
+  }
+  .likeCol:hover{
+    color : red;
+  }
+  
+  .replyCount{
+    font-size: 20px;
+  }
+  
+  .replyCol{
+    align-items: center;
+  }
+  .replyCol:hover{
+    color : green;
+  }
+  
+  .retweetCount{
+    font-size: 20px;
+  }
+  
+  .retweetCol{
+    align-items: center;
+  }
+  .retweetCol:hover{
+    color : rgb(29,155,239);
+  }
+  .rightTweetHeader {
+    display: flex;
+    gap: 5px;
+  }
+
+  /* BIG TWEET */
+
+  .bigTweet {
+    border: 1px solid rgb(239,243,244);
+    flex-grow: 1;
+    margin-top: 20px;
+  }
+
+  .bigTweetHeader{
+    display: flex;
+    align-items: center;
+  }
+  
+  #thread{
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 30px;
+  }
+  .bigTweetPicAndNames{
+    display: flex;
+    align-items: center;
+  }
+  .bigTweetContent{
+    font-size: 30px;
+    margin: 20px 10px 20px 20px;
+  }
+  .bigTweetDate{
+    font-size: 18px;
+  }
+  .bold{
+    font-weight: bold;
+  }
+  .marginLeft{
+    margin-left: 20px;
+  }

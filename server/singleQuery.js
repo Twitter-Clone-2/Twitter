@@ -70,6 +70,8 @@ ADD CONSTRAINT fk_accounts FOREIGN KEY (accounts_id)
 REFERENCES accounts (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
+
+const createReply = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('You ass', 1 , 24);`
 //                  Likes Queries
 const createLikesTable = `CREATE TABLE IF NOT EXISTS likes
 (
@@ -125,6 +127,7 @@ const selectAllReplies= `SELECT * FROM replies;`;
 
 
 
+
 const alterRepliesTableFKAccount = `ALTER TABLE IF EXISTS replies
 ADD CONSTRAINT fk_accounts FOREIGN KEY (accounts_id)
 REFERENCES accounts (id) MATCH SIMPLE
@@ -157,7 +160,7 @@ const selectRelationships = `SELECT * FROM relationship;`;
 const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES (1,2);`;
 
 const deleteRelationship = `DELETE FROM relationship WHERE id = 23`;
-//runQuery(alterFKReplyID);
+//runQuery(createReply);
 
 /*
 

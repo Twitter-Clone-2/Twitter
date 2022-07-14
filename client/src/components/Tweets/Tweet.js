@@ -6,7 +6,8 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import CachedIcon from '@mui/icons-material/Cached';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-const route = require("../utils/server_router");
+import "./tweets.css"
+const route = require("../../utils/server_router");
 
 export default function Tweet({ tweet , likes }) {
   const [count, setCount] = useState(0);
@@ -15,10 +16,11 @@ export default function Tweet({ tweet , likes }) {
   const [retweetCount, setRetweetCount] = useState(0);
   const navigate = useNavigate();
   let currLikeCount = 0;
+  const currentUserId =  JSON.parse(localStorage.getItem("currUser")).id;
 
   useEffect(()=>{
     for(let i = 0; i < likes.length; i++){
-      if(likes[i].accounts_id == JSON.parse(localStorage.getItem("currUser")).id && likes[i].tweets_id == tweet.id){
+      if(likes[i].accounts_id == currentUserId && likes[i].tweets_id == tweet.id){
         setLiked(true);
       }
       if(likes[i].tweets_id == tweet.id) currLikeCount++
@@ -52,17 +54,17 @@ export default function Tweet({ tweet , likes }) {
     }
     
   }
-  const loadTweet = (username, id) =>{
-    console.log(username, id);
+  const loadTweet = (id) =>{
+    navigate(`/tweet/${id}`)
   }
 
   const takeToProfile = (id) =>{
     navigate("/profile/page/" + id);
   }
   return (
-    <div className="tweet" onClick={() => loadTweet(tweet.username, tweet.id)}>
+    <div className="tweet" onClick={() => loadTweet( tweet.id)}>
       <div className="flex">
-        <div className="leftTweet">
+        <div>
           <PersonIcon onClick={()=> takeToProfile(tweet.accounts_id)} />
         </div>
         <div className="rightTweet">
@@ -79,7 +81,7 @@ export default function Tweet({ tweet , likes }) {
 
       <div className="buttonsTweet">
         <div className='flex likeCol'>
-          <FavoriteBorderIcon onClick={()=> likeFunction(JSON.parse(localStorage.getItem("currUser")).id, tweet.id)} className={`${liked ? "liked" : ""}`}/>
+          <FavoriteBorderIcon onClick={()=> likeFunction(currentUserId, tweet.id)} className={`${liked ? "liked" : ""}`}/>
           <div className='likeCount'> {count == 0 ? "" : count} </div> 
         </div>
        

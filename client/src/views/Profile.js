@@ -7,7 +7,7 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
-import Tweet from "../components/Tweet";
+import Tweet from "../components/Tweets/Tweet";
 
 const Profile = () => {
   const route = require("../utils/server_router");
