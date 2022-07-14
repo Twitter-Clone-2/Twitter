@@ -6,7 +6,7 @@ import Logout from "../components/Logout";
 import { useParams, useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
-import Tweet from "../components/Tweet";
+import Tweet from "../components/Tweets/Tweet";
 
 const OtherUserProfile = () => {
   const [allTweets, setAllTweets] = useState(0);

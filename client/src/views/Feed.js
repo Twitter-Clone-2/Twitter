@@ -4,7 +4,7 @@ import "../CSS/HomePage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Post from "../components/Post";
-import Tweet from "../components/Tweet";
+import Tweet from "../components/Tweets/Tweet";
 const route = require("../utils/server_router");
 
 const Feed = (props) => {

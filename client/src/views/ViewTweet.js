@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, {useState,useEffect} from 'react'
 import route from "../utils/server_router"
 import { useParams, useNavigate } from "react-router-dom";
+import BigTweet from '../components/Tweets/BigTweet';
 
 const ViewTweet = () => {
   const {id} = useParams()
@@ -13,15 +14,12 @@ const ViewTweet = () => {
     id
    }).then(({data}) =>{
     console.log(data);
-    setTweet(data.tweet)
+    setTweet(data.tweet[0])
     setLikes(data.likes)
     setReplies(data.replies)
    } )
   }, [])
-  
-  return (
-    <div>
-        
+  /*
         <div>
             <div>Profice pic</div>
             <div>Names</div>
@@ -36,8 +34,16 @@ const ViewTweet = () => {
         <div>Area for a reply [Profile pic then tweet area then button]</div>
 
         <div>Reply area</div>
+  */
+  return (
+    <>
+      {tweet.id && <BigTweet 
+      tweet = {tweet}
+      likes={likes}
+      replies={replies}
+      />}
 
-    </div>
+    </>
   )
 }
 
