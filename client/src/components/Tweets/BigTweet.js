@@ -16,9 +16,25 @@ const BigTweet = ({tweet , likes , replies }) => {
     const [replyCount, setReplyCount] = useState(0);
     const [retweetCount, setRetweetCount] = useState(0);
     const navigate = useNavigate();
+    const currentUserId =  JSON.parse(localStorage.getItem("currUser")).id;
     let currLikeCount = 0;
 
-    console.log(tweet, likes, replies)
+
+    useEffect(()=>{
+      setCount(likes.length)
+      setReplyCount(replies.length)
+
+      for(let i = 0; i < likes.length; i++){
+        if(likes[i].accounts_id == currentUserId && likes[i].tweets_id == tweet.id){
+          setLiked(true);
+        }
+        if(likes[i].tweets_id == tweet.id) currLikeCount++
+      }
+      setCount(currLikeCount)  
+    },[likes])
+    console.log(`tweet = ${JSON.stringify(tweet)}
+     likes = ${JSON.stringify(likes)}
+      replies = ${JSON.stringify(replies)}`)
 
 
     const likeFunction = (accounts_id , tweets_id) =>{  
@@ -78,31 +94,39 @@ const BigTweet = ({tweet , likes , replies }) => {
       {tweet.content}
     </div>
           
-    <div className='marginLeft bigTweetDate'>{format(new Date(tweet.created_at), "PPpp")}</div>
+    <div className='marginLeft bigTweetDate borderBot underline'>{format(new Date(tweet.created_at), "PPpp")}</div>
        
       
     
 
-    <div className='flex '>
-        <div>{likes.length} Likes</div>
-        <div>{replies.length} Replies</div>
-        <div>0 Retweets</div>
+    <div className='flex bigTweetCount marginLeft borderBot'>
+        {count > 0 && <div className='underline' >
+          <span className='bold'>{count}</span>
+          <span>Likes</span>
+          </div>}
+        
+          {replyCount > 0 && <div className='underline'>
+          <span className='bold'>{replyCount}</span>
+          <span>Replies</span>
+          </div>}
+
+          {retweetCount > 0 && <div className='underline'>
+          <span className='bold'>{retweetCount}</span>
+          <span>Retweets</span>
+          </div>}
     </div>
 
-    <div className="buttonsTweet">
+    <div className="buttonsTweet borderBot">
       <div className='flex likeCol'>
         <FavoriteBorderIcon onClick={()=> likeFunction(JSON.parse(localStorage.getItem("currUser")).id, tweet.id)} className={`${liked ? "liked" : ""}`}/>
-        <div className='likeCount'> {count == 0 ? "" : count} </div> 
       </div>
      
       <div className='flex replyCol'>
         <ChatBubbleOutlineIcon/>
-        <div className='replyCount'> {replyCount == 0 ? "" : replyCount} </div> 
       </div>
 
       <div className='flex retweetCol'>
         <CachedIcon/>
-        <p className='retweetCount'> {retweetCount == 0 ? "" : retweetCount} </p>
       </div>
     </div>
   </div> 

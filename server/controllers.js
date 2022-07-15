@@ -399,7 +399,7 @@ async function getOneTweetAndAllData(req,res){
 
   const queryForReplies = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE tweets.reply_id = ${id};`;
 
-  const queryForLikes = `SELECT accounts.first_name, accounts.last_name, accounts.username FROM likes LEFT JOIN accounts on accounts.id = likes.accounts_id WHERE likes.tweets_id = ${id};`;
+  const queryForLikes = `SELECT accounts.first_name, accounts.last_name, accounts.username , accounts.id FROM likes LEFT JOIN accounts on accounts.id = likes.accounts_id WHERE likes.tweets_id = ${id};`;
 
   try{
     const resultForTweet = await db.query(queryForTweet);
