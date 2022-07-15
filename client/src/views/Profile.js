@@ -8,9 +8,9 @@ import EditProfile from "../components/EditProfile";
 import Settings from "../components/Settings";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 import Tweet from "../components/Tweets/Tweet";
+import route from "../utils/server_router";
 
 const Profile = () => {
-  const route = require("../utils/server_router");
   const [editProfile, setEditProfile] = useState(false);
   const [settings, setSettings] = useState(false);
   const [allTweets, setAllTweets] = useState(0);
@@ -32,7 +32,7 @@ const Profile = () => {
       }).catch(e=>{
         console.log(e);
       })
-  
+
       axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
         follower : user.id
       }).then(res=>{
@@ -106,13 +106,13 @@ const Profile = () => {
           <p>joined , {user.created_at}</p>
           <div className="flex" id="follows">
             <div>
-               <FollowersAndFollowingModal 
+               <FollowersAndFollowingModal
                num={`${numOfFollowing} Following`}
                relationship={followingInfo}
                />
                </div>
             <div>
-              <FollowersAndFollowingModal 
+              <FollowersAndFollowingModal
               num={`${numOfFollowers} Followers`}
               relationship={followersInfo}
               />

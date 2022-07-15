@@ -3,6 +3,8 @@ import "../CSS/Register.css";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import route from "../utils/server_router";
+
 const FormUserName = ({
   firstName,
   setFirstName,
@@ -19,7 +21,6 @@ const FormUserName = ({
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
-  const route = require("../utils/server_router");
 
   const handleSubmit = (e) => {
     e.preventDefault();
