@@ -17,7 +17,6 @@ const BigTweet = ({tweet , likes , replies }) => {
     const [retweetCount, setRetweetCount] = useState(0);
     const navigate = useNavigate();
     const currentUserId =  JSON.parse(localStorage.getItem("currUser")).id;
-    let currLikeCount = 0;
 
 
     useEffect(()=>{
@@ -25,13 +24,13 @@ const BigTweet = ({tweet , likes , replies }) => {
       setReplyCount(replies.length)
 
       for(let i = 0; i < likes.length; i++){
-        if(likes[i].accounts_id == currentUserId && likes[i].tweets_id == tweet.id){
+        if(likes[i].id == currentUserId){
           setLiked(true);
+          console.log("this line hit");
         }
-        if(likes[i].tweets_id == tweet.id) currLikeCount++
       }
-      setCount(currLikeCount)  
     },[likes])
+
     console.log(`tweet = ${JSON.stringify(tweet)}
      likes = ${JSON.stringify(likes)}
       replies = ${JSON.stringify(replies)}`)
