@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Post from "../components/Post";
 import Tweet from "../components/Tweets/Tweet";
-const route = require("../utils/server_router");
+import route from "../utils/server_router";
 
 const Feed = (props) => {
   const navigate = useNavigate();
@@ -74,12 +74,12 @@ const Feed = (props) => {
         <div id="createTweet"></div>
         {/* ALL TWEETS FROM YOU AND FOLLOWERS */}
         <div id="content">
-          {feed.map((tweet, i) => 
-          <Tweet 
-          className="tweet" 
-          tweet={tweet} 
-          likes={likes}
-          key={i} 
+          {feed.map((tweet, i) =>
+          <Tweet
+          className="tweet"
+          tweet={tweet}
+          likes={likes.filter((like) => like.tweets_id === tweet.id)}
+          key={i}
           />)}
         </div>
       </div>
