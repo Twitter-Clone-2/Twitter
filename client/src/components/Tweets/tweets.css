@@ -92,9 +92,20 @@
   .bigTweetDate{
     font-size: 18px;
   }
+  .underline:hover{
+    text-decoration: underline;
+  }
+  .bigTweetCount{
+    margin-top: 10px;
+    gap: 20px;
+  }
   .bold{
     font-weight: bold;
   }
   .marginLeft{
     margin-left: 20px;
+  }
+  .borderBot{
+    border-bottom: 1px solid rgb(239,243,244);
+    padding-bottom: 10px;
   }
