@@ -15,6 +15,7 @@ export default function Tweet({ tweet, likes }) {
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
+  const filteredLikes = likes.filter((like) => like.tweets_id == tweet.id)
 
   return (
     <div className="tweet" onClick={() => loadTweet(tweet.id)}>
@@ -35,7 +36,7 @@ export default function Tweet({ tweet, likes }) {
           <h3>{tweet.content}</h3>
         </div>
       </div>
-      <TweetActions tweet={tweet} likes={likes}/>
+      <TweetActions tweet={tweet} likes={filteredLikes}/>
     </div>
   );
 }

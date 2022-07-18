@@ -12,7 +12,7 @@ export default function TweetActions({
 }) {
   const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
   const tweetIsLiked = likes.some(
-    (like) => like.accounts_id === currentUserId || like.id === currentUserId
+    (like) => like.tweets_id == tweet.id && like.accounts_id === currentUserId || like.id === currentUserId
   );
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(tweetIsLiked);
