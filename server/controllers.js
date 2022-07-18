@@ -345,7 +345,7 @@ async function findAllTweetsFromFollowing(req,res){
     const resultOfIds = await db.query(queryToGetFollowingIds);
     const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following);
     idArr.push(id);
-    const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
+    const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
     
     const resultsOfTweets = await db.query(queryToGetAllTweets);
     const tweetIDArr = resultsOfTweets.rows.map(tweetOBJ=> tweetOBJ.id)
@@ -370,7 +370,7 @@ async function findAllTweetsFromFollowing(req,res){
 async function findCurrUserAndTweets(req,res){
   const db = await startPool();
   const {id} = req.body;
-  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
+  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id,  tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
 
   try{
     const resultsOfTweets =  await  db.query(queryForTweets);

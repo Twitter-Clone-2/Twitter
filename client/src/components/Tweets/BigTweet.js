@@ -12,12 +12,17 @@ const BigTweet = ({ tweet, likes, replies }) => {
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
+
+  const backToFeed = () =>{
+    navigate("/main/feed")
+  }
   return (
     <div className="bigTweet">
       <div className="bigTweetHeader">
         <KeyboardBackspaceIcon
           className="backButton paddingLeft"
           sx={{ fontSize: 40 }}
+          onClick={()=>backToFeed()}
         />
         <div id="thread">Thread</div>
       </div>

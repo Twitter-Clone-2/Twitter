@@ -40,7 +40,7 @@ const Feed = (props) => {
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
-        setFeed(data.tweets);
+        //setFeed(data.tweets.filter());
         setLikes(data.likes);
       })
       .catch((e) => console.log(e));
