@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+
 const app = express();
-// const serverless = require("serverless-http");
-//const port = process.env.PORT || 8080;
+
 
 app.use(cors());
 app.use(express.json());
@@ -33,7 +33,7 @@ const {
   getOneTweetAndAllData,
 } = require("./controllers");
 
-app.options("*", cors()); // include before other routes
+app.options("*", cors());
 //get all users
 app.get("/api/users", cors(), getAllUsers);
 // get one user
@@ -78,8 +78,9 @@ const server = app.listen(process.env.PORT || 8080, () => {
 const io = require('socket.io')(server, {cors : true});
 
 io.on("connection", socket =>{
-  console.log(socket.id);
-  socket.on("event_from_client", data =>{
-    socket.broadcast.emit("send_data_to_all_other_clients", data);
+  console.log(`-----------------${socket.id}----------------`);
+  socket.on("send_message", data =>{
+    console.log(`------MESSAGE FROM FRONTEND ------${data}`)
+    //socket.broadcast.emit("send_data_to_all_other_clients", data);
   });
 });
