@@ -81,6 +81,6 @@ io.on("connection", socket =>{
   console.log(`-----------------${socket.id}----------------`);
   socket.on("send_message", data =>{
     console.log(`------MESSAGE FROM FRONTEND ------${data}`)
-    //socket.broadcast.emit("send_data_to_all_other_clients", data);
+    socket.broadcast.emit("receive_message", data);
   });
 });

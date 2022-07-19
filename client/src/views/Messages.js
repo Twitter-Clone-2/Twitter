@@ -5,25 +5,26 @@ import route from "../utils/server_router";
 
 
 const Messages = () => {
-    // const [socket] = useState(() => io(":process.env.PORT" || ':8080'));
-
+    const [message, setMessage] = useState("");
+    const [messageReceived, setMessageReceived] = useState("")
     const socket = io.connect(route)
 
-    // useEffect(() => {
-    //     console.log("test");
-    //     console.log(process.env.PORT);
-    //     socket.on('Welcome', data => console.log(data));
+    useEffect(() => {
+        socket.on('receive_message', data =>{
+          setMessageReceived(data.message)
+        });
 
-    //     return () => socket.disconnect(true);
-    // }, [])
+        return () => socket.disconnect(true);
+    }, [socket])
     
     const sendMesssage = () =>{
-      socket.emit("send_message", {message : "Hello"})
+      socket.emit("send_message", {message})
     }
   return (
     <div className='messageMainDiv'>
-      <input placeholder='Message...'/>
+      <input placeholder='Message...' onChange={(e) => setMessage(e.target.value)}/>
       <button onClick={sendMesssage}>Send Message</button>
+      <h1>Message : {messageReceived}</h1>
     </div>
   )
 }
