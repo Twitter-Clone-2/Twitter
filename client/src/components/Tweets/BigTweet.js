@@ -16,7 +16,7 @@ const BigTweet = ({ tweet, likes, replies, replyLikes }) => {
   };
 
   const backToFeed = () =>{
-    navigate("/main/feed")
+    navigate(-1);
   }
   return (
     <div className="bigTweet">
