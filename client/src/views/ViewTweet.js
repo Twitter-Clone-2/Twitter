@@ -6,10 +6,11 @@ import BigTweet from '../components/Tweets/BigTweet';
 
 
 const ViewTweet = () => {
-  const {id} = useParams()
-  const [likes, setLikes] = useState([])
-  const [tweet, setTweet] = useState({})
-  const [replies, setReplies] = useState([])
+  const {id} = useParams();
+  const [likes, setLikes] = useState([]);
+  const [tweet, setTweet] = useState({});
+  const [replies, setReplies] = useState([]);
+  const [replyLikes, setReplyLikes] = useState([]);
 
 
   useEffect(() => {
@@ -17,9 +18,10 @@ const ViewTweet = () => {
     id
    }).then(({data}) =>{
     console.log(data);
-    setTweet(data.tweet[0])
-    setLikes(data.likes)
-    setReplies(data.replies)
+    setTweet(data.tweet[0]);
+    setLikes(data.likes);
+    setReplies(data.replies);
+    setReplyLikes(data.replyLikes);
    } )
   }, [id])
   return (
@@ -28,6 +30,7 @@ const ViewTweet = () => {
       tweet = {tweet}
       likes={likes}
       replies={replies}
+      replyLikes={replyLikes}
       />}
     </>
   )
