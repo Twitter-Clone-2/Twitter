@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./tweets.css";
 import TweetActions from "./TweetActions";
 
-export default function Tweet({ tweet, likes }) {
+export default function Tweet({ tweet, likes, replyingTo = false }) {
   const navigate = useNavigate();
 
   const loadTweet = (id) => {
@@ -20,8 +20,8 @@ export default function Tweet({ tweet, likes }) {
   return (
     <div className="tweet" onClick={() => loadTweet(tweet.id)}>
       <div className="flex">
-        <div>
-          <PersonIcon onClick={() => takeToProfile(tweet.accounts_id)} />
+        <div className="paddingLeft">
+          <PersonIcon sx={{ fontSize: 60 }} onClick={() => takeToProfile(tweet.accounts_id)} />
         </div>
         <div className="rightTweet">
           <div className="rightTweetHeader">
@@ -33,6 +33,7 @@ export default function Tweet({ tweet, likes }) {
             </p>
             <p>{format(new Date(tweet.created_at), "PPpp")}</p>
           </div>
+            {replyingTo && <p>Replying to <span className="replyingToUsername">@{tweet.username}</span></p>}
           <h3>{tweet.content}</h3>
         </div>
       </div>

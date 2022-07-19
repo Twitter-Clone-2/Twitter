@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import "./tweets.css";
 import TweetActions from "./TweetActions";
+import ReplyBox from "./ReplyBox";
+import Tweet from "./Tweet";
 
 const BigTweet = ({ tweet, likes, replies }) => {
   const navigate = useNavigate();
@@ -51,7 +53,11 @@ const BigTweet = ({ tweet, likes, replies }) => {
         {format(new Date(tweet.created_at), "PPpp")}
       </div>
 
-      <TweetActions tweet={tweet} likes={likes} displayIconCount={true}/>
+      <TweetActions tweet={tweet} likes={likes} displayIconCount={true} replies={replies}/>
+
+      <ReplyBox tweet={tweet}/>
+
+      {replies.map((reply, i) => <Tweet key={i} tweet={reply} likes={likes} replyingTo={true}/>)}
     </div>
   );
 };
