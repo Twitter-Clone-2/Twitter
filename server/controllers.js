@@ -345,7 +345,7 @@ async function findAllTweetsFromFollowing(req,res){
     const resultOfIds = await db.query(queryToGetFollowingIds);
     const idArr = resultOfIds.rows.map((followingObject)=> followingObject.following);
     idArr.push(id);
-    const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
+    const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]);`;
     
     const resultsOfTweets = await db.query(queryToGetAllTweets);
     const tweetIDArr = resultsOfTweets.rows.map(tweetOBJ=> tweetOBJ.id)
@@ -370,7 +370,7 @@ async function findAllTweetsFromFollowing(req,res){
 async function findCurrUserAndTweets(req,res){
   const db = await startPool();
   const {id} = req.body;
-  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
+  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id,  tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
 
   try{
     const resultsOfTweets =  await  db.query(queryForTweets);
@@ -405,16 +405,24 @@ async function getOneTweetAndAllData(req,res){
     const resultForTweet = await db.query(queryForTweet);
     const resultForLikes = await db.query(queryForLikes);
     const resultForReplies = await db.query(queryForReplies);
-    console.log(`LIKE = ${JSON.stringify(resultForLikes)}
-    Replies = ${JSON.stringify(resultForReplies)}`);
+
+    const replyIDArr = resultForReplies.rows.map(replyOBJ=> replyOBJ.id);
+    const queryForRepliesLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${replyIDArr}]); `;
+
+    let holder = []
+    if(replyIDArr.length > 0){
+      const resultForRepliesLikes = await db.query(queryForRepliesLikes);
+      holder = resultForRepliesLikes.rows;
+    }
     const results ={
       tweet : resultForTweet.rows,
       replies : resultForReplies.rows,
-      likes : resultForLikes.rows
+      likes : resultForLikes.rows,
+      replyLikes : holder ,
     }
     res.status(200).send(results);
-    endPool(db)
-    
+    endPool(db)  
+
   }catch(e){
     console.error(e.stack)
     res.status(400).send(false);

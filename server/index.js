@@ -70,8 +70,16 @@ app.post("/api/selectAllFollowingAndTheirAccounts", cors(), selectAllFollowingAn
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
 
-app.listen(process.env.PORT || 8080, () => {
+const server = app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${process.env.PORT || 8080}`);
 });
 
-// module.exports.handler = serverless(app);
+
+const io = require('socket.io')(server, {cors : true});
+
+io.on("connection", socket =>{
+  console.log(socket.id);
+  socket.on("event_from_client", data =>{
+    socket.broadcast.emit("send_data_to_all_other_clients", data);
+  });
+});

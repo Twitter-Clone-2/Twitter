@@ -4,20 +4,32 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import CachedIcon from "@mui/icons-material/Cached";
 import axios from "axios";
 import route from "../../utils/server_router";
+import { useParams } from "react-router-dom";
 
 export default function TweetActions({
   tweet,
   likes,
   displayIconCount = false,
+  replies,
 }) {
   const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
   const tweetIsLiked = likes.some(
-    (like) => like.accounts_id === currentUserId || like.id === currentUserId
+    (like) => like.tweets_id == tweet.id && like.accounts_id === currentUserId || like.id === currentUserId
   );
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(tweetIsLiked);
-  const [replyCount, setReplyCount] = useState(0);
   const [retweetCount, setRetweetCount] = useState(0);
+  const [replyCount, setReplyCount] = useState(0);
+  const {id} = useParams();
+
+  useEffect(() => {
+    if(displayIconCount){
+      setReplyCount(replies.length);
+      setCount(likes.length);
+    }
+  }, [id])
+
+  
 
   const likeFunction = (accounts_id, tweets_id) => {
     if (liked === false) {
@@ -77,13 +89,12 @@ export default function TweetActions({
           )}
         </div>
       )}
-      <div className="buttonsTweet">
+      <div className="buttonsTweet borderBot">
         <div className="flex likeCol">
           <FavoriteBorderIcon
             onClick={(event) => {
               event.stopPropagation();
               likeFunction(currentUserId, tweet.id);
-              console.log("asdfsadfasdf");
             }}
             className={`${liked ? "liked" : ""}`}
           />

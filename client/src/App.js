@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
+import Messages from "./views/Messages";
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
           />
           <Route exact path="/main/feed" element={<Feed />} />
           <Route exact path = "/tweet/:id" element={<ViewTweet/>}/>
+          <Route exact path="/messages" element={<Messages/>}/>
         </Routes>
         <NewsAPI/>
       </BrowserRouter>

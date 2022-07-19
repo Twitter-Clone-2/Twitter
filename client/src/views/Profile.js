@@ -62,12 +62,11 @@ const Profile = () => {
 
       axios.post(route + "/api/currUser/tweets", { id : user.id })
       .then(({ data }) => {
-        console.log(data.tweets);
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
-        setFeed(data.tweets);
+        setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
         setLikes(data.likes);
-        setAllTweets(data.tweets.length)
+        setAllTweets(feed.length)
       })
       .catch((e) => console.log(e));
   }, []);

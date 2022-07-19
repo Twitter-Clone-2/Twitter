@@ -32,7 +32,10 @@ const IconNav = (props) => {
             <NotificationsIcon className="icon" />
             <div className="buttonLabel">Notifications</div>
           </Button>
-          <Button className={"iconButton"}>
+          <Button 
+            className={"iconButton"}
+            onClick={()=> navigate("/messages")}
+          >
             <ChatBubbleIcon className="icon" />
             <div className="buttonLabel">Messages</div>
           </Button>

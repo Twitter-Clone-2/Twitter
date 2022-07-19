@@ -1,5 +1,5 @@
-const DATABASE_URL = "postgres://iymqgddwvkmhdp:645b50b0485b622bfd4fd7621cb69c0f14c9c7b66a7dc92da0711b2fd1c7a444@ec2-44-206-11-200.compute-1.amazonaws.com:5432/dfgoqemk9vjf9o"
-
+const DATABASE_URL = ""
+//go into .env for DATABASE_URL
 const { Pool } = require('pg');
 
 const db = new Pool({
@@ -114,32 +114,6 @@ ADD CONSTRAINT fk_tweets FOREIGN KEY (tweets_id)
 REFERENCES tweets (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
-//                  Replies Queries
-const createRepliesTable = `CREATE TABLE IF NOT EXISTS replies
-(
-    accounts_id integer,
-    tweets_id integer,
-    the_reply character varying(240) NOT NULL,
-    id SERIAL PRIMARY KEY
-);`;
-
-const selectAllReplies= `SELECT * FROM replies;`;
-
-
-
-
-const alterRepliesTableFKAccount = `ALTER TABLE IF EXISTS replies
-ADD CONSTRAINT fk_accounts FOREIGN KEY (accounts_id)
-REFERENCES accounts (id) MATCH SIMPLE
-ON UPDATE NO ACTION
-ON DELETE NO ACTION;`;
-
-const alterRepliesTableFKTweet = `ALTER TABLE IF EXISTS replies
-ADD CONSTRAINT fk_tweets FOREIGN KEY (tweets_id)
-REFERENCES tweets (id) MATCH SIMPLE
-ON UPDATE NO ACTION
-ON DELETE NO ACTION;`;
-
 //                  Relationship queries (follower, following)
 
 const createRelationshipTable = `CREATE TABLE IF NOT EXISTS relationship
@@ -161,17 +135,3 @@ const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES
 
 const deleteRelationship = `DELETE FROM relationship WHERE id = 23`;
 //runQuery(createReply);
-
-/*
-
-
-
-*/
-
-// db.query('Select * From penguins', (err, res) => {
-//   if (err) throw err;
-//   for (let row of res.rows) {
-//     console.log(JSON.stringify(row));
-//   }
-//   db.end();
-// });
