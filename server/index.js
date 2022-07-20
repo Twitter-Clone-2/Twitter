@@ -79,8 +79,11 @@ const io = require('socket.io')(server, {cors : true});
 
 io.on("connection", socket =>{
   console.log(`-----------------${socket.id}----------------`);
-  socket.on("send_message", data =>{
-    console.log(`------MESSAGE FROM FRONTEND ------${data}`)
-    socket.broadcast.emit("receive_message", data);
+  socket.on("send_message", (message, room) =>{
+    socket.to(room).emit("receive-message", message)
   });
+
+  socket.on("join_room", room =>{
+    socket.join(room)
+  })
 });

@@ -6,7 +6,7 @@ const NewsAPI = () => {
   const [news, setNews] = useState([]);
   const { pathname } = useLocation();
   const displayNews =
-    pathname !== "/" && pathname !== "/login" && pathname !== "/register";
+    pathname !== "/" && pathname !== "/login" && pathname !== "/register" && pathname !== "/messages";
 
   // Retrieving NY times news from api
   const axiosNews = () => {
