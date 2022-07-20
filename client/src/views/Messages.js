@@ -19,15 +19,6 @@ const Messages = () => {
         socket.on('receive_message', data =>{
           setMessageReceived(data.message)
         });
-
-        axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
-          follower : user.id
-        }).then(res=>{
-          setFollowingInfo(res.data.rows)
-        }).catch(e=>{
-          console.log(e);
-        })
-
         return () => socket.disconnect(true);
     }, [socket])
     
