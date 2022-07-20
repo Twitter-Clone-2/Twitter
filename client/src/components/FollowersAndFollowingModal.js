@@ -6,8 +6,6 @@ import Modal from '@mui/material/Modal';
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/followersAndFollowingModal.css";
 
-
-
 const FollowersAndFollowingModal = (props) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -18,11 +16,10 @@ const FollowersAndFollowingModal = (props) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        width: 500,
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
-        p: 4,
       };
 
   return (
@@ -37,12 +34,12 @@ const FollowersAndFollowingModal = (props) => {
       <Box sx={style}>
         {props.relationship.map(item=>{
             return(
-                <Typography key={item.id} id="modal-modal-description" sx={{ mt: 2 }}>
+                <Typography key={item.id} id="modal-modal-description" sx={{ mt: 2 }} className="modalProfileCard">
                 {/* <div className='account'>{item.first_name} {item.last_name}</div> */}
                 <div className='account'>
                     <div><PersonIcon sx={{ fontSize: 65 }}/></div>
                     <div className='names'>
-                        <p className='accountName'>{item.first_name} {item.last_name}</p>
+                      <p className='accountName'>{item.first_name} {item.last_name}</p>
                         <p>@{item.username}</p>
                     </div>
                 </div>

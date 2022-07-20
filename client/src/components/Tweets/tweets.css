@@ -120,7 +120,7 @@
     font-size: 26px;
   }
   ::placeholder { 
-    color : rgb(83,99,113)
+    color : rgb(83,99,113);
   }
 
   .replyingTo{
