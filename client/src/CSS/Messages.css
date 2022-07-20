@@ -5,14 +5,10 @@
   }
 
   .messagesProfileSection{
-    border: solid 1px red;
-    flex : 2;
     width : 30vw;
   }
 
   .messagesConvoSection{
-    border : solid 1px blue;
-    flex : 3;
     width : 40vw;
   }
 

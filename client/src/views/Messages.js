@@ -6,6 +6,7 @@ import ProfileMessageCard from '../components/ProfileMessageCard';
 import Button from '@mui/material/Button';
 import axios from "axios";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
+import PlaceHolderMessages from '../components/PlaceHolderMessages';
 
 
 const Messages = () => {
@@ -19,8 +20,15 @@ const Messages = () => {
         socket.on('receive_message', data =>{
           setMessageReceived(data.message)
         });
+        axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
+          follower : user.id
+        }).then(res=>{
+          setFollowingInfo(res.data.rows)
+        }).catch(e=>{
+          console.log(e);
+        })
         return () => socket.disconnect(true);
-    }, [socket])
+    }, [])
     
     const sendMesssage = () =>{
       socket.emit("send_message", {message})
@@ -39,17 +47,7 @@ const Messages = () => {
         <ProfileMessageCard className="t"/>
       </div>
 
-      <div className="messagesConvoSection">
-        <div id='messagesConvoSectionHeader'>Select a message</div>
-        <div id="messagesConvoSectionSubHeader">Choose from your existing conversations, start a new one, or just keep swimming.</div>
-        <div>
-               <FollowersAndFollowingModal
-               num={`New Message`}
-               relationship={followingInfo}
-               />
-               </div>
-      </div>
-
+      <PlaceHolderMessages followingInfo={followingInfo}/>
     </div>
   )
 }

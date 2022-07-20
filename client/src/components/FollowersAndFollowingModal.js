@@ -6,8 +6,6 @@ import Modal from '@mui/material/Modal';
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/followersAndFollowingModal.css";
 
-
-
 const FollowersAndFollowingModal = (props) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -41,7 +39,7 @@ const FollowersAndFollowingModal = (props) => {
                 <div className='account'>
                     <div><PersonIcon sx={{ fontSize: 65 }}/></div>
                     <div className='names'>
-                        <p className='accountName'>{item.first_name} {item.last_name}</p>
+                      <p className='accountName'>{item.first_name} {item.last_name}</p>
                         <p>@{item.username}</p>
                     </div>
                 </div>
