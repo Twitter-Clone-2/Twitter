@@ -6,6 +6,8 @@
 
   .messagesProfileSection{
     width : 30vw;
+    overflow:scroll;
+    overflow-x:hidden;
   }
 
   .messagesConvoSection{

@@ -44,7 +44,25 @@ const Messages = () => {
            className='messagesSearchBar'
            />
         </div>
-        <ProfileMessageCard className="t"/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
+        <ProfileMessageCard/>
       </div>
 
       <PlaceHolderMessages followingInfo={followingInfo}/>

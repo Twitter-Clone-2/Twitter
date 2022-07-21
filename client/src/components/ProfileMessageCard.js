@@ -4,7 +4,7 @@ import PersonIcon from "@mui/icons-material/Person";
 const ProfileMessageCard = () => {
   return (
     <div className='messagesProfileCard'>
-        <PersonIcon sx={{ fontSize: 55 }}/>
+        <PersonIcon sx={{ fontSize: 70 }}/>
 
         <div>
             <div>Reza Amraei @RezaAmraei</div>

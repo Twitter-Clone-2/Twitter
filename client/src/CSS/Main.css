@@ -11,13 +11,74 @@
   overflow: hidden;
 }
 
-#leftCol {
+#leftColMainPage {
   height: 100vh;
   display: flex;
 }
 
-#rightCol {
+#rightColMainPage {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-left: 50px;
+}
+
+#mainPageTwitterLogo{
+  height: 50px;
+  width: 50px;
+  margin-bottom: 70px;
+}
+
+#mainPageHeader{
+  font-size: 55px;
+  margin-bottom: 50px;
+}
+
+.mainPageHeaderFont{
+  font-weight: 700;
+  font-family: TwitterChirpExtendedHeavy, Verdana, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-style: normal;
+}
+
+.mainPageFont{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+
+#mainPageSubHeader{
+  font-size: 28px;
+}
+
+#signUpButton{
+  color: aliceblue;
+  background-color: rgb(29,155,240);
+  margin-top: 30px;
+}
+
+#agreement{
+  color: rgb(83,99,113);
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin-top: 10px;
+}
+
+#mainPageQuestion{
+  margin-top: 70px;
+  font-size: 17px;
+}
+
+#mainPageSignInButton{
+  background-color: rgb(255,255,255);
+  color: rgb(29,155,240);
+  font-size: 15px;
+  margin-top: 30px;
+  border: 1px solid rgb(222,229,232);
+}
+
+.mainPageButtonShape{
+  border-radius: 25px;
+  border: none;
+  padding: 10px 30px;
+  font-size: 15px;
+  width: 300px;
 }
