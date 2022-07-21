@@ -6,8 +6,8 @@ import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import FormAccountInfo from "../../components/FormAccountInfo";
-import FormUserName from "../../components/FormUserName";
+import FormAccountInfo from "../components/FormAccountInfo";
+import FormUserName from "../components/FormUserName";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -61,7 +61,8 @@ const Register = () => {
 
   const steps = ["Account Details", "User Name"];
   return (
-    <>
+    <div id="registerMainDiv">
+    <div>
       <Stepper activeStep={currentStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>
@@ -69,6 +70,7 @@ const Register = () => {
           </Step>
         ))}
       </Stepper>
+    </div>
 
       {currentStep === 0 && (
         <FormAccountInfo
@@ -103,7 +105,7 @@ const Register = () => {
       <Button variant="contained" onClick={() => handleButton()}>
         {currentStep === 1 ? "Completed" : "Next"}
       </Button>
-    </>
+    </div>
   );
 };
 

@@ -1,12 +1,11 @@
 import "./App.css";
 import Main from "./views/Main";
-import Register from "./views/LoginAndReg/Register";
+import Register from "./views/Register";
 import Feed from "./views/Feed";
 import Profile from "./views/Profile";
 import Settings from "./components/Settings";
 import EditProfile from "./components/EditProfile";
 import OtherUserProfile from "./views/OtherUserProfile";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
