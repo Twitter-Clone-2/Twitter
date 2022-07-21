@@ -65,8 +65,9 @@ const Profile = () => {
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
         setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
+        setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length)
         setLikes(data.likes);
-        setAllTweets(feed.length)
+        console.log(feed);
       })
       .catch((e) => console.log(e));
   }, []);

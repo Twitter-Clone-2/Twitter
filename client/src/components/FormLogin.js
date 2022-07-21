@@ -31,7 +31,6 @@ const FormLogin = () => {
       .catch((err) => console.log(err));
   };
   return (
-    <div id="backgroundBody">
       <div id="mainBody">
         <div id="header">
           {/* PLACE HOLDER FOR AN ICON */}
@@ -65,7 +64,6 @@ const FormLogin = () => {
           Don't have an account? <Link to="/register">Sign up</Link>
         </p>
       </div>
-    </div>
   );
 };
 
