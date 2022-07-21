@@ -33,10 +33,31 @@
   margin-top: 20px;
 }
 
-#loginEmailInputDiv{
-  border : 1px solid rgb(133, 135, 136)
+#loginEmailInput{
+  margin: 25px 0px;
+
 }
-#loginEmailInput::placeholder{
-  margin-top: 200px;
-  color: red;
+
+.loginButtonShape{
+  border-radius: 25px;
+  border: none;
+  padding: 10px 30px;
+  font-size: 15px;
+  width: 210px;
+}
+#loginButton{
+  color: white;
+  background-color: rgb(15,20,26);
+  margin-top: 20px;
+  font-weight: 700;
+}
+
+#registerLink{
+  color: rgb(29,155,240);
+  text-decoration: none;
+}
+
+#loginQuestion{
+  color: rgb(83,99,113);
+  margin-top: 50px
 }

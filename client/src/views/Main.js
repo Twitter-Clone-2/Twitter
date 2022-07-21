@@ -25,10 +25,6 @@ const Main = () => {
         </div>
 
         <div className="mainPageFont" id="mainPageQuestion">Already have an account?</div>
-        <Link to="/login">
-          <button id="mainPageSignInButton" className="mainPageButtonShape mainPageHeaderFont ">Sign in</button>
-        </Link>
-
         <LoginModal/>
       </div>
     </div>
