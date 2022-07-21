@@ -25,6 +25,7 @@
 .loginCloseButton:hover {
   background-color:lightgray !important;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 #loginHeader{

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import "../CSS/Main.css";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import LoginModal from "../components/LoginModal"
+import { useNavigate} from "react-router-dom";
+
 
 const Main = () => {
+  const navigate = useNavigate();
+
   return (
     <div id="leftColMainPage">
       <img
@@ -16,9 +19,11 @@ const Main = () => {
         <img id="mainPageTwitterLogo" src="https://www.iconpacks.net/icons/2/free-twitter-logo-icon-2429-thumb.png"/>
         <div id="mainPageHeader" className="mainPageHeaderFont">Happening now</div>
         <div id="mainPageSubHeader" className="mainPageHeaderFont">Join "Twitter" today.</div>
-        <Link to="/register">
-          <button id="signUpButton" className="mainPageFont mainPageButtonShape">Sign up with an email</button>
-        </Link>
+          <button 
+          id="signUpButton" 
+          className="mainPageFont mainPageButtonShape"
+          onClick={()=> navigate("/register")}
+          >Sign up with an email</button>
         <div id="agreement">
           By signing up, you agree to the Terms of Service and Privacy Policy,
           including Cookie Use.

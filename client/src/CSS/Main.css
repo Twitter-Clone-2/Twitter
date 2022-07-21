@@ -53,6 +53,7 @@
   color: aliceblue;
   background-color: rgb(29,155,240);
   margin-top: 30px;
+  cursor: pointer;
 }
 
 #agreement{
@@ -73,6 +74,8 @@
   font-size: 15px;
   margin-top: 30px;
   border: 1px solid rgb(222,229,232);
+  cursor: pointer;
+
 }
 
 .mainPageButtonShape{
