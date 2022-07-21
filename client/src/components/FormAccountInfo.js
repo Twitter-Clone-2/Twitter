@@ -16,21 +16,14 @@ const FormAccountInfo = ({
   confirm,
   setConfirm,
 }) => {
-  const handleFirstName = (e) => {
-    setFirstName(e.target.value);
-    // if (firstName.length < 5) {
-    //   setFirstNameError(true);
-    //   console.log(firstNameError);
-    // } else {
-    //   setFirstNameError(false);
-    // }
-  };
+
   return (
     <div className="accountDetails">
       <div>
         <label>First Name </label>
-        <TextField value={firstName} onChange={(e) => handleFirstName(e)} />
-        {firstNameError && <div>First Name must be at least 2 characters!</div>}
+        <TextField 
+        value={firstName} 
+        onChange={(e) => setFirstName(e.target.value)} />
       </div>
 
       <div>

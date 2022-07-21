@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import FormAccountInfo from "../components/FormAccountInfo";
 import FormUserName from "../components/FormUserName";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import route from "../utils/server_router";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -17,46 +17,96 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [userName, setUserName] = useState("");
+  const [bio, setBio] = useState("");
+  const [location, setLocation] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+
+  const navigate = useNavigate();
 
   function handleButton() {
     let meetsAllReq = true;
-    const tempErrorMessage = [];
+    let tempErrorMessage = [];
 
-    if (firstName.length < 2) {
-      tempErrorMessage.push('First name needs to be at least 2 characters.')
-      meetsAllReq = false;
+    if(currentStep == 0){
+      if (firstName.length < 2) {
+        tempErrorMessage.push('First name needs to be at least 2 characters.')
+        meetsAllReq = false;
+      }
+  
+      if (lastName.length < 2) {
+        tempErrorMessage.push(
+          "Last name needs to be at least 2 characters."
+        );
+        meetsAllReq = false;
+      }
+  
+       if(!/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email) || email.length == 0){
+        tempErrorMessage.push(
+          "Must be a valid email."
+        );
+        meetsAllReq = false;
+       }
+  
+      if (password !== confirm) {
+        tempErrorMessage.push(
+          "Passwords must match."
+        );
+        meetsAllReq = false;
+      }
+  
+      if (password.length <= 7) {
+        tempErrorMessage.push(
+          "Password needs to be at least 8 characters."
+        );
+        meetsAllReq = false;
+      }
+  
+      if (meetsAllReq) {
+        setCurrentStep((prev) => prev + 1);
+        setErrorMessages([])
+      } else {
+        setErrorMessages(tempErrorMessage);
+      }
+      tempErrorMessage = [];
     }
+    
+    if(currentStep == 1){
+      if(userName.length === 0){
+        tempErrorMessage.push(
+          "Must enter a username."
+        )
+        meetsAllReq = false;
+      }
 
-    if (lastName.length < 2) {
-      tempErrorMessage.push(
-        "First name needs to be at least 2 characters."
-      );
-      meetsAllReq = false;
+      if (meetsAllReq) {
+        axios
+      .post(route + "/api/register", {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        username: userName,
+        bio: bio,
+        location: location,
+      })
+      .then(() => {
+        axios
+          .post(route + "/api/user/email", {
+            email: email,
+          })
+          .then((res) => {
+            console.log(email);
+            localStorage.setItem("currUser", JSON.stringify(res.data[0]));
+            navigate("/main/feed");
+          });
+      })
+      .catch((err) => console.log(err));
+        
+      } else {
+        setErrorMessages(tempErrorMessage);
+      }
     }
-
-    // if (/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email)) setEmailError(false);
-
-    if (password !== confirm) {
-      tempErrorMessage.push(
-        "First name needs to be at least 2 characters."
-      );
-      meetsAllReq = false;
-    }
-
-    if (password.length < 8) {
-      tempErrorMessage.push(
-        "First name needs to be at least 2 characters."
-      );
-      meetsAllReq = false;
-    }
-
-    if (meetsAllReq) {
-      setCurrentStep((prev) => prev + 1);
-    } else {
-      setErrorMessages(tempErrorMessage);
-    }
-
   }
 
   const steps = ["Account Details", "User Name"];
@@ -71,7 +121,11 @@ const Register = () => {
         ))}
       </Stepper>
     </div>
-
+          <div>
+            <ul>
+              {errorMessages.map((error, i) => <li key={i}>{error}</li>)}
+            </ul>
+          </div>
       {currentStep === 0 && (
         <FormAccountInfo
           firstName={firstName}
@@ -91,15 +145,12 @@ const Register = () => {
       {currentStep === 1 && (
         <FormUserName
           firstName={firstName}
-          setFirstName={setFirstName}
-          lastName={lastName}
-          setLastName={setLastName}
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          confirm={confirm}
-          setConfirm={setConfirm}
+          userName={userName}
+          setUserName={setUserName}
+          bio={bio}
+          setBio={setBio}
+          location={location}
+          setLocation={setLocation}
         />
       )}
       <Button variant="contained" onClick={() => handleButton()}>
