@@ -90,6 +90,7 @@ export default function BasicModal() {
                     variant="outlined"
                     value={password} 
                     onChange={(e)=> setPassword(e.target.value)}
+                    type="password"
                     />
                 </div>
             </Box>

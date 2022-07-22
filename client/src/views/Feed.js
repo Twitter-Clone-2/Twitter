@@ -3,7 +3,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/Feed.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Post from "../components/Post";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
 
@@ -14,13 +13,12 @@ const Feed = (props) => {
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
 
-  const createTweet = (e) => {
-    e.preventDefault();
-    let userId = JSON.parse(localStorage.getItem("currUser"));
+  const createTweet = () => {
+    if(tweet.length == 0) return
     axios
       .post(route + "/api/create/tweet", {
-        tweet: tweet,
-        id: userId.id,
+        tweet,
+        id,
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
@@ -45,11 +43,10 @@ const Feed = (props) => {
   };
   return (
     <div id="feed">
-      {/* Middle */}
       <div id="allContent">
-        <h2>Home</h2>
-        <form onSubmit={createTweet}>
-          <p className="flex">
+        <div id="feedContainer">
+          <h2>Home</h2>
+          <div id="feedCreateTweet">
             <PersonIcon
               onClick={takeToProfile}
               sx={{ fontSize: 100 }}
@@ -60,13 +57,9 @@ const Feed = (props) => {
               onChange={(e) => setTweet(e.target.value)}
               value={tweet}
             />
-            <button>Tweet</button>
-          </p>
-          {props.postForm ? <Post setPostForm={props.setPostForm} /> : ""}
-        </form>
-        {/* CREATE A TWEET */}
-        <div id="createTweet"></div>
-        {/* ALL TWEETS FROM YOU AND FOLLOWERS */}
+            <button onClick={createTweet} id="feedTweetButton" className={tweet.length == 0 ? "incompleteColor" : ""}>Tweet</button>
+          </div>
+        </div>
         <div id="content">
           {feed.map((tweet, i) =>
           <Tweet

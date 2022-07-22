@@ -68,6 +68,7 @@
   .rightTweetHeader {
     display: flex;
     gap: 5px;
+    padding-top: 8px;
   }
 
   /* BIG TWEET */

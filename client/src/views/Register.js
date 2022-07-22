@@ -8,6 +8,7 @@ import FormUserName from "../components/FormUserName";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
+import "../CSS/Register.css"
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -153,7 +154,7 @@ const Register = () => {
           setLocation={setLocation}
         />
       )}
-      <Button variant="contained" onClick={() => handleButton()}>
+      <Button id="stepperButton" variant="contained" onClick={() => handleButton()}>
         {currentStep === 1 ? "Completed" : "Next"}
       </Button>
     </div>

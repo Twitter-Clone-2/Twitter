@@ -15,27 +15,30 @@ input {
   outline: 0;
   font-size: 40px;
 }
-
-
-/* BUTTONS */
-
-#icons {
-  display: flex;
-  flex-direction: column;
-  background-color: #034578;
-  flex: 1;
-  gap: 30px;
-  border-right: 10px #7bc2f8 double;
-  min-width: 10%;
-  height: 100vh;
-  position: sticky;
-  /* position: fixed;
-    top: 0;
-    left: 0; */
-  padding: 15px;
-  left: 0;
+#feedContainer{
+  border: 1px solid  rgb(239,243,244);
+  padding: 10px 0px 0px 20px;
 }
-
+#feedCreateTweet{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+#feedTweetButton{
+  background-color: rgb(29,155,239);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 8px 25px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+}
+.incompleteColor{
+  background-color: rgb(154,205,248) !important;
+  cursor: no-drop !important;
+}
 #mainBodyHomePage {
   display: flex;
   justify-content: space-between;
