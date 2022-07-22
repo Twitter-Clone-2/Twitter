@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import "../CSS/HomePage.css";
+import "../CSS/Feed.css";
 const NewsAPI = () => {
   const [news, setNews] = useState([]);
   const { pathname } = useLocation();

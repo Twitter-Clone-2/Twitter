@@ -1,4 +1,4 @@
-.tweet:hover{
+  .tweet:hover{
     background-color: rgb(239,243,244) !important;
   }
   .tweet {
@@ -6,8 +6,13 @@
     border-left: 1px solid rgb(239,243,244);
     border-right: 1px solid rgb(239,243,244);
     flex-grow: 1;
+    cursor: pointer;
   }
 
+  .cursorPointer{
+    cursor: pointer;
+  }
+  
   .backButton{
     border-radius: 50%;
   }
@@ -159,3 +164,10 @@
     left: 570px;
     bottom: 50px;
   }
+
+  .tweetNames:hover{
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+ 

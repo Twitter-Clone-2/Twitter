@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import "../CSS/HomePage.css";
+import "../CSS/Feed.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Post from "../components/Post";

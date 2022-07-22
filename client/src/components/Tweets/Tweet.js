@@ -25,10 +25,10 @@ export default function Tweet({ tweet, likes, replyingTo = false }) {
         </div>
         <div className="rightTweet">
           <div className="rightTweetHeader">
-            <p onClick={() => takeToProfile(tweet.accounts_id)}>
+            <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
               {tweet.first_name} {tweet.last_name}
             </p>
-            <p onClick={() => takeToProfile(tweet.accounts_id)}>
+            <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
               @{tweet.username}
             </p>
             <p>{format(new Date(tweet.created_at), "PPpp")}</p>

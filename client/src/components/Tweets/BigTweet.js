@@ -22,7 +22,7 @@ const BigTweet = ({ tweet, likes, replies, replyLikes }) => {
     <div className="bigTweet">
       <div className="bigTweetHeader">
         <KeyboardBackspaceIcon
-          className="backButton paddingLeft"
+          className="backButton  cursorPointer"
           sx={{ fontSize: 40 }}
           onClick={()=>backToFeed()}
         />
@@ -30,7 +30,7 @@ const BigTweet = ({ tweet, likes, replies, replyLikes }) => {
       </div>
 
       <div className="bigTweetPicAndNames paddingLeft">
-        <div className="leftTweet">
+        <div className="leftTweet cursorPointer" >
           <PersonIcon
             sx={{ fontSize: 60 }}
             onClick={() => takeToProfile(tweet.accounts_id)}
@@ -38,10 +38,10 @@ const BigTweet = ({ tweet, likes, replies, replyLikes }) => {
         </div>
 
         <div>
-          <p className="bold" onClick={() => takeToProfile(tweet.accounts_id)}>
+          <p className="bold tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
             {tweet.first_name} {tweet.last_name}
           </p>
-          <p onClick={() => takeToProfile(tweet.accounts_id)}>
+          <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
             @{tweet.username}
           </p>
         </div>
