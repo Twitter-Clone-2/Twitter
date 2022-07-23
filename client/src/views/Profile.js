@@ -9,6 +9,7 @@ import Settings from "../components/Settings";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
+import { format } from "date-fns";
 
 const Profile = () => {
   const [editProfile, setEditProfile] = useState(false);
@@ -75,7 +76,6 @@ const Profile = () => {
   return (
     <div id="profilePage">
       <div id="profilePageUser">
-        {/* HEADER OF USER PROFILE */}
         <div id="profilePageHeader">
           <div>
             <h3>
@@ -85,8 +85,6 @@ const Profile = () => {
             <Logout />
           </div>
         </div>
-
-        {/* USERS BACKGROUND AND PROFILE PIC WILL BE DISPLAYED HERE */}
         <div>
           {/* BIG IMAGE HERE */}
           {/* DELETE THIS DIV WHEN IMAGE IS READY */}
@@ -94,16 +92,16 @@ const Profile = () => {
           {/* SMALL IMAGE HERE */}
           <div id="bottomOfPicture">
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
-            <p onClick={() => setEditProfile(true)}>
-              <SettingsSuggestIcon sx={{ fontSize: 100 }} />
-            </p>
+            <div onClick={() => setEditProfile(true)}>
+              <button id="profileEditProfileButton">Edit Profile</button>
+            </div>
           </div>
           <h2>
             {user.first_name} {user.last_name}
           </h2>
           <p>{user.bio}</p>
           <p>@{user.username}</p>
-          <p>joined , {user.created_at}</p>
+          <p>Joined , {format(new Date(user.created_at), "PPpp")}</p>
           <div className="flex" id="follows">
             <div>
                <FollowersAndFollowingModal

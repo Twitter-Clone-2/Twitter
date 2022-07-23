@@ -14,40 +14,29 @@
   border: 4px solid grey;
 }
 #userPic {
-  position: relative;
+  position: absolute;
   left: 0px;
-  top: -60px;
+  bottom: 0px;
 }
 #bottomOfPicture {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  position: relative;
+  margin: 10px 0px 15px 0px;
 }
-
-/* MY WORK BELOW */
-#profilePage {
-  display: flex;
-}
-#profilePageUser {
-  flex: 6.5;
+#profileEditProfileButton{
+  border-radius: 25px;
+  border : 2px solid  rgb(207,217,222);
+  background-color: white;
+  color : black;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 5px 20px;
 }
 .flex {
   display: flex;
 }
-#profilePageHeader {
-  display: flex;
-}
-#tempImage {
-  height: 250px;
-}
-#userPic {
-  position: relative;
-  left: 0px;
-  top: -60px;
-}
-#bottomOfPicture {
-  display: flex;
-  justify-content: space-between;
-}
+
 #follows {
   gap: 20px;
 }
