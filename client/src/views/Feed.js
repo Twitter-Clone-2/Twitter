@@ -43,6 +43,7 @@ const Feed = (props) => {
   };
   return (
     <div id="feed">
+      <h1>Big change</h1>
       <div id="allContent">
         <div id="feedContainer">
           <h2>Home</h2>
