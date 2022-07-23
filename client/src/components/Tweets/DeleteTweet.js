@@ -36,7 +36,7 @@ const DeleteTweet = ({tweet_id}) => {
         })
         .then(()=> handleClose())
         .catch((e)=>console.error(e))
-      }
+      } 
     
 
   return (
