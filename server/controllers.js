@@ -168,7 +168,7 @@ async function deleteTweetAndEverythingRelated(req,res){
     await db.query(deleteTweetQuery);
     await db.query(deleteAllLikesQuery);
     await db.query(deleteAllRepliesQuery);
-    res.status(200)
+    res.status(200).send(true)
     endPool(db);
   }catch(e){
     console.error(e.stack);
