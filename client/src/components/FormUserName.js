@@ -1,56 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../CSS/Register.css";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import route from "../utils/server_router";
 
 const FormUserName = ({
   firstName,
-  setFirstName,
-  lastName,
-  setLastName,
-  email,
-  setEmail,
-  password,
-  setPassword,
-  confirm,
-  setConfirm,
+  userName,
+  setUserName,
+  bio,
+  setBio,
+  location,
+  setLocation
 }) => {
-  const navigate = useNavigate();
-  const [userName, setUserName] = useState("");
-  const [bio, setBio] = useState("");
-  const [location, setLocation] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(email);
-
-    axios
-      .post(route + "/api/register", {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: password,
-        username: userName,
-        bio: bio,
-        location: location,
-      })
-      .then(() => {
-        axios
-          .post(route + "/api/user/email", {
-            email: email,
-          })
-          .then((res) => {
-            console.log(email);
-            localStorage.setItem("currUser", JSON.stringify(res.data[0]));
-            navigate("/main/feed");
-          });
-      })
-      .catch((err) => console.log(err));
-  };
   return (
-    <form className="accountDetails" onSubmit={handleSubmit}>
+    <form className="accountDetails">
       <h1>Hello {firstName}</h1>
 
       <label>User Name</label>
@@ -65,7 +27,6 @@ const FormUserName = ({
         value={location}
         onChange={(e) => setLocation(e.target.value)}
       />
-      <button>Welcome To Twitter!</button>
     </form>
   );
 };

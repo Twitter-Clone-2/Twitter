@@ -155,6 +155,27 @@ async function findAllTweetsFromOneUser(req, res) {
   }
 }
 
+async function deleteTweetAndEverythingRelated(req,res){
+  const db = await startPool();
+  const {tweet_id} = req.body;
+  console.log(`-----------------------${JSON.stringify(req.body)}-------------------`);
+
+  const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
+  const deleteAllLikesQuery = `DELETE FROM likes WHERE tweets_id = ${tweet_id};`;
+  const deleteAllRepliesQuery = `DELETE FROM tweets WHERE reply_id = ${tweet_id};`;
+
+  try{
+    await db.query(deleteTweetQuery);
+    await db.query(deleteAllLikesQuery);
+    await db.query(deleteAllRepliesQuery);
+    res.status(200)
+    endPool(db);
+  }catch(e){
+    console.error(e.stack);
+    res.status(400);
+    endPool(db);
+  }
+}
 
 
 //                            Follow or Following status
@@ -454,4 +475,5 @@ module.exports = {
   findCurrUserAndTweets,
   createAComment,
   getOneTweetAndAllData,
+  deleteTweetAndEverythingRelated
 };
