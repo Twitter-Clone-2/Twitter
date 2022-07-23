@@ -16,7 +16,8 @@ const DeleteTweet = ({tweet_id}) => {
         setStage(1);
     };
     const [stage, setStage] = useState(1);
-
+    const [value, setValue] = useState(0);
+    
     const style = {
         position: 'absolute',
         top: '50%',
@@ -34,6 +35,9 @@ const DeleteTweet = ({tweet_id}) => {
         axios.delete(route + "/api/delete/tweet/" + tweet_id)
         .then(()=> handleClose())
         .catch((e)=>console.error(e))
+
+         // integer state
+        return () => setValue(value => value + 1); // update the state to force render
       } 
     
 

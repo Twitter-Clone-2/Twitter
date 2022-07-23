@@ -158,7 +158,6 @@ async function findAllTweetsFromOneUser(req, res) {
 async function deleteTweetAndEverythingRelated(req,res){
   const db = await startPool();
   const {tweet_id} = req.params;
-  console.log(`-----------------------${JSON.stringify(req.params)}-------------------`);
 
   const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
   const deleteAllLikesQuery = `DELETE FROM likes WHERE tweets_id = ${tweet_id};`;
@@ -359,7 +358,7 @@ async function selectAllFollowingAndTheirAccounts(req,res){
 
 async function findAllTweetsFromFollowing(req,res){
   const db = await startPool();
-  const { id } = req.body;
+  const { id } = req.params;
   const queryToGetFollowingIds = `SELECT following FROM relationship WHERE follower = ${id};`
   
   try {

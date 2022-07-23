@@ -25,10 +25,9 @@ const Feed = (props) => {
 
       setTweet("");
   };
-
-  useEffect(() => {
+  const fetchAllTweetsForFeed = () =>{
     axios
-      .post(route + "/api/findAllTweetsFromFollowing", { id })
+      .get(route + "/api/findAllTweetsFromFollowing/" + id)
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
@@ -36,6 +35,9 @@ const Feed = (props) => {
         setLikes(data.likes);
       })
       .catch((e) => console.log(e));
+  }
+  useEffect(() => {
+    fetchAllTweetsForFeed();
   }, []);
 
   const takeToProfile = () => {
