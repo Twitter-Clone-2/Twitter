@@ -32,7 +32,7 @@ const DeleteTweet = ({tweet_id}) => {
       const deleteTweet = () =>{
         console.log(`Tweet id : ${tweet_id}`);
         axios.delete(route + "/api/delete/tweet",{
-            tweet_id
+            tweet_id : tweet_id
         })
         .then(()=> handleClose())
         .catch((e)=>console.error(e))
