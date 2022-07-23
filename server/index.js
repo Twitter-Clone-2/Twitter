@@ -52,7 +52,7 @@ app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
 app.post("/api/findAllTweetsFromFollowing", cors(), findAllTweetsFromFollowing);
 app.post("/api/currUser/tweets", cors(), findCurrUserAndTweets);
 app.post("/api/view/tweet", cors(), getOneTweetAndAllData);
-app.delete("/api/delete/tweet", cors(), deleteTweetAndEverythingRelated);
+app.delete("/api/delete/tweet/:tweet_id", cors(), deleteTweetAndEverythingRelated);
 //likes
 app.post("/api/likeTweet", cors(), likeATweet);
 app.post("/api/removeLike", cors(), removeLike);

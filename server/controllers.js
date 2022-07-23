@@ -157,8 +157,8 @@ async function findAllTweetsFromOneUser(req, res) {
 
 async function deleteTweetAndEverythingRelated(req,res){
   const db = await startPool();
-  const {tweet_id} = req.body;
-  console.log(`-----------------------${JSON.stringify(req.body)}-------------------`);
+  const {tweet_id} = req.params;
+  console.log(`-----------------------${JSON.stringify(req.params)}-------------------`);
 
   const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
   const deleteAllLikesQuery = `DELETE FROM likes WHERE tweets_id = ${tweet_id};`;
