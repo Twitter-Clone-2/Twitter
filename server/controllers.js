@@ -151,9 +151,9 @@ async function deleteTweetAndEverythingRelated(req,res){
   const db = await startPool();
   const {tweet_id} = req.params;
 
-  const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
   const deleteAllLikesQuery = `DELETE FROM likes WHERE tweets_id = ${tweet_id};`;
   const deleteAllRepliesQuery = `DELETE FROM tweets WHERE reply_id = ${tweet_id};`;
+  const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
 
   try{
     await db.query(deleteTweetQuery);

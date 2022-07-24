@@ -56,16 +56,17 @@ const DeleteTweet = ({tweet_id, fetchAllTweetsForFeed}) => {
       >
         <Box sx={style}>
             {stage === 1 && <div className='tweetDeleteOption'>
-                <div className="deleteTweetRow deleteTweetFirst" onClick={()=> setStage(2)}> 
+                <div className="deleteTweetRow deleteTweetFirst" onClick={(event)=> {
+                  setStage(2)
+                  event.stopPropagation()
+                  }}> 
                     <DeleteOutlineIcon/>
                     Delete
                 </div>
                 <div className="deleteTweetRow" onClick={(event)=>{
-                    // event.stopPropagation()
-                    handleClose()
-                }
-                    
-                    }>
+                  handleClose()
+                  event.stopPropagation()
+                  }}>
                     <CancelIcon/>
                     Cancel
                 </div>
@@ -81,13 +82,19 @@ const DeleteTweet = ({tweet_id, fetchAllTweetsForFeed}) => {
                         <button 
                         className='deleteTweetFinalButton deleteTweetButtons'
                         id='deleteTweetButtonFinal'
-                        onClick={deleteTweet}
+                        onClick={(event)=>{
+                          deleteTweet()
+                          event.stopPropagation()
+                        }}
                         >Delete</button>
                         
                         <button 
                         className='deleteTweetSecondCancelButton deleteTweetButtons'
                         id='deleteTweetCancelButtonFinal'
-                        onClick={handleClose}
+                        onClick={(event) => {
+                          handleClose()
+                          event.stopPropagation()
+                        }}
                         >Cancel</button>
                     </div>
                 </div>
