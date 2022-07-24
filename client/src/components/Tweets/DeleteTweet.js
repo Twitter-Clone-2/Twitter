@@ -8,7 +8,7 @@ import axios from 'axios';
 import route from "../../utils/server_router";
 
 
-const DeleteTweet = ({tweet_id}) => {
+const DeleteTweet = ({tweet_id, fetchAllTweetsForFeed}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () =>{
@@ -16,6 +16,7 @@ const DeleteTweet = ({tweet_id}) => {
         setStage(1);
     };
     const [stage, setStage] = useState(1);
+    const [value, setValue] = useState(0);
 
     const style = {
         position: 'absolute',
@@ -31,10 +32,11 @@ const DeleteTweet = ({tweet_id}) => {
 
       const deleteTweet = () =>{
         console.log(`Tweet id : ${tweet_id}`);
-        axios.delete(route + "/api/delete/tweet",{
-            tweet_id : tweet_id
+        axios.delete(route + "/api/delete/tweet/" + tweet_id)
+        .then(()=> {
+            handleClose();
+            fetchAllTweetsForFeed();
         })
-        .then(()=> handleClose())
         .catch((e)=>console.error(e))
       } 
     
@@ -43,7 +45,9 @@ const DeleteTweet = ({tweet_id}) => {
     <div>
       <MoreHorizIcon 
         className="tweet3Dots"
-        onClick={() => {handleOpen()}}/>
+        onClick={(event) => {
+            handleOpen()
+            event.stopPropagation();}}/>
       <Modal
         open={open}
         onClose={handleClose}
@@ -52,11 +56,17 @@ const DeleteTweet = ({tweet_id}) => {
       >
         <Box sx={style}>
             {stage === 1 && <div className='tweetDeleteOption'>
-                <div className="deleteTweetRow deleteTweetFirst" onClick={()=> setStage(2)}> 
+                <div className="deleteTweetRow deleteTweetFirst" onClick={(event)=> {
+                  setStage(2)
+                  event.stopPropagation()
+                  }}> 
                     <DeleteOutlineIcon/>
                     Delete
                 </div>
-                <div className="deleteTweetRow" onClick={handleClose}>
+                <div className="deleteTweetRow" onClick={(event)=>{
+                  handleClose()
+                  event.stopPropagation()
+                  }}>
                     <CancelIcon/>
                     Cancel
                 </div>
@@ -72,13 +82,19 @@ const DeleteTweet = ({tweet_id}) => {
                         <button 
                         className='deleteTweetFinalButton deleteTweetButtons'
                         id='deleteTweetButtonFinal'
-                        onClick={deleteTweet}
+                        onClick={(event)=>{
+                          deleteTweet()
+                          event.stopPropagation()
+                        }}
                         >Delete</button>
                         
                         <button 
                         className='deleteTweetSecondCancelButton deleteTweetButtons'
                         id='deleteTweetCancelButtonFinal'
-                        onClick={handleClose}
+                        onClick={(event) => {
+                          handleClose()
+                          event.stopPropagation()
+                        }}
                         >Cancel</button>
                     </div>
                 </div>

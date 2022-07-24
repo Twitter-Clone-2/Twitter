@@ -55,3 +55,41 @@
   font-size: 16px;
   font-weight: bold;
 }
+
+.iconNavBarContainer{
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  height: 97vh;
+  justify-content: space-between;
+}
+
+#iconNavBarSignout{
+  display: flex;
+  align-items: center;
+  border-radius: 25px;
+  gap: 15px;
+}
+#iconNavBarSignout:hover{
+  background-color: rgb(239,243,244) !important;
+}
+#iconNavBarNames{
+  display: flex;
+  flex-direction: column;
+  padding : 10px
+}
+#iconNavBarName{
+  font-weight: 700;
+}
+#iconNavBarUsername{
+  color: rgb(83,99,113);
+}
+.iconNavBarFont{
+  font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.sticky {
+  position: sticky;
+  top: 20px;
+  
+}
