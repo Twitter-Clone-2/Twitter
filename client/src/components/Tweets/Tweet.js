@@ -6,7 +6,12 @@ import "./tweets.css";
 import TweetActions from "./TweetActions";
 import DeleteTweet from "./DeleteTweet";
 
-export default function Tweet({ tweet, likes, replyingTo = false }) {
+export default function Tweet({ 
+  tweet, 
+  likes, 
+  replyingTo = false,
+  fetchAllTweetsForFeed
+ }) {
   const navigate = useNavigate();
   const id = JSON.parse(localStorage.getItem("currUser")).id;
 
@@ -20,8 +25,7 @@ export default function Tweet({ tweet, likes, replyingTo = false }) {
   const filteredLikes = likes.filter((like) => like.tweets_id == tweet.id)
 
   return (
-    <div className="tweet" onClick={(e) =>{
-      if(e.currentTarget != e.target ) return;
+    <div className="tweet" onClick={() =>{
       loadTweet(tweet.id)
     }}>
       <div className="tweetTopHalf">
@@ -43,7 +47,12 @@ export default function Tweet({ tweet, likes, replyingTo = false }) {
             <h3>{tweet.content}</h3>
           </div>
       </div>
-      {tweet.accounts_id === id && <DeleteTweet tweet_id={tweet.id} />}
+      {tweet.accounts_id === id && 
+        <DeleteTweet 
+        tweet_id={tweet.id} 
+        fetchAllTweetsForFeed={fetchAllTweetsForFeed}
+        onClick={(event) => event.stopPropagation()}
+        />}
       </div>
       <TweetActions tweet={tweet} likes={filteredLikes}/>
     </div>

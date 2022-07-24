@@ -8,7 +8,7 @@ import axios from 'axios';
 import route from "../../utils/server_router";
 
 
-const DeleteTweet = ({tweet_id}) => {
+const DeleteTweet = ({tweet_id, fetchAllTweetsForFeed}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () =>{
@@ -17,7 +17,7 @@ const DeleteTweet = ({tweet_id}) => {
     };
     const [stage, setStage] = useState(1);
     const [value, setValue] = useState(0);
-    
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -33,11 +33,11 @@ const DeleteTweet = ({tweet_id}) => {
       const deleteTweet = () =>{
         console.log(`Tweet id : ${tweet_id}`);
         axios.delete(route + "/api/delete/tweet/" + tweet_id)
-        .then(()=> handleClose())
+        .then(()=> {
+            handleClose();
+            fetchAllTweetsForFeed();
+        })
         .catch((e)=>console.error(e))
-
-         // integer state
-        return () => setValue(value => value + 1); // update the state to force render
       } 
     
 
@@ -45,7 +45,9 @@ const DeleteTweet = ({tweet_id}) => {
     <div>
       <MoreHorizIcon 
         className="tweet3Dots"
-        onClick={() => {handleOpen()}}/>
+        onClick={(event) => {
+            handleOpen()
+            event.stopPropagation();}}/>
       <Modal
         open={open}
         onClose={handleClose}
@@ -58,7 +60,12 @@ const DeleteTweet = ({tweet_id}) => {
                     <DeleteOutlineIcon/>
                     Delete
                 </div>
-                <div className="deleteTweetRow" onClick={handleClose}>
+                <div className="deleteTweetRow" onClick={(event)=>{
+                    // event.stopPropagation()
+                    handleClose()
+                }
+                    
+                    }>
                     <CancelIcon/>
                     Cancel
                 </div>
