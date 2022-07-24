@@ -156,9 +156,9 @@ async function deleteTweetAndEverythingRelated(req,res){
   const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
 
   try{
-    await db.query(deleteTweetQuery);
     await db.query(deleteAllLikesQuery);
     await db.query(deleteAllRepliesQuery);
+    await db.query(deleteTweetQuery);
     res.status(200).send(true)
     endPool(db);
   }catch(e){
