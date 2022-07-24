@@ -2,8 +2,6 @@ const bcrypt = require("bcrypt");
 const pool = require("./dataBase/index");
 const { endPool, startPool } = require("./dataBase/index");
 
-//important query SELECT * FROM replies RIGHT JOIN accounts ON accounts.id = replies.accounts_id RIGHT JOIN tweets ON tweets.id = replies.tweets_id
-
 //                ALL USER RELATED
 async function getAllUsers(req, res) {
   const db = await startPool();
@@ -20,10 +18,9 @@ async function getAllUsers(req, res) {
 }
 
 async function getOneUser(req, res) {
+  const db = await startPool();
   let { id } = req.body;
   const query = `SELECT * FROM accounts WHERE id = ${id}`;
-  const db = await startPool();
-  console.log("-----------------" + db);
   try {
     const results = await db.query(query);
     res.send(results.rows);
@@ -38,14 +35,12 @@ async function getOneUser(req, res) {
 async function getOneUserByEmail(req, res) {
   const db = await startPool();
   let { email } = req.body;
-  console.log(email);
-  console.log(req.body);
   const query = `SELECT * FROM accounts WHERE email = '${email}'`;
 
   try {
     const results = await db.query(query);
     res.send(results.rows);
-    pool.end();
+    endPool(db);
   } catch (e) {
     console.error(e.stack);
     res.status(400);
@@ -70,7 +65,6 @@ async function register(req, res) {
       .catch((err) => {
         console.log(err);
         endPool(db);
-
         return res.status(400);
       });
   });
@@ -84,7 +78,6 @@ async function login(req, res) {
   try {
     const results = await db.query(queryForUser);
     let user = results.rows[0];
-    endPool(db);
     if (!user) {
       endPool(db);
       return res.send(false);
@@ -95,7 +88,6 @@ async function login(req, res) {
       endPool(db);
       return res.send(false);
     }
-
     res.json({
       user: user,
       status: true,
@@ -104,6 +96,7 @@ async function login(req, res) {
   } catch (e) {
     console.error(e.stack);
     res.status(400);
+    endPool(db);
   }
 }
 
@@ -111,9 +104,8 @@ async function deleteUser(req, res) {
   const db = await startPool();
   const { id } = req.body;
   const query = `DELETE FROM accounts WHERE id = ${id};`;
-
   try {
-    const results = await db.query(query);
+    await db.query(query);
     res.status(200).send(`Deleted account with id of ${id}`);
     endPool(db);
   } catch (e) {
@@ -129,7 +121,7 @@ async function createTweet(req, res) {
   const { tweet, id } = req.body;
   const query = `INSERT INTO tweets (content, accounts_id) VALUES ('${tweet}', ${id});`;
   try {
-    const results = await db.query(query);
+    await db.query(query);
     res.status(200).send("Tweet was created succesfully");
     endPool(db);
   } catch (e) {
@@ -157,18 +149,17 @@ async function findAllTweetsFromOneUser(req, res) {
 
 async function deleteTweetAndEverythingRelated(req,res){
   const db = await startPool();
-  const {tweet_id} = req.body;
-  console.log(`-----------------------${JSON.stringify(req.body)}-------------------`);
+  const {tweet_id} = req.params;
 
-  const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
   const deleteAllLikesQuery = `DELETE FROM likes WHERE tweets_id = ${tweet_id};`;
   const deleteAllRepliesQuery = `DELETE FROM tweets WHERE reply_id = ${tweet_id};`;
+  const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
 
   try{
-    await db.query(deleteTweetQuery);
     await db.query(deleteAllLikesQuery);
     await db.query(deleteAllRepliesQuery);
-    res.status(200)
+    await db.query(deleteTweetQuery);
+    res.status(200).send(true)
     endPool(db);
   }catch(e){
     console.error(e.stack);
@@ -181,8 +172,6 @@ async function findFollowers(req, res) {
   const db = await startPool();
   const { following } = req.body;
   const query = `SELECT * FROM relationship WHERE following = ${following};`;
-  console.log()
-
   try {
     const results = await db.query(query);
     res.status(200).send(results);
@@ -231,7 +220,7 @@ async function followAnotherUser(req, res) {
   const query = `INSERT INTO relationship (follower, following) VALUES (${follower}, ${following});`;
 
   try {
-    const results = await db.query(query);
+    await db.query(query);
     res.status(200).send(true);
     endPool(db);
   } catch (e) {
@@ -247,7 +236,7 @@ async function unFollowAnotherUser(req, res) {
   const query = `DELETE FROM relationship WHERE follower = ${follower} AND following = ${following};`;
 
   try {
-    const result = await db.query(query);
+    await db.query(query);
     res.status(200).send(true);
     endPool(db);
   } catch (e) {
@@ -296,7 +285,7 @@ async function removeLike(req,res){
   const query = `DELETE FROM likes WHERE accounts_id = ${accounts_id} AND tweets_id = ${tweets_id};`;
 
   try{
-    const result = await db.query(query);
+    await db.query(query);
     res.status(200).send(true);
     endPool(db);
   }catch(e){
@@ -312,7 +301,7 @@ async function createAComment(req,res){
   const query = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('${content}', ${id}, ${fk});`;
 
   try{
-    const result = await db.query(query);
+    await db.query(query);
     res.status(200).send(true);
     endPool(db);
   }catch(e){
@@ -357,7 +346,7 @@ async function selectAllFollowingAndTheirAccounts(req,res){
 
 async function findAllTweetsFromFollowing(req,res){
   const db = await startPool();
-  const { id } = req.body;
+  const { id } = req.params;
   const queryToGetFollowingIds = `SELECT following FROM relationship WHERE follower = ${id};`
   
   try {

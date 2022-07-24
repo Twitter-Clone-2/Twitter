@@ -13,22 +13,10 @@ const Feed = (props) => {
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
 
-  const createTweet = () => {
-    if(tweet.length == 0) return
+  const fetchAllTweetsForFeed = () =>{
+    console.log("hi");
     axios
-      .post(route + "/api/create/tweet", {
-        tweet,
-        id,
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
-      setTweet("");
-  };
-
-  useEffect(() => {
-    axios
-      .post(route + "/api/findAllTweetsFromFollowing", { id })
+      .get(route + "/api/findAllTweetsFromFollowing/" + id)
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
@@ -36,10 +24,28 @@ const Feed = (props) => {
         setLikes(data.likes);
       })
       .catch((e) => console.log(e));
+  }
+  useEffect(() => {
+    fetchAllTweetsForFeed();
   }, []);
 
   const takeToProfile = () => {
     navigate("/profile/page");
+  };
+
+  const createTweet = () => {
+    if(tweet.length == 0) return
+    axios
+      .post(route + "/api/create/tweet", {
+        tweet,
+        id,
+      })
+      .then(() =>{
+        setTweet("");
+        fetchAllTweetsForFeed();
+      })
+      .catch((err) => console.log(err));
+      
   };
   return (
     <div id="feed">
@@ -67,6 +73,7 @@ const Feed = (props) => {
           tweet={tweet}
           likes={likes.filter((like) => like.tweets_id === tweet.id)}
           key={i}
+          fetchAllTweetsForFeed={fetchAllTweetsForFeed}
           />)}
         </div>
       </div>

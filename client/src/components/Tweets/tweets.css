@@ -245,3 +245,8 @@
     background-color: rgb(230, 237, 241) !important ;
     cursor: pointer;
   }
+  .center5{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
