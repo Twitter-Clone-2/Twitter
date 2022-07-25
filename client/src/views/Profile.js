@@ -68,7 +68,6 @@ const Profile = () => {
         setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
         setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length)
         setLikes(data.likes);
-        console.log(feed);
       })
       .catch((e) => console.log(e));
   }, []);

@@ -57,7 +57,7 @@ const BigTweet = ({ tweet, likes, replies, replyLikes }) => {
 
       <ReplyBox tweet={tweet}/>
 
-      {replies.map((reply, i) => <Tweet key={i} tweet={reply} likes={replyLikes} replyingTo={true}/>)}
+      {replies.map((reply, i) => <Tweet key={i} tweet={reply} likes={replyLikes} replyingTo={true} replies={[]}/> )}
     </div>
   );
 };

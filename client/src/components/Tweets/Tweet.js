@@ -10,7 +10,8 @@ export default function Tweet({
   tweet, 
   likes, 
   replyingTo = false,
-  fetchAllTweetsForFeed
+  fetchAllTweetsForFeed,
+  replies,
  }) {
   const navigate = useNavigate();
   const id = JSON.parse(localStorage.getItem("currUser")).id;
@@ -23,6 +24,8 @@ export default function Tweet({
     navigate("/profile/page/" + id);
   };
   const filteredLikes = likes.filter((like) => like.tweets_id == tweet.id)
+  const filteredReplies = replies.filter((reply) => reply.reply_id == tweet.id)
+  
 
   return (
     <div className="tweet" onClick={() =>{
@@ -54,7 +57,7 @@ export default function Tweet({
         onClick={(event) => event.stopPropagation()}
         />}
       </div>
-      <TweetActions tweet={tweet} likes={filteredLikes}/>
+      <TweetActions tweet={tweet} likes={filteredLikes} replies={filteredReplies}/>
     </div>
   );
 }

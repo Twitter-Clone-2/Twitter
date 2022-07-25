@@ -19,14 +19,14 @@ export default function TweetActions({
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(tweetIsLiked);
   const [retweetCount, setRetweetCount] = useState(0);
-  const [replyCount, setReplyCount] = useState(0);
+  const [replyCount, setReplyCount] = useState(replies.length || 0);
   const {id} = useParams();
 
   useEffect(() => {
-    if(displayIconCount){
-      setReplyCount(replies.length);
-      setCount(likes.length);
-    }
+      if(displayIconCount){  
+        setCount(likes.length);
+        setReplyCount(replies.length);
+      }
   }, [id])
 
   
@@ -38,7 +38,7 @@ export default function TweetActions({
           accounts_id,
           tweets_id,
         })
-        .then((res) => {
+        .then(() => {
           setLiked(true);
           setCount((prev) => prev + 1);
         })
@@ -53,7 +53,7 @@ export default function TweetActions({
           accounts_id,
           tweets_id,
         })
-        .then((res) => {
+        .then(() => {
           setLiked(false);
           setCount((prev) => prev - 1);
         })
@@ -105,10 +105,9 @@ export default function TweetActions({
 
         <div className="flex replyCol">
           <ReplyModal tweet_id={tweet.id}/>
-          <div className="replyCount">
-            {" "}
-            {replyCount === 0 ? "" : replyCount}{" "}
-          </div>
+          {!displayIconCount && Boolean(replyCount) && <div className="replyCount">
+            {replyCount === 0 ? "" : replyCount}
+          </div>}
         </div>
 
         <div className="flex retweetCol">

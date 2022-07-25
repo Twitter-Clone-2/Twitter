@@ -74,10 +74,9 @@ const OtherUserProfile = () => {
     axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
       following : id
     }).then(res=>{
-      console.log(`SELECT ALL FOLLOWERS ${JSON.stringify(res.data.rows)}`);
       setFollowersInfo(res.data.rows)
     }).catch(e=>{
-      console.log(e);
+      console.error(e);
     })
 
     axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
@@ -85,7 +84,7 @@ const OtherUserProfile = () => {
     }).then(res=>{
       setFollowingInfo(res.data.rows)
     }).catch(e=>{
-      console.log(e);
+      console.error(e);
     })
   },[followingStatus])
 

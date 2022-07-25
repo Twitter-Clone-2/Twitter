@@ -416,17 +416,23 @@ async function getOneTweetAndAllData(req,res){
 
     const replyIDArr = resultForReplies.rows.map(replyOBJ=> replyOBJ.id);
     const queryForRepliesLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${replyIDArr}]); `;
+    const queryForRepliesReplies = `SELECT * FROM tweets WHERE reply_id = ANY(ARRAY[${replyIDArr}]); `;
 
-    let holder = []
+    let holderForLikes = []
+    let holderForReplies = []
     if(replyIDArr.length > 0){
       const resultForRepliesLikes = await db.query(queryForRepliesLikes);
-      holder = resultForRepliesLikes.rows;
+      holderForLikes = resultForRepliesLikes.rows;
+
+      const resultForRepliesReplies = await db.query(queryForRepliesReplies);
+      holderForReplies = resultForRepliesReplies.rows;
     }
     const results ={
       tweet : resultForTweet.rows,
       replies : resultForReplies.rows,
       likes : resultForLikes.rows,
-      replyLikes : holder ,
+      replyLikes : holderForLikes ,
+      replyReplies : holderForReplies,
     }
     res.status(200).send(results);
     endPool(db)  

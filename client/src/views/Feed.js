@@ -12,6 +12,7 @@ const Feed = (props) => {
   const [tweet, setTweet] = useState("");
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
+  const [replies, setReplies] = useState([])
 
   const fetchAllTweetsForFeed = () =>{
     axios
@@ -21,6 +22,7 @@ const Feed = (props) => {
         data.tweets.reverse();
         setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
         setLikes(data.likes);
+        setReplies(data.tweets.filter((tweet) => tweet.reply_id));
       })
       .catch((e) => console.log(e));
   }
@@ -73,6 +75,7 @@ const Feed = (props) => {
           likes={likes.filter((like) => like.tweets_id === tweet.id)}
           key={i}
           fetchAllTweetsForFeed={fetchAllTweetsForFeed}
+          replies={replies}
           />)}
         </div>
       </div>
