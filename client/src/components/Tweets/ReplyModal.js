@@ -9,6 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import route from "../../utils/server_router";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
 const style = {
   position: 'absolute',
@@ -22,7 +23,14 @@ const style = {
   p: 2,
 };
 
-export default function ReplyModal({tweet_id}) {
+export default function ReplyModal({
+  tweet_id,
+  first_name,
+  last_name,
+  username,
+  created_at,
+  content,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -80,17 +88,21 @@ export default function ReplyModal({tweet_id}) {
                 <PersonIcon sx ={{fontSize : "80px"}}/>
                 <div>
                     <div>
-                        <span className='replyModalFont' id='replyModalAccountName'>Account Name </span>
-                        <span className='replyModalFont replyModalGray'>@account userName</span>
-                        <span className='replyModalFont replyModalGray'> * time</span>
+                        <span className='replyModalFont' id='replyModalAccountName'>
+                          {first_name} {last_name} 
+                          </span>
+                        <span className='replyModalFont replyModalGray'> @{username}  </span>
+                        <span className='replyModalFont replyModalGray'>
+                           * {format(new Date(created_at), "PPpp")}
+                        </span>
                     </div>
-                    <div className='replyModalFont'>What ever the user you are commenting to tweeted out</div>
+                    <div className='replyModalFont'>{content}</div>
                 </div>
             </div>
 
             {/* MID */}
             <div className='replyModalFont replyModalMiddle'>
-                Replying to <span onClick={()=>console.log("take to their profile")} className="replyModalAccountLink">@account userName</span>
+                Replying to <span onClick={()=>console.log("take to their profile")} className="replyModalAccountLink">@{username}</span>
             </div>
 
             {/* BOT */}

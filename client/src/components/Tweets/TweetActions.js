@@ -104,7 +104,14 @@ export default function TweetActions({
         </div>
 
         <div className="flex replyCol">
-          <ReplyModal tweet_id={tweet.id}/>
+          <ReplyModal 
+          tweet_id={tweet.id}
+          first_name={tweet.first_name}
+          last_name={tweet.last_name}
+          username={tweet.username}
+          created_at={tweet.created_at}
+          content={tweet.content}
+          />
           {!displayIconCount && Boolean(replyCount) && <div className="replyCount">
             {replyCount === 0 ? "" : replyCount}
           </div>}

@@ -1,15 +1,20 @@
 import React, {useState} from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/followersAndFollowingModal.css";
+import { useNavigate } from "react-router-dom";
 
-const FollowersAndFollowingModal = (props) => {
+const FollowersAndFollowingModal = ({
+  num,
+  relationship,
+  handle = false,
+}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const navigate = useNavigate(); 
 
     const style = {
         position: 'absolute',
@@ -22,9 +27,20 @@ const FollowersAndFollowingModal = (props) => {
         boxShadow: 24,
       };
 
+      let handleFunction = (id)=>{
+        if(handle){
+          console.log(`Hello ${id}`)
+        }else{
+          navigate("/profile/page/" + id)
+        }
+      }
+
+        
+        
+      
   return (
     <div>
-    <Button onClick={handleOpen}>{props.num}</Button>
+    <Button onClick={handleOpen}>{num}</Button>
     <Modal
       open={open}
       onClose={handleClose}
@@ -32,18 +48,24 @@ const FollowersAndFollowingModal = (props) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        {props.relationship.map(item=>{
+        {relationship.map(item=>{
             return(
-                <Typography key={item.id} id="modal-modal-description" sx={{ mt: 2 }} className="modalProfileCard">
-                {/* <div className='account'>{item.first_name} {item.last_name}</div> */}
-                <div className='account'>
-                    <div><PersonIcon sx={{ fontSize: 65 }}/></div>
-                    <div className='names'>
-                      <p className='accountName'>{item.first_name} {item.last_name}</p>
-                        <p>@{item.username}</p>
+                <div 
+                key={item.id} 
+                id="modal-modal-description" 
+                sx={{ mt: 2 }} 
+                className="modalProfileCard"
+                onClick={()=> handleFunction(item.id) }
+                >
+
+                    <div className='account'>
+                        <div><PersonIcon sx={{ fontSize: 65 }}/></div>
+                        <div className='names'>
+                          <p className='accountName'>{item.first_name} {item.last_name}</p>
+                            <p>@{item.username}</p>
+                        </div>
                     </div>
-                </div>
-              </Typography>
+              </div>
             )
         })}
 

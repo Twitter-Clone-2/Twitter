@@ -3,23 +3,21 @@ import "../CSS/Messages.css"
 import io from 'socket.io-client';
 import route from "../utils/server_router";
 import ProfileMessageCard from '../components/ProfileMessageCard';
-import Button from '@mui/material/Button';
 import axios from "axios";
-import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 import PlaceHolderMessages from '../components/PlaceHolderMessages';
 
 
 const Messages = () => {
     const [message, setMessage] = useState("");
     const [messageReceived, setMessageReceived] = useState("");
-    const socket = io.connect(route);
+   // const socket = io.connect(route);
     const user = JSON.parse(localStorage.getItem("currUser"));
     const [followingInfo, setFollowingInfo] = useState([])
 
     useEffect(() => {
-        socket.on('receive_message', data =>{
-          setMessageReceived(data.message)
-        });
+        // socket.on('receive_message', data =>{
+        //   setMessageReceived(data.message)
+        // });
         axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
           follower : user.id
         }).then(res=>{
@@ -27,12 +25,12 @@ const Messages = () => {
         }).catch(e=>{
           console.log(e);
         })
-        return () => socket.disconnect(true);
+        //return () => socket.disconnect(true);
     }, [])
     
-    const sendMesssage = () =>{
-      socket.emit("send_message", {message})
-    }
+    // const sendMesssage = () =>{
+    //   socket.emit("send_message", {message})
+    // }
   return (
     <div className='messageMainDiv flex'>
       
@@ -65,7 +63,9 @@ const Messages = () => {
         <ProfileMessageCard/>
       </div>
 
-      <PlaceHolderMessages followingInfo={followingInfo}/>
+      <PlaceHolderMessages 
+      followingInfo={followingInfo} 
+      />
     </div>
   )
 }
