@@ -167,8 +167,6 @@ async function deleteTweetAndEverythingRelated(req,res){
     endPool(db);
   }
 }
-
-
 //                            Follow or Following status
 async function findFollowers(req, res) {
   const db = await startPool();
