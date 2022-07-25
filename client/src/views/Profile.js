@@ -23,6 +23,7 @@ const Profile = () => {
 
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
+  const [replies, setReplies] = useState([])
 // hi
   useEffect(() => {
 
@@ -68,7 +69,7 @@ const Profile = () => {
         setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
         setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length)
         setLikes(data.likes);
-        console.log(feed);
+        setReplies(data.tweets.filter((tweet)=> tweet.reply_id))
       })
       .catch((e) => console.log(e));
   }, []);
@@ -82,7 +83,6 @@ const Profile = () => {
               {user.first_name} {user.last_name}
             </h3>
             <p>{allTweets} tweets</p>
-            <Logout />
           </div>
         </div>
         <div>
@@ -127,7 +127,7 @@ const Profile = () => {
           {settings ? <Settings setSettings={setSettings} /> : ""}
           <h1>Tweets</h1>
           <hr />
-          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} key={i} />)}
+          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} replies={replies} key={i} />)}
         </div>
       </div>
     </div>

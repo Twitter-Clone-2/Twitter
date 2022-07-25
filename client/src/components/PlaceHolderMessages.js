@@ -11,6 +11,7 @@ const PlaceHolderMessages = ({followingInfo}) => {
             <FollowersAndFollowingModal
             num={`New Message`}
             relationship={followingInfo}
+            handle={true}
             />
         </div>
   </div>

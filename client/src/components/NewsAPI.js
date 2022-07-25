@@ -1,55 +1,50 @@
 import React, { useState, useEffect } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import "../CSS/Feed.css";
+import NewsArticle from "./NewsPost";
+import "../CSS/News.css";
+
 const NewsAPI = () => {
   const [news, setNews] = useState([]);
   const { pathname } = useLocation();
   const displayNews =
-    pathname !== "/" && pathname !== "/login" && pathname !== "/register" && pathname !== "/messages";
+    pathname !== "/" &&
+    pathname !== "/login" &&
+    pathname !== "/register" &&
+    pathname !== "/messages";
 
-  // Retrieving NY times news from api
-  const axiosNews = () => {
-    const newsCatcher = [];
+  const fetchNews = () => {
+    const url =
+      "http://api.mediastack.com/v1/news?access_key=064da5aecefaeb7af36f94210f399862&countries=us&sort=popularity&sources=cnn,espn";
     axios
-      .get(
-        "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=new+york+times&page=2&sort=oldest&api-key=Uh8kclNaPnGtLJAhGbU5hTStY36qZz8z"
-      )
-      .then((res) => {
-        for (let i = 0, count = 0; count < 8; i++) {
-          if (res.data.response.docs[i].headline.print_headline.length < 200) {
-            newsCatcher.push(res.data.response.docs[i]);
-            count++;
-          }
-        }
-        setNews(newsCatcher);
+      .get(url)
+      .then(({ data }) => {
+        setNews(data.data.filter((article) => article.image));
       })
       .catch((err) => console.log(err));
   };
 
-  // useEffect
   useEffect(() => {
-    axiosNews();
+    fetchNews();
   }, []);
 
   return (
-    <>
+    <div>
+      <div className="newsComponentTitle">What's happening?</div>
       {displayNews && (
-        <div id="news">
-          {news.map((headline, idx) => {
-            return (
-              <div className="news-box" key={idx}>
-                <h2 className="news-title">
-                  {" "}
-                  {news[idx].headline.print_headline}{" "}
-                </h2>
-                <h5 className="news-feed"> {news[idx].headline.main} </h5>
-              </div>
-            );
-          })}
+        <div id="newsContainer">
+          {news.length === 0 &&
+            <div className="newsLoadingSpinner">
+              <CircularProgress />
+            </div>
+          }
+          {news.map((article, key) => (
+            <NewsArticle key={key} article={article} />
+          ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

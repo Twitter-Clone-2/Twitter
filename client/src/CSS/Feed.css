@@ -68,27 +68,7 @@ input {
   text-align: center;
   height: fit-content;
 }
-.news-box {
-  height: 10%;
-  border-style: double;
-  /* height: 14%; */
-  border: 9px #034578 double;
-}
-.news-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #7bc2f8;
-}
-.news-feed {
-  border: 4px darkgrey solid;
-  margin: 5%;
-  box-shadow: 10px 15px 10px #034578;
-  border-radius: 7px;
-}
-/* .iconSize {
-    height: 100px;
-  } */
+
 .button3 {
   background-color: #7bc2f8;
   border-style: double;

@@ -11,13 +11,7 @@ const ReplyBox = ({tweet}) => {
     const [hiddenDiv ,setHiddenDiv] = useState(true);
     const [reply, setReply] = useState('')
 
-    const createReply = (e) =>{
-        e.preventDefault();
-        console.log(`
-        content : ${reply},
-        id : ${currentUserId},
-        fk : ${tweet.id}
-        `);
+    const createReply = () =>{
         axios.post(route + "/api/reply",{
             content : reply,
             id : currentUserId,
