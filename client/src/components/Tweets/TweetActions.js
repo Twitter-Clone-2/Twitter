@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import CachedIcon from "@mui/icons-material/Cached";
 import axios from "axios";
 import route from "../../utils/server_router";
 import { useParams } from "react-router-dom";
+import ReplyModal from "./ReplyModal";
 
 export default function TweetActions({
   tweet,
@@ -104,12 +104,7 @@ export default function TweetActions({
         </div>
 
         <div className="flex replyCol">
-          <ChatBubbleOutlineIcon
-            onClick={(event) => {
-              event.stopPropagation();
-              console.log("comment was clicked");
-            }}
-          />
+          <ReplyModal/>
           <div className="replyCount">
             {" "}
             {replyCount === 0 ? "" : replyCount}{" "}

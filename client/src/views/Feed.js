@@ -14,7 +14,6 @@ const Feed = (props) => {
   const [likes, setLikes] = useState([]);
 
   const fetchAllTweetsForFeed = () =>{
-    console.log("hi");
     axios
       .get(route + "/api/findAllTweetsFromFollowing/" + id)
       .then(({ data }) => {
