@@ -15,12 +15,12 @@ const NewsAPI = () => {
     pathname !== "/messages";
 
   const fetchNews = () => {
+    const url =
+      "http://api.mediastack.com/v1/news?access_key=064da5aecefaeb7af36f94210f399862&countries=us&sort=popularity&sources=cnn,espn";
     axios
-      .get(
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=b8f02497506e4c19a569bd0487e8ace0"
-      )
+      .get(url)
       .then(({ data }) => {
-        setNews(data.articles.slice(0, 7));
+        setNews(data.data.filter((article) => article.image));
       })
       .catch((err) => console.log(err));
   };
@@ -34,7 +34,11 @@ const NewsAPI = () => {
       <div className="newsComponentTitle">What's happening?</div>
       {displayNews && (
         <div id="newsContainer">
-          {news.length === 0 && <CircularProgress />}
+          {news.length === 0 &&
+            <div className="newsLoadingSpinner">
+              <CircularProgress />
+            </div>
+          }
           {news.map((article, key) => (
             <NewsArticle key={key} article={article} />
           ))}
