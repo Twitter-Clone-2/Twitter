@@ -1,23 +1,16 @@
 import React from "react";
 
 export default function NewsArticle({ article }) {
-  function fixTitle() {
-    const { title } = article;
-    let start = title?.indexOf(" - ");
-    let correctTitle = title?.slice(0, start);
-
-    return correctTitle;
-  }
-
+  const { title, url, image, source } = article;
   return (
     <div className="articleContainer">
-      <div className="articleTitle">{fixTitle()}</div>
+      <div className="articleTitle">{article.title}</div>
       <img
         className="articleImage"
-        src={article.urlToImage}
-        alt={article.articleTitle}
+        src={article.image}
+        // alt={article.title}
       />
-      <div>{article.source.name}</div>
+      <div>{article.source}</div>
     </div>
   );
 }
