@@ -5,6 +5,10 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import CloseIcon from '@mui/icons-material/Close';
 import "../../CSS/ReplyModal.css"
 import PersonIcon from "@mui/icons-material/Person";
+import InputBase from '@mui/material/InputBase';
+import route from "../../utils/server_router";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: 'absolute',
@@ -18,10 +22,26 @@ const style = {
   p: 2,
 };
 
-export default function ReplyModal() {
+export default function ReplyModal({tweet_id}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [reply, setReply] = useState("")
+  const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
+  const navigate = useNavigate();
+
+  const createReply = () =>{
+    axios.post(route + "/api/reply",{
+        content : reply,
+        id : currentUserId,
+        fk : tweet_id
+    })
+    .then(()=>{
+        setReply('');
+        navigate(`/tweet/${tweet_id}`);
+    })
+
+}
 
   return (
     <div>
@@ -74,7 +94,33 @@ export default function ReplyModal() {
             </div>
 
             {/* BOT */}
-            <div></div>
+            <div className='replyModalReplyBot'>
+                <div>
+                    <PersonIcon sx ={{fontSize : "80px"}}/>
+                </div>
+
+                <div>
+                    <InputBase 
+                    className='replyModalInput' 
+                    placeholder='Tweet your reply' 
+                    onChange={(e)=>setReply(e.target.value)}
+                    value={reply}
+                    multiline={true} 
+                    sx={{
+                      fontSize:"33px",
+                      fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
+                      width: "100%",
+                      }}/>
+                </div>
+            </div>
+            <div className='replyModalGetButtonOnRight'>
+                  <div></div>
+                    <button 
+                    id="feedTweetButton" 
+                    className={reply.length == 0 ? "incompleteColor" : ""}
+                    onClick={createReply}
+                    >Reply</button>
+                </div>
 
           </div>
         </Box>

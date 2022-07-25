@@ -104,7 +104,7 @@ export default function TweetActions({
         </div>
 
         <div className="flex replyCol">
-          <ReplyModal/>
+          <ReplyModal tweet_id={tweet.id}/>
           <div className="replyCount">
             {" "}
             {replyCount === 0 ? "" : replyCount}{" "}

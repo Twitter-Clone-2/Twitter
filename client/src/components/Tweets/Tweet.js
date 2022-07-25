@@ -15,8 +15,8 @@ export default function Tweet({
   const navigate = useNavigate();
   const id = JSON.parse(localStorage.getItem("currUser")).id;
 
-  const loadTweet = (id) => {
-    navigate(`/tweet/${id}`);
+  const loadTweet = (tweet_id) => {
+    navigate(`/tweet/${tweet_id}`);
   };
 
   const takeToProfile = (id) => {

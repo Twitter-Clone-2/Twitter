@@ -31,4 +31,13 @@
 }
 .replyModalMiddle{
     padding-left: 10px;
+    margin: 20px 0px;
+}
+.replyModalReplyBot{
+    display: flex;
+    align-items: center;
+}
+.replyModalGetButtonOnRight{
+    display: flex;
+    justify-content: space-between;
 }
