@@ -8,7 +8,7 @@ import TweetActions from "./TweetActions";
 import ReplyBox from "./ReplyBox";
 import Tweet from "./Tweet";
 
-const BigTweet = ({ tweet, likes, replies, replyLikes }) => {
+const BigTweet = ({ tweet, likes, replies, replyLikes,replyReplies }) => {
   const navigate = useNavigate();
 
   const takeToProfile = (id) => {
@@ -57,7 +57,7 @@ const BigTweet = ({ tweet, likes, replies, replyLikes }) => {
 
       <ReplyBox tweet={tweet}/>
 
-      {replies.map((reply, i) => <Tweet key={i} tweet={reply} likes={replyLikes} replyingTo={true} replies={[]}/> )}
+      {replies.map((reply, i) => <Tweet key={i} tweet={reply} likes={replyLikes} replyingTo={true} replies={replyReplies}/> )}
     </div>
   );
 };
