@@ -1,16 +1,16 @@
 import React from "react";
 
 export default function NewsArticle({ article }) {
-  const { title, url, image, source } = article;
+  const { title, media, url } = article;
+  const image = media[0]["media-metadata"][2].url;
+
   return (
-    <div className="articleContainer">
-      <div className="articleTitle">{article.title}</div>
-      <img
-        className="articleImage"
-        src={article.image}
-        // alt={article.title}
-      />
-      <div>{article.source}</div>
-    </div>
+    <a className="articleLink" href={url}>
+      <div className="articleContainer">
+        <div className="articleTitle">{title}</div>
+        <img className="articleImage" src={image} alt={title} />
+        <div>{article.byline}</div>
+      </div>
+    </a>
   );
 }

@@ -16,11 +16,12 @@ const NewsAPI = () => {
 
   const fetchNews = () => {
     const url =
-      "http://api.mediastack.com/v1/news?access_key=064da5aecefaeb7af36f94210f399862&countries=us&sort=popularity&sources=cnn,espn";
+      "https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=QiiGRmEBFONox7btatJfgvjB7aFiEc3y";
     axios
       .get(url)
       .then(({ data }) => {
-        setNews(data.data.filter((article) => article.image));
+        setNews(data.results.filter((article) => article.media.length));
+        console.log(data);
       })
       .catch((err) => console.log(err));
   };
@@ -30,19 +31,21 @@ const NewsAPI = () => {
   }, []);
 
   return (
-    <div>
-      <div className="newsComponentTitle">What's happening?</div>
+    <div id="mainNewsContainer">
       {displayNews && (
-        <div id="newsContainer">
-          {news.length === 0 &&
-            <div className="newsLoadingSpinner">
-              <CircularProgress />
-            </div>
-          }
-          {news.map((article, key) => (
-            <NewsArticle key={key} article={article} />
-          ))}
-        </div>
+        <>
+          <div className="newsComponentTitle">What's happening?</div>
+          <div id="newsArticlesContainer">
+            {news.length === 0 && (
+              <div className="newsLoadingSpinner">
+                <CircularProgress />
+              </div>
+            )}
+            {news.map((article, key) => (
+              <NewsArticle key={key} article={article} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
