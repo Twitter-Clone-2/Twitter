@@ -14,3 +14,6 @@
 
 ## Production
 https://main.d3ieofe88k6zwp.amplifyapp.com/
+
+## Development
+https://dev.d3ieofe88k6zwp.amplifyapp.com/
