@@ -3,7 +3,9 @@ require("dotenv").config();
 
 const credentials = {
   connectionString: process.env.DATABASE_URL,
-  
+  ssl: {
+    rejectUnauthorized: false
+  }
 };
 
 async function startPool() {
