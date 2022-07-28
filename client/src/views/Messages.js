@@ -15,24 +15,42 @@ const Messages = () => {
     const [followingInfo, setFollowingInfo] = useState([])
     const [accountClicked, setAccountClicked] = useState(false)
     const [accountBeingMessaged, setAccountBeingMessaged] = useState({})
+    const [conversations, setConversations] = useState([])
 
-    useEffect(() => {
-        // socket.on('receive_message', data =>{
-        //   setMessageReceived(data.message)
-        // });
-        axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
-          follower : user.id
-        }).then(res=>{
-          setFollowingInfo(res.data.rows)
-        }).catch(e=>{
-          console.log(e);
-        })
-        //return () => socket.disconnect(true);
-    }, [])
+    // useEffect(() => {
+    //     socket.on('receive_message', data =>{
+    //       setMessageReceived(data.message)
+    //     });
+    //     return () => socket.disconnect(true);
+    // }, [])
     
     // const sendMesssage = () =>{
     //   socket.emit("send_message", {message})
     // }
+
+    const grabAllInfoForMessages = function(){
+      axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
+        follower : user.id
+      }).then(res=>{
+        setFollowingInfo(res.data.rows)
+      }).catch(e=>{
+        console.error(e);
+      })
+
+      axios
+        .get(route + "/api/findConversations/" + user.id)
+        .then((res) =>{
+          console.log(res.data);
+          setConversations(res.data)
+        })
+        .catch(e=>{
+          console.error(e)
+        })
+    }
+    useEffect(() => {
+      grabAllInfoForMessages();
+    }, [])
+    
   return (
     <div className='messageMainDiv flex'>
       
