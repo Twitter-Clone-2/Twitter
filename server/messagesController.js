@@ -13,7 +13,8 @@ async function findConversations(req,res){
             endPool(db);
             return;
         }
-        const idArr = resultForRoomID.map((roomObjs) => roomObjs.room_id);
+        console.log(`---------------------- ${resultForRoomID.rows} -----------------------------`)
+        const idArr = resultForRoomID.rows.map((roomObjs) => roomObjs.room_id);
         
         const queryToGetEveryoneUserIsMessaging = `SELECT * FROM room_and_messages LEFT JOIN  accounts on accounts.id = room_and_messages.user_id WHERE room_and_messages.room_id = ANY(ARRAY[${idArr}]) AND room_and_messages.user_id != ${id};`; 
 
