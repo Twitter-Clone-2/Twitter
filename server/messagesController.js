@@ -8,7 +8,7 @@ async function findConversations(req,res){
 
     try{
         const resultForRoomID = await db.query(queryToGetRoomID);
-        if(resultForRoomID.rows === []){
+        if(resultForRoomID.rows.length === 0){
             res.status(200).send([]);
             endPool(db);
             return;
