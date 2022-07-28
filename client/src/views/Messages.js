@@ -5,7 +5,7 @@ import route from "../utils/server_router";
 import ProfileMessageCard from '../components/ProfileMessageCard';
 import axios from "axios";
 import PlaceHolderMessages from '../components/PlaceHolderMessages';
-
+import Conversation from '../components/Conversation';
 
 const Messages = () => {
     const [message, setMessage] = useState("");
@@ -13,6 +13,8 @@ const Messages = () => {
    // const socket = io.connect(route);
     const user = JSON.parse(localStorage.getItem("currUser"));
     const [followingInfo, setFollowingInfo] = useState([])
+    const [accountClicked, setAccountClicked] = useState(false)
+    const [accountBeingMessaged, setAccountBeingMessaged] = useState({})
 
     useEffect(() => {
         // socket.on('receive_message', data =>{
@@ -44,28 +46,17 @@ const Messages = () => {
         </div>
         <ProfileMessageCard/>
         <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
-        <ProfileMessageCard/>
       </div>
 
+      {!accountClicked && 
       <PlaceHolderMessages 
       followingInfo={followingInfo} 
-      />
+      setAccountClicked={setAccountClicked}
+      setAccountBeingMessaged={setAccountBeingMessaged}
+      />}
+
+      {accountClicked && <Conversation accountBeingMessaged={accountBeingMessaged}/>}
+
     </div>
   )
 }

@@ -2,7 +2,11 @@ import React from 'react'
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 import "../CSS/followersAndFollowingModal.css";
 
-const PlaceHolderMessages = ({followingInfo}) => {
+const PlaceHolderMessages = ({
+  followingInfo,
+  setAccountClicked,
+  setAccountBeingMessaged,
+}) => {
   return (
     <div className="messagesConvoSection">
         <div id='messagesConvoSectionHeader'>Select a message</div>
@@ -12,6 +16,8 @@ const PlaceHolderMessages = ({followingInfo}) => {
             num={`New Message`}
             relationship={followingInfo}
             handle={true}
+            setAccountClicked={setAccountClicked}
+            setAccountBeingMessaged={setAccountBeingMessaged}
             />
         </div>
   </div>
