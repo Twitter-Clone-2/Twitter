@@ -41,9 +41,7 @@ export default function BasicModal() {
       .then((res) => {
         if (res.data) {
           navigate("/main/feed");
-          console.log(res.data.user);
           localStorage.setItem("currUser", JSON.stringify(res.data.user));
-          console.log(localStorage.getItem("currUser"));
         }
       })
       .catch((err) => console.log(err));

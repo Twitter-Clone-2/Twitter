@@ -1,16 +1,23 @@
 .messageMainDiv {
     border: 1px solid rgb(239,243,244);
     flex-grow: 1;
-    height: 97vh;
+    height: 98.5vh;
   }
 
   .messagesProfileSection{
     width : 30vw;
     overflow:scroll;
     overflow-x:hidden;
+    max-width: max-content;
   }
 
   .messagesConvoSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    font-stretch: condensed;
+    padding-left: 10vw;
     width : 40vw;
   }
 
@@ -30,7 +37,9 @@
     padding : 10px 20px;
     width: 100%;
   }
-
+  .messagesSearchBar:focus{
+    border : 2px solid rgb(70,168,242);
+  }
   .messagesSearchBar::placeholder { 
     color : rgb(83,99,113);
     text-align: center;
@@ -55,15 +64,6 @@
     background-color: rgb(239,243,244) !important;
   }
 
-  .messagesConvoSection{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    font-stretch: condensed;
-    padding-left: 10vw;
-  }
-
   #messagesConvoSectionHeader{
     font-size: 30px;
     font-weight: bolder;
@@ -73,7 +73,7 @@
   #messagesConvoSectionSubHeader{
     color: rgb(139, 141, 143);
     font-size: 17px;
-    width : 30vw;
+    width : 25vw;
     margin-bottom: 20px;
   }
 
