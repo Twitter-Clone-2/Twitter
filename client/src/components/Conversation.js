@@ -21,18 +21,12 @@ const Conversation = ({
     const [messageReceived, setMessageReceived] = useState("");
     const [allMessages, setAllMessages] = useState([])
     
-    const grabRoom = function(){
-        axios.get()
-    }
     useEffect(() => {
-        socket.emit("join_room", roomId)
-
         socket.on('receive_message', data =>{
           setMessageReceived(data.message)
           setAllMessages([...allMessages, messageReceived])
         });
-        return () => socket.disconnect(true);
-    }, [])
+    }, [roomId])
     
     const sendMesssage = () =>{
       socket.emit("send_message", {message, roomId})

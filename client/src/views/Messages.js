@@ -27,7 +27,6 @@ const Messages = () => {
       axios
         .get(route + "/api/findConversations/" + user.id)
         .then((res) =>{
-          console.log(res.data);
           setConversations(res.data)
         })
         .catch(e=>{
