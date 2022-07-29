@@ -57,7 +57,8 @@
   .messagesProfileCard{
     display: flex;
     align-items: center;
-    padding: 10px
+    padding: 10px;
+    cursor: pointer;
   }
 
   .messagesProfileCard:hover{

@@ -167,6 +167,10 @@ const createRoomTable = `CREATE TABLE IF NOT EXISTS room
     created_at timestamp without time zone DEFAULT now()
 );`
 
+const insertValueIntoRoomForTest = `INSERT INTO room DEFAULT VALUES`;
+
+const test = `INSERT INTO room DEFAULT VALUES RETURNING id;`
+
 //                     Union Table for Messages and Room
 const createRoomAndMessagesUnionTable = `CREATE TABLE IF NOT EXISTS room_and_messages
 (
@@ -188,4 +192,7 @@ REFERENCES public.room (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`
 
-//runQuery(alterMessagesAndRoomFKRoom);
+const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`
+
+
+//runQuery(test);
