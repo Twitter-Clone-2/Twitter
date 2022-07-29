@@ -1,5 +1,7 @@
 import React from 'react'
 import PersonIcon from "@mui/icons-material/Person";
+import io from 'socket.io-client';
+import route from "../utils/server_router";
 
 const ProfileMessageCard = ({
   userObj,
@@ -8,7 +10,8 @@ const ProfileMessageCard = ({
   room_id,
   setRoomId,
 }) => {
-  console.log(room_id);
+  const socket = io.connect(route);
+
   return (
     <div 
     className='messagesProfileCard'
@@ -16,6 +19,7 @@ const ProfileMessageCard = ({
       setAccountBeingMessaged(userObj)
       setAccountClicked(true)
       setRoomId(room_id)
+      socket.emit("join_room", room_id)
     }}
     >
         <PersonIcon sx={{ fontSize: 70 }}/>
