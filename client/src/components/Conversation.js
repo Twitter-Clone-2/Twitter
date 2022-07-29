@@ -6,7 +6,7 @@ import { format, set } from "date-fns";
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import GifBoxIcon from '@mui/icons-material/GifBox';
 import SendIcon from '@mui/icons-material/Send';
-import io from 'socket.io-client';
+import {io} from 'socket.io-client';
 import route from "../utils/server_router";
 import axios from "axios";
 
@@ -16,19 +16,27 @@ const Conversation = ({
 }) => {
 
     const [test, setTest] = useState([])
-    const socket = io.connect(route);
+    //const socket = io.connect(route);
+    const socket = io(route);
     const [message, setMessage] = useState("");
     const [messageReceived, setMessageReceived] = useState("");
     const [allMessages, setAllMessages] = useState([])
     
+    socket.on("connect", () => {
+        console.log(socket.connected);
+      });
+
     useEffect(() => {
+
+        socket.emit("join_room", roomId)
+
         socket.on('receive-message', data =>{
             console.log(data);
             console.log(data.message);
           setMessageReceived(data.message)
           setAllMessages([...allMessages, messageReceived])
         });
-    }, [])
+    }, [roomId])
     
     const sendMesssage = () =>{
       socket.emit("send_message", {
