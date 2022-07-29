@@ -35,7 +35,7 @@ const Conversation = ({
     }, [])
     
     const sendMesssage = () =>{
-      socket.emit("send_message", {message})
+      socket.emit("send_message", {message, roomId})
       setMessage("")
       setAllMessages([...allMessages, message])
     }

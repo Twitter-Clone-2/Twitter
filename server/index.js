@@ -95,6 +95,7 @@ io.on("connection", socket =>{
   });
 
   socket.on("join_room", room =>{
+    console.log("is thbis working")
     socket.join(room)
   })
 });
