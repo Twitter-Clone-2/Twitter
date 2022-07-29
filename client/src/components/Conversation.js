@@ -22,7 +22,9 @@ const Conversation = ({
     const [allMessages, setAllMessages] = useState([])
     
     useEffect(() => {
-        socket.on('receive_message', data =>{
+        socket.on('receive-message', data =>{
+            console.log(data);
+            console.log(data.message);
           setMessageReceived(data.message)
           setAllMessages([...allMessages, messageReceived])
         });
