@@ -89,14 +89,18 @@ const server = app.listen(process.env.PORT || 8080, () => {
 const io = require('socket.io')(server, {cors : true});
 
 io.on("connection", socket =>{
+ 
+  console.log("hi")
+
+  socket.on("send_message", (data) =>{
+    console.log(data)
+    const {message, room} = data;
+    socket.to(room).emit("receive-message", message)
+    console.log(`sent message : ${message} to room # ${room}`)
+  });
 
   socket.on("join_room", room =>{
     console.log(room)
     socket.join(room)
   })
-  socket.on("send_message", (message, room) =>{
-    socket.to(room).emit("receive-message", message)
-    console.log(`sent message : ${message} to room # ${room}`)
-  });
-
 });
