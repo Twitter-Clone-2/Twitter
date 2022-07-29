@@ -26,10 +26,13 @@ const Conversation = ({
           setMessageReceived(data.message)
           setAllMessages([...allMessages, messageReceived])
         });
-    }, [roomId])
+    }, [])
     
     const sendMesssage = () =>{
-      socket.emit("send_message", (message, roomId))
+      socket.emit("send_message", {
+        message,
+        room : roomId
+      })
       setMessage("")
       setAllMessages([...allMessages, message])
     }
