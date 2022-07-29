@@ -10,53 +10,40 @@ import {io} from 'socket.io-client';
 import route from "../utils/server_router";
 import axios from "axios";
 
+const socket = io(route);
+
 const Conversation = ({
     accountBeingMessaged,
     roomId,
 }) => {
-
-    const [test, setTest] = useState([])
-    //const socket = io.connect(route);
-    const socket = io(route);
     const [message, setMessage] = useState("");
     const [messageReceived, setMessageReceived] = useState("");
     const [allMessages, setAllMessages] = useState([])
-    
-    socket.on("connect", () => {
-        //console.log(socket.connected);
-      });
 
+    
     useEffect(() => {
 
+        socket.on("connect", () => {
+          });
+        
         socket.emit("join_room", roomId)
 
         socket.on('receive-message', (data) =>{
             console.log(data);
-            setAllMessages([...allMessages, data])
-        });
+            setAllMessages(prev => [...prev, data ])
+        });    
     }, [roomId])
     
     const sendMesssage = () =>{
-      socket.emit("send_message", {
-        message,
-        room : roomId
-      })
-      setMessage("")
-      console.log([...allMessages])
-      setAllMessages([...allMessages, message])
-    }
-
-    /*            BASIC VERSION OF SOCKET IO, WORKING
-    <div className='messageMainDiv'>
-      <input placeholder='Message...' onChange={(e) => setMessage(e.target.value)}/>
-      <button onClick={sendMesssage}>Send Message</button>
-      <h1>Message : {messageReceived}</h1>
-    </div>
-*/
-
+        socket.emit("send_message", {
+          message,
+          roomId,
+        })
+        setAllMessages(prev => [...prev, message ])
+        setMessage("")
+      }
     return (
     <div className="conversationBody">
-        {roomId}
         <div className='convoHeader'>
             <PersonIcon sx={{fontSize:45}}/>
             <div className='convoHeaderNames'>
