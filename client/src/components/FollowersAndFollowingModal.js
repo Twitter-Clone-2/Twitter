@@ -6,6 +6,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/followersAndFollowingModal.css";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
+import axios from 'axios';
+import route from "../utils/server_router";
 
 const FollowersAndFollowingModal = ({
   num,
@@ -13,13 +15,14 @@ const FollowersAndFollowingModal = ({
   handle = false,
   setAccountClicked,
   setAccountBeingMessaged,
+  user_id,
 }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate(); 
     const [searchArr, setSearchArr] = useState([]) 
-    const [searchValue, setSearchValue] = useState("")
+    const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     setSearchArr([...relationship])
@@ -40,6 +43,12 @@ const FollowersAndFollowingModal = ({
       let handleFunction = (id)=>{
         if(handle){
           setAccountClicked(true)
+          axios.post(route + "/api/create/room",{
+            curr_user_id : user_id,
+            other_user_id : id
+          })
+          .then(res=>console.log(res.data))
+          .catch(e=>console.error(e))
         }else{
           navigate("/profile/page/" + id)
         }

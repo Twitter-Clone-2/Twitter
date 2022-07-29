@@ -2,20 +2,55 @@ import React,{useState,useEffect} from 'react'
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/Conversation.css";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import GifBoxIcon from '@mui/icons-material/GifBox';
 import SendIcon from '@mui/icons-material/Send';
+import io from 'socket.io-client';
+import route from "../utils/server_router";
+import axios from "axios";
 
 const Conversation = ({
-    accountBeingMessaged
+    accountBeingMessaged,
+    roomId,
 }) => {
+
     const [test, setTest] = useState([])
-    const testingArray = () =>{
-        setTest([...test, "hi"])
+    const socket = io.connect(route);
+    const [message, setMessage] = useState("");
+    const [messageReceived, setMessageReceived] = useState("");
+    const [allMessages, setAllMessages] = useState([])
+    
+    const grabRoom = function(){
+        axios.get()
     }
+    useEffect(() => {
+        socket.emit("join_room", roomId)
+
+        socket.on('receive_message', data =>{
+          setMessageReceived(data.message)
+          setAllMessages([...allMessages, messageReceived])
+        });
+        return () => socket.disconnect(true);
+    }, [])
+    
+    const sendMesssage = () =>{
+      socket.emit("send_message", {message})
+      setMessage("")
+      setAllMessages([...allMessages, message])
+    }
+
+    /*            BASIC VERSION OF SOCKET IO, WORKING
+    <div className='messageMainDiv'>
+      <input placeholder='Message...' onChange={(e) => setMessage(e.target.value)}/>
+      <button onClick={sendMesssage}>Send Message</button>
+      <h1>Message : {messageReceived}</h1>
+    </div>
+*/
+
     return (
     <div className="conversationBody">
+        {roomId}
         <div className='convoHeader'>
             <PersonIcon sx={{fontSize:45}}/>
             <div className='convoHeaderNames'>
@@ -44,6 +79,9 @@ const Conversation = ({
                     <CalendarMonthIcon/>
                     {format(new Date(accountBeingMessaged.created_at), "PPpp")}
                 </div>
+                {allMessages.map((message,i)=>
+                <div key={i}>{message}</div>
+                )}
             </div>
             {test.map((item, i)=> {
                 return(
@@ -57,10 +95,12 @@ const Conversation = ({
             <input 
             id='convoFooterInput'
             placeholder='Start a new message'
+            onChange={(e)=>setMessage(e.target.value)}
+            value={message}
             />
             <SendIcon 
             sx={{color:"rgb(70,168,242)"}}
-            onClick={testingArray}
+            onClick={sendMesssage}
             className="conversationIcon"
             />
         </div>

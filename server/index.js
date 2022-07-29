@@ -34,6 +34,11 @@ const {
   deleteTweetAndEverythingRelated,
 } = require("./controllers");
 
+const {
+  findConversations,
+  createRoom,
+} = require("./messagesController");
+
 app.options("*", cors());
 //get all users
 app.get("/api/users", cors(), getAllUsers);
@@ -69,6 +74,10 @@ app.post("/api/unfollow", cors(), unFollowAnotherUser);
 app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
 app.post("/api/selectAllFollowersAndTheirAccounts", cors(), selectAllFollowersAndTheirAccounts);
 app.post("/api/selectAllFollowingAndTheirAccounts", cors(), selectAllFollowingAndTheirAccounts);
+
+//messages
+app.get("/api/findConversations/:id", cors(), findConversations);
+app.post("/api/create/room", cors(), createRoom);
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
 
