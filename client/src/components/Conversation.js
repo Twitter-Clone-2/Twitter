@@ -23,18 +23,16 @@ const Conversation = ({
     const [allMessages, setAllMessages] = useState([])
     
     socket.on("connect", () => {
-        console.log(socket.connected);
+        //console.log(socket.connected);
       });
 
     useEffect(() => {
 
         socket.emit("join_room", roomId)
 
-        socket.on('receive-message', data =>{
+        socket.on('receive-message', (data) =>{
             console.log(data);
-            console.log(data.message);
-          setMessageReceived(data.message)
-          setAllMessages([...allMessages, messageReceived])
+            setAllMessages([...allMessages, data])
         });
     }, [roomId])
     
@@ -44,6 +42,7 @@ const Conversation = ({
         room : roomId
       })
       setMessage("")
+      console.log([...allMessages])
       setAllMessages([...allMessages, message])
     }
 
@@ -86,15 +85,10 @@ const Conversation = ({
                     <CalendarMonthIcon/>
                     {format(new Date(accountBeingMessaged.created_at), "PPpp")}
                 </div>
-                {allMessages.map((message,i)=>
-                <div key={i}>{message}</div>
+                {allMessages.map((currMessage,i)=>
+                <div key={i}>{currMessage}</div>
                 )}
             </div>
-            {test.map((item, i)=> {
-                return(
-                    <div key={i}>{item}</div>
-                )
-            })}
         </div>
         <div className='convoFooter'> 
             <WallpaperIcon className="conversationIcon" sx={{color:"rgb(70,168,242)"}}/>
