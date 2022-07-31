@@ -97,8 +97,9 @@ io.on("connection", (socket) =>{
   })
 
   socket.on("send_message", ({roomId, message}) =>{
-    console.log("Sending message : " + message + "in room " + roomId)
-    socket.to(roomId).emit("receive-message", message)
+    let i = 0
+    console.log("Sending message : " + message + "in room " + roomId + "value of i " + i)
+    socket.to(roomId).emit("receive-message", ({i : message}))
   });
 
  
