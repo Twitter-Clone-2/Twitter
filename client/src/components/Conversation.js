@@ -20,7 +20,6 @@ const Conversation = ({
     const [messageReceived, setMessageReceived] = useState("");
     const [allMessages, setAllMessages] = useState([])
 
-    let i = 1;
     useEffect(() => {
         socket.on("connect", () => {
         });
