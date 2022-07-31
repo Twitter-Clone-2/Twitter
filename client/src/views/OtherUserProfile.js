@@ -20,6 +20,7 @@ const OtherUserProfile = () => {
   const [likes, setLikes] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("currUser"));
 
   const getUsersAndTweets = () => {
     axios
@@ -92,7 +93,7 @@ const OtherUserProfile = () => {
     //unfollow
     if(followingStatus){
       axios.post(route + "/api/unfollow", {
-        follower: JSON.parse(localStorage.getItem("currUser")).id,
+        follower: user.id,
         following : id
       }).then(()=> {
         setFollowingStatus(false)
@@ -102,7 +103,7 @@ const OtherUserProfile = () => {
       })
     }else{
       axios.post(route + "/api/follow", {
-        follower: JSON.parse(localStorage.getItem("currUser")).id,
+        follower: user.id,
         following : id
       }).then(()=> {
         setFollowingStatus(true)
@@ -165,7 +166,7 @@ const OtherUserProfile = () => {
           </div>
           <h1>Tweets</h1>
           <hr />
-          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} key={i} />)}
+          {/* {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} key={i} />)} */}
         </div>
       </div>
     </div>
