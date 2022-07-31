@@ -28,12 +28,12 @@ const Conversation = ({
     
     useEffect(() => {
         socket.emit("join_room", roomId) 
-    }, [roomId])
 
-    socket.on('receive-message', (data) =>{
-        console.log(data);
-        setAllMessages(prev => [...prev, data ])
-    });   
+        socket.on('receive-message', (data) =>{
+            console.log(data);
+            setAllMessages(prev => [...prev, data ])
+        });  
+    }, [roomId]) 
     
     const sendMesssage = () =>{
         socket.emit("send_message", {
