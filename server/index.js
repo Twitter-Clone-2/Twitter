@@ -89,6 +89,7 @@ const server = app.listen(process.env.PORT || 8080, () => {
 const io = require('socket.io')(server, {cors : true});
 
 io.on("connection", (socket) =>{
+  console.log("server side connection")
  
   socket.on("join_room", room =>{
     socket.join(room)
