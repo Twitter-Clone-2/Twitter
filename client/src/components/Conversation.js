@@ -27,6 +27,7 @@ const Conversation = ({
         socket.emit("join_room", roomId) 
     }, [roomId])
 
+    console.log("testing code")
     socket.on('receive-message', (data) =>{
         console.log(data);
         setAllMessages(prev => [...prev, data ])
