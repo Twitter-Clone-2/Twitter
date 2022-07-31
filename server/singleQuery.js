@@ -194,5 +194,6 @@ ON DELETE NO ACTION;`
 
 const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`
 
-
-//runQuery(test);
+const delete1 = "DELETE FROM accounts WHERE id = 3";
+//const delete1 = "DELETE FROM likes WHERE tweets_id = 23";
+runQuery(delete1);
