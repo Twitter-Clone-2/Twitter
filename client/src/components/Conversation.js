@@ -20,17 +20,22 @@ const Conversation = ({
     const [messageReceived, setMessageReceived] = useState("");
     const [allMessages, setAllMessages] = useState([])
 
+    let i = 1;
+    useEffect(() => {
+        socket.on("connect", () => {
+        });
+        console.log("testing connection")
+    }, [])
     
-    socket.on("connect", () => {
-      });
     useEffect(() => {
         socket.emit("join_room", roomId) 
     }, [roomId])
 
-    console.log("testing code")
     socket.on('receive-message', (data) =>{
         console.log(data);
         setAllMessages(prev => [...prev, data ])
+        i++
+        console.log(i)
     });   
     
     const sendMesssage = () =>{
