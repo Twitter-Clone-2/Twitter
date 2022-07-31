@@ -33,8 +33,6 @@ const Conversation = ({
     socket.on('receive-message', (data) =>{
         console.log(data);
         setAllMessages(prev => [...prev, data ])
-        i++
-        console.log(i)
     });   
     
     const sendMesssage = () =>{
