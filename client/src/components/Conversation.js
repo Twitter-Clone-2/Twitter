@@ -15,19 +15,16 @@ const socket = io(route);
 const Conversation = ({
     accountBeingMessaged,
     roomId,
+    user,
 }) => {
     const [message, setMessage] = useState("");
-    const [messageReceived, setMessageReceived] = useState("");
-    const [allMessages, setAllMessages] = useState([])
-
+    const [allMessages, setAllMessages] = useState([]);
+    
+    
     useEffect(() => {
         socket.on("connect", () => {
-        });
-        console.log("testing connection")
-
-        
+        });        
         socket.on('receive-message', (data) =>{
-            console.log(data);
             let newMessage = {received : data}
             setAllMessages(prev => [...prev, newMessage ])
         });  
@@ -37,6 +34,19 @@ const Conversation = ({
         socket.emit("join_room", roomId)
         setAllMessages([]);
 
+        axios.get(route + "/api/find/messages/" + roomId)
+            .then((res) =>{
+                console.log(res.data)
+                let oldMessages = res.data.map((message) =>{
+                    if(message.user_sent_message == user.id){
+                        return {sent : message.message}
+                    }else{
+                        return {received : message.message}
+                    }
+                } )
+                setAllMessages(oldMessages)
+            })
+            .catch((e) => console.error(e))
     }, [roomId]) 
 
     
@@ -46,9 +56,18 @@ const Conversation = ({
           message,
           roomId,
         })
-        let newMessage = {sent : message}
-        setAllMessages(prev => [...prev, newMessage ])
-        setMessage("")
+        
+        axios.post(route + "/api/create/message", {
+            user_id : user.id,
+            message,
+            room_number : roomId
+        })
+        .then(()=> {
+            let newMessage = {sent : message};
+            setAllMessages(prev => [...prev, newMessage ]);
+            setMessage("");
+        })
+        
       }
     return (
     <div className="conversationBody">

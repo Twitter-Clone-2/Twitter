@@ -37,6 +37,8 @@ const {
 const {
   findConversations,
   createRoom,
+  createMessage,
+  findMessagesForTheRoom,
 } = require("./messagesController");
 
 app.options("*", cors());
@@ -78,6 +80,8 @@ app.post("/api/selectAllFollowingAndTheirAccounts", cors(), selectAllFollowingAn
 //messages
 app.get("/api/findConversations/:id", cors(), findConversations);
 app.post("/api/create/room", cors(), createRoom);
+app.post("/api/create/message", cors(), createMessage);
+app.get("/api/find/messages/:room_number", cors(), findMessagesForTheRoom);
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
 
