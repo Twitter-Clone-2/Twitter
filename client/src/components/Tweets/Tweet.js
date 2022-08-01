@@ -38,16 +38,16 @@ export default function Tweet({
           </div>
           <div className="rightTweet">
             <div className="rightTweetHeader">
-              <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
+              <div className="tweetNames" id="tweetRealNames" onClick={() => takeToProfile(tweet.accounts_id)}>
                 {tweet.first_name} {tweet.last_name}
-              </p>
+              </div>
               <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
                 @{tweet.username}
               </p>
               <p>{format(new Date(tweet.created_at), "PPpp")}</p>
             </div>
               {replyingTo && <p>Replying to <span className="replyingToUsername">@{tweet.username}</span></p>}
-            <h3>{tweet.content}</h3>
+            <div className="tweetContent">{tweet.content}</div>
           </div>
       </div>
       {tweet.accounts_id === id && 

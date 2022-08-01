@@ -34,6 +34,7 @@ input {
   cursor: pointer;
   font-size: 18px;
   font-weight: 700;
+  margin-right: 20px;
 }
 .incompleteColor{
   background-color: rgb(154,205,248) !important;
@@ -56,85 +57,4 @@ input {
   border: 0;
   outline: 0;
   font-size: 40px;
-}
-
-/* Todo: Move this to its own news css */
-
-#news {
-  /* border: 3px solid black; */
-  border-bottom: none;
-  flex: 2.5;
-  max-width: 30%;
-  text-align: center;
-  height: fit-content;
-}
-
-.button3 {
-  background-color: #7bc2f8;
-  border-style: double;
-  border-color: black 4px;
-  border-width: 6px;
-  height: 32px;
-  width: 18.5%;
-  text-align: center;
-  margin: 10px;
-  margin-left: 30px;
-  color: black;
-  border-radius: 4px;
-}
-.button3:hover {
-  color: #000000;
-  background-color: #034578;
-  width: 18.5%;
-  max-height: 32px;
-  text-align: center;
-}
-.but-del {
-  background-color: rgb(253, 49, 49);
-  border-style: double;
-  border-color: black 4px;
-  border-width: 6px;
-  width: 18.5%;
-  height: 32px;
-  border-radius: 4px;
-  cursor: crosshair;
-  text-align: center;
-  margin-left: 30px;
-}
-.but-del:hover {
-  color: rgb(247, 126, 126);
-  background-color: rgb(214, 4, 4);
-  border-radius: 4px;
-}
-.button-15 {
-  background-image: linear-gradient(#7bc2f8, #045292);
-  border: 1px solid #888888;
-  border-radius: 4px;
-  box-sizing: border-box;
-  color: #f8f8fa;
-  cursor: grab;
-  direction: ltr;
-  display: block;
-  font-family: SF Pro Text, SF Pro Icons, AOS Icons, Helvetica Neue, Helvetica,
-    Arial, sans-serif;
-  font-size: 17px;
-  line-height: 1.47059;
-  min-width: 70px;
-  overflow: visible;
-  text-align: center;
-  user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  width: 60%;
-  height: 45px;
-  margin-left: 20%;
-}
-.button-15:disabled {
-  cursor: default;
-  opacity: 0.3;
-}
-.button-15:hover {
-  background-image: linear-gradient(#045292, #7bc2f8);
-  border-color: #1482d0;
-  text-decoration: none;
 }
