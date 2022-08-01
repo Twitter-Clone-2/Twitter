@@ -60,13 +60,43 @@ async function createRoom(req,res){
     }
 }
 
-// async function grabRoomId(req,res){
-//     const db = await startPool();
-//     const {other_user_id, user_id } = req.params;
-//     const queryToFindAllRoomsUserIsIn = `SELECT * FROM room_and_messages WHERE user_id = ${curr_user_id}`;
-// }
+async function createMessage(req,res){
+    const db = await startPool();
+    const {user_id , message, room_number } = req.body;
+    const query = 
+    `INSERT INTO messages (user_sent_message, message, room_number, liked) 
+    VALUES ( ${user_id}, '${message}', ${room_number}, 0 );`;
+
+    try{
+        await db.query(query);
+        res.status(200).send(true);
+        endPool(db);
+    }catch(e){
+        console.error(e.stack);
+        res.status(400).send(false);
+        endPool(db);
+    }
+}
+
+async function findMessagesForTheRoom(req,res){
+    const db = await startPool();
+    const {room_number} = req.params;
+    const query = `SELECT * FROM messages WHERE room_number = ${room_number};`;
+
+    try{
+        const results = await db.query(query);
+        res.status(200).send(results.rows);
+        endPool(db);
+    }catch(e){
+        console.error(e.stack);
+        res.status(400).send(false);
+        endPool(db);
+    }
+}
 
 module.exports = {
     findConversations,
     createRoom,
+    createMessage,
+    findMessagesForTheRoom,
   };

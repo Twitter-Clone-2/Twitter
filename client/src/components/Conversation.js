@@ -15,33 +15,59 @@ const socket = io(route);
 const Conversation = ({
     accountBeingMessaged,
     roomId,
+    user,
 }) => {
     const [message, setMessage] = useState("");
-    const [messageReceived, setMessageReceived] = useState("");
-    const [allMessages, setAllMessages] = useState([])
-
+    const [allMessages, setAllMessages] = useState([]);
+    
+    
     useEffect(() => {
         socket.on("connect", () => {
-        });
-        console.log("testing connection")
+        });        
+        socket.on('receive-message', (data) =>{
+            let newMessage = {received : data}
+            setAllMessages(prev => [...prev, newMessage ])
+        });  
     }, [])
     
     useEffect(() => {
-        socket.emit("join_room", roomId) 
+        socket.emit("join_room", roomId)
+        setAllMessages([]);
 
-        socket.on('receive-message', (data) =>{
-            console.log(data);
-            setAllMessages(prev => [...prev, data ])
-        });  
+        axios.get(route + "/api/find/messages/" + roomId)
+            .then((res) =>{
+                console.log(res.data)
+                let oldMessages = res.data.map((message) =>{
+                    if(message.user_sent_message == user.id){
+                        return {sent : message.message}
+                    }else{
+                        return {received : message.message}
+                    }
+                } )
+                setAllMessages(oldMessages)
+            })
+            .catch((e) => console.error(e))
     }, [roomId]) 
+
+    
     
     const sendMesssage = () =>{
         socket.emit("send_message", {
           message,
           roomId,
         })
-        setAllMessages(prev => [...prev, message ])
-        setMessage("")
+        
+        axios.post(route + "/api/create/message", {
+            user_id : user.id,
+            message,
+            room_number : roomId
+        })
+        .then(()=> {
+            let newMessage = {sent : message};
+            setAllMessages(prev => [...prev, newMessage ]);
+            setMessage("");
+        })
+        
       }
     return (
     <div className="conversationBody">
@@ -73,10 +99,20 @@ const Conversation = ({
                     <CalendarMonthIcon/>
                     {format(new Date(accountBeingMessaged.created_at), "PPpp")}
                 </div>
-                {allMessages.map((currMessage,i)=>
-                <div key={i}>{currMessage}</div>
-                )}
             </div>
+                {allMessages.map((currMessage,i)=>
+                <div className={currMessage.sent ? "convoSentDiv" : "convoReceivedDiv"}>
+                {currMessage.sent && 
+                <div className='convoSentMessage' key={i}>
+                    {currMessage.sent}
+                </div>}
+                {currMessage.received &&
+                <div key={i} className="convoReceivedMessage">
+                    {currMessage.received}
+                </div>}
+                </div>
+                )}
+            
         </div>
         <div className='convoFooter'> 
             <WallpaperIcon className="conversationIcon" sx={{color:"rgb(70,168,242)"}}/>

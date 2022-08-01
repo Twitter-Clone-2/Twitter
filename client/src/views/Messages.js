@@ -69,6 +69,7 @@ const Messages = () => {
       {accountClicked && <Conversation 
       accountBeingMessaged={accountBeingMessaged}
       roomId={roomId}
+      user={user}
       />}
 
     </div>
