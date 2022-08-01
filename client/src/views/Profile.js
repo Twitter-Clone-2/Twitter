@@ -10,79 +10,123 @@ import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
 import { format } from "date-fns";
+import { useParams, useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  let { id } = useParams();
+  const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true)
+  const [followingStatus, setFollowingStatus] = useState(false);
+  const user = JSON.parse(localStorage.getItem("currUser"));
+  const [currentUser, setCurrentUser] = useState(user)
+
   const [editProfile, setEditProfile] = useState(false);
   const [settings, setSettings] = useState(false);
-  const [allTweets, setAllTweets] = useState(0);
-  const user = JSON.parse(localStorage.getItem("currUser"));
   const [numOfFollowers , setNumOfFollowers] = useState(0);
   const [followersInfo, setFollowersInfo] = useState([])
   const [numOfFollowing , setNumOfFollowing] = useState(0);
   const [followingInfo, setFollowingInfo] = useState([])
 
+  const [allTweets, setAllTweets] = useState(0);
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
-// hi
-  useEffect(() => {
+  const [replies, setReplies] = useState([])
 
-      axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
-        following : user.id
-      }).then(res=>{
-        setFollowersInfo(res.data.rows)
-      }).catch(e=>{
-        console.log(e);
-      })
+  const navigate = useNavigate();
+  
+  const grabRelationshipsAndTweets = function(curr_id){
+    axios.post(route + "/api/selectAllFollowersAndTheirAccounts",{
+      following : curr_id
+    }).then(res=>{
+      setFollowersInfo(res.data.rows)
+      setFollowingStatus(res.data.rows.filter((account) => account.id == user.id).length)
+      setNumOfFollowers(res.data.rows.length)
+    }).catch(e=>{
+      console.log(e);
+    })
 
-      axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
-        follower : user.id
-      }).then(res=>{
-        setFollowingInfo(res.data.rows)
-      }).catch(e=>{
-        console.log(e);
-      })
+    axios.post(route + "/api/selectAllFollowingAndTheirAccounts",{
+      follower : curr_id
+    }).then(res=>{
+      setFollowingInfo(res.data.rows)
+      setNumOfFollowing(res.data.rows.length)
+    }).catch(e=>{
+      console.log(e);
+    })
 
-      axios.post(route + "/api/findAllRelationships", {
-        follower : user.id,
-        following : user.id
-      })
-      .then(res =>{
-        let followerCount = 0;
-        let followingCount = 0;
-        for(let i = 0; i < res.data.rows.length; i++){
-          if(res.data.rows[i].following == user.id ){
-            followerCount++;
-            setNumOfFollowers(followerCount);
-          }else if(res.data.rows[i].follower == user.id){
-            followingCount++;
-            setNumOfFollowing(followingCount);
-          }
-        }
-      })
-      .catch(e=>console.log(e))
+    axios.post(route + "/api/currUser/tweets", { id : curr_id })
+    .then(({ data }) => {
+      data.tweets.sort((x, y) => x.created_at - y.created_at)
+      data.tweets.reverse();
+      setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
+      setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length)
+      setLikes(data.likes);
+      setReplies(data.tweets.filter((tweet)=> tweet.reply_id))
+    })
+    .catch((e) => console.log(e));
+  }
 
-      axios.post(route + "/api/currUser/tweets", { id : user.id })
+  const grabUserDetails = function(id){
+    axios
+      .post(route + "/api/user", {
+        id
+      })
       .then(({ data }) => {
-        data.tweets.sort((x, y) => x.created_at - y.created_at)
-        data.tweets.reverse();
-        setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
-        setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length)
-        setLikes(data.likes);
-        console.log(feed);
+        setCurrentUser(data[0]);
       })
-      .catch((e) => console.log(e));
-  }, []);
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+  useEffect(() => {
+    if(id){
+      if (user.id == id) {
+        navigate("/profile/page");
+      }
+      grabRelationshipsAndTweets(id);
+      grabUserDetails(id);
+      setUserProfileCheck(false);
+      
+    }else{
+      grabRelationshipsAndTweets(user.id);
+      setUserProfileCheck(true);
+    }
+  }, [id]);
 
+  const followButton = () => {
+    //unfollow
+    if(followingStatus){
+      axios.post(route + "/api/unfollow", {
+        follower: user.id,
+        following : id
+      }).then(()=> {
+        setFollowingStatus(false)
+        setNumOfFollowers(numOfFollowers - 1)
+      }).catch(e=>{
+        console.error(e)
+      })
+    }else{
+      axios.post(route + "/api/follow", {
+        follower: user.id,
+        following : id
+      }).then(()=> {
+        setFollowingStatus(true)
+        setNumOfFollowers(numOfFollowers + 1)
+      }).catch(e=>{
+        console.error(e)
+      })
+    }
+  };
+
+    
   return (
     <div id="profilePage">
       <div id="profilePageUser">
         <div id="profilePageHeader">
           <div>
             <h3>
-              {user.first_name} {user.last_name}
+              {currentUser.first_name} {currentUser.last_name}
             </h3>
             <p>{allTweets} tweets</p>
-            <Logout />
           </div>
         </div>
         <div>
@@ -92,16 +136,20 @@ const Profile = () => {
           {/* SMALL IMAGE HERE */}
           <div id="bottomOfPicture">
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
-            <div onClick={() => setEditProfile(true)}>
+           { userProfileCheck ? <div onClick={() => setEditProfile(true)}>
               <button id="profileEditProfileButton">Edit Profile</button>
             </div>
+              :
+            <button onClick={() => followButton()}>
+              {followingStatus ? "Unfollow" : "Follow"}
+            </button>}
           </div>
           <h2>
-            {user.first_name} {user.last_name}
+            {currentUser.first_name} {currentUser.last_name}
           </h2>
-          <p>{user.bio}</p>
-          <p>@{user.username}</p>
-          <p>Joined , {format(new Date(user.created_at), "PPpp")}</p>
+          <p>{currentUser.bio}</p>
+          <p>@{currentUser.username}</p>
+          <p>Joined , {format(new Date(currentUser.created_at), "PPpp")}</p>
           <div className="flex" id="follows">
             <div>
                <FollowersAndFollowingModal
@@ -127,7 +175,7 @@ const Profile = () => {
           {settings ? <Settings setSettings={setSettings} /> : ""}
           <h1>Tweets</h1>
           <hr />
-          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} key={i} />)}
+          {feed.map((tweet, i) => <Tweet tweet={tweet} likes={likes} replies={replies} key={i} />)}
         </div>
       </div>
     </div>

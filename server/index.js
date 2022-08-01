@@ -34,6 +34,13 @@ const {
   deleteTweetAndEverythingRelated,
 } = require("./controllers");
 
+const {
+  findConversations,
+  createRoom,
+  createMessage,
+  findMessagesForTheRoom,
+} = require("./messagesController");
+
 app.options("*", cors());
 //get all users
 app.get("/api/users", cors(), getAllUsers);
@@ -69,6 +76,12 @@ app.post("/api/unfollow", cors(), unFollowAnotherUser);
 app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
 app.post("/api/selectAllFollowersAndTheirAccounts", cors(), selectAllFollowersAndTheirAccounts);
 app.post("/api/selectAllFollowingAndTheirAccounts", cors(), selectAllFollowingAndTheirAccounts);
+
+//messages
+app.get("/api/findConversations/:id", cors(), findConversations);
+app.post("/api/create/room", cors(), createRoom);
+app.post("/api/create/message", cors(), createMessage);
+app.get("/api/find/messages/:room_number", cors(), findMessagesForTheRoom);
 //delete an account
 app.delete("/api/delete/account", cors(), deleteUser);
 
@@ -79,13 +92,19 @@ const server = app.listen(process.env.PORT || 8080, () => {
 
 const io = require('socket.io')(server, {cors : true});
 
-io.on("connection", socket =>{
-  console.log(`-----------------${socket.id}----------------`);
-  socket.on("send_message", (message, room) =>{
-    socket.to(room).emit("receive-message", message)
-  });
-
+io.on("connection", (socket) =>{
+  console.log("server side connection")
+ 
   socket.on("join_room", room =>{
     socket.join(room)
+    console.log("joined room " + room);
   })
+
+  socket.on("send_message", ({roomId, message}) =>{
+
+    console.log("Sending message : " + message + " in room " + roomId)
+    socket.to(roomId).emit("receive-message", (message))
+  });
+
+ 
 });

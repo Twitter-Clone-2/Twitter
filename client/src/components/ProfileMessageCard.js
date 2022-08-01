@@ -1,13 +1,28 @@
 import React from 'react'
 import PersonIcon from "@mui/icons-material/Person";
+import {io} from 'socket.io-client';
 
-const ProfileMessageCard = () => {
+const ProfileMessageCard = ({
+  userObj,
+  setAccountBeingMessaged,
+  setAccountClicked,
+  room_id,
+  setRoomId,
+}) => {
+
   return (
-    <div className='messagesProfileCard'>
+    <div 
+    className='messagesProfileCard'
+    onClick={()=> {
+      setAccountBeingMessaged(userObj)
+      setAccountClicked(true)
+      setRoomId(room_id)
+    }}
+    >
         <PersonIcon sx={{ fontSize: 70 }}/>
 
         <div>
-            <div>Reza Amraei @RezaAmraei</div>
+            <div>{userObj.first_name} {userObj.last_name} @{userObj.username}</div>
             <div>Hey how is your day going</div>
         </div>
     </div>

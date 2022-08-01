@@ -1,15 +1,33 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/followersAndFollowingModal.css";
+import { useNavigate } from "react-router-dom";
+import SearchIcon from '@mui/icons-material/Search';
+import axios from 'axios';
+import route from "../utils/server_router";
 
-const FollowersAndFollowingModal = (props) => {
+const FollowersAndFollowingModal = ({
+  num,
+  relationship,
+  handle = false,
+  setAccountClicked,
+  setAccountBeingMessaged,
+  user_id,
+}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const navigate = useNavigate(); 
+    const [searchArr, setSearchArr] = useState([]) 
+    const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    setSearchArr([...relationship])
+  }, [relationship])
+  
 
     const style = {
         position: 'absolute',
@@ -18,32 +36,78 @@ const FollowersAndFollowingModal = (props) => {
         transform: 'translate(-50%, -50%)',
         width: 500,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        borderRadius : "25px",
         boxShadow: 24,
       };
 
+      let handleFunction = (item)=>{
+        if(handle){
+          setAccountClicked(true)
+          setAccountBeingMessaged(item)
+          axios.post(route + "/api/create/room",{
+            curr_user_id : user_id,
+            other_user_id : item.id
+          })
+          .then(res=>console.log(res.data))
+          .catch(e=>console.error(e))
+        }else{
+          navigate("/profile/page/" + item.id)
+        }
+      }
+
+        
+        
+      
   return (
     <div>
-    <Button onClick={handleOpen}>{props.num}</Button>
+    <Button onClick={handleOpen}>{num}</Button>
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={(event)=>{
+        event.stopPropagation();
+          handleClose();
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        {props.relationship.map(item=>{
+        {searchArr && 
+        <div className='searchTopLayer'>
+          <SearchIcon sx={{color : "rgb(29,155,240)"}}/>
+          <input 
+            className='searchModalInput'
+            placeholder='Search for someone!'
+            onChange={(e)=>{
+              setSearchArr(relationship.filter(person => {
+
+                return person.first_name.slice(0 , e.target.value.length).toUpperCase() == e.target.value.toUpperCase() || person.username.slice(0 , e.target.value.length).toUpperCase() == e.target.value.toUpperCase()
+              }))
+            }}
+          />
+          </div>}
+        {searchArr.map(item=>{
             return(
-                <Typography key={item.id} id="modal-modal-description" sx={{ mt: 2 }} className="modalProfileCard">
-                {/* <div className='account'>{item.first_name} {item.last_name}</div> */}
-                <div className='account'>
-                    <div><PersonIcon sx={{ fontSize: 65 }}/></div>
-                    <div className='names'>
-                      <p className='accountName'>{item.first_name} {item.last_name}</p>
-                        <p>@{item.username}</p>
+                <div 
+                key={item.id} 
+                id="modal-modal-description" 
+                sx={{ mt: 2 }} 
+                className="modalProfileCard"
+                onClick={()=> {
+                  handleFunction(item)
+                  handleClose();
+                }}
+                >
+
+                    <div className='account'>
+                        <div><PersonIcon sx={{ fontSize: 70 }}/></div>
+                        <div className='names'>
+                          <div className='followerModalAccountName followerModalFont'>
+                            {item.first_name} {item.last_name}
+                          </div>
+                          <div className='followerModalFont followerModalUsername'>@{item.username}</div>
+                        </div>
                     </div>
-                </div>
-              </Typography>
+              </div>
             )
         })}
 

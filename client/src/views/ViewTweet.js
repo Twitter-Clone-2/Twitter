@@ -11,6 +11,7 @@ const ViewTweet = () => {
   const [tweet, setTweet] = useState({});
   const [replies, setReplies] = useState([]);
   const [replyLikes, setReplyLikes] = useState([]);
+  const [replyReplies, setReplyReplies] = useState([])
 
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const ViewTweet = () => {
     setLikes(data.likes);
     setReplies(data.replies);
     setReplyLikes(data.replyLikes);
+    setReplyReplies(data.replyReplies);
    } )
   }, [id])
   return (
@@ -31,6 +33,7 @@ const ViewTweet = () => {
       likes={likes}
       replies={replies}
       replyLikes={replyLikes}
+      replyReplies={replyReplies}
       />}
     </>
   )

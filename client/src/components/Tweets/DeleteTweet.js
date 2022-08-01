@@ -50,7 +50,13 @@ const DeleteTweet = ({tweet_id, fetchAllTweetsForFeed}) => {
             event.stopPropagation();}}/>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={(event)=>{
+          event.stopPropagation();
+          handleClose();
+      }}
+      onClick={(event)=>{
+        event.stopPropagation();
+    }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

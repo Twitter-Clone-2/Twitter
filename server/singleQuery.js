@@ -1,9 +1,10 @@
-const DATABASE_URL = ""
 //go into .env for DATABASE_URL
 const { Pool } = require('pg');
+require("dotenv").config();
+
 
 const db = new Pool({
-  connectionString: DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
@@ -71,7 +72,7 @@ REFERENCES accounts (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
 
-const createReply = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('You ass', 1 , 24);`
+const createReply = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('You're Great', 1 , 24);`
 //                  Likes Queries
 const createLikesTable = `CREATE TABLE IF NOT EXISTS likes
 (
@@ -134,4 +135,65 @@ const selectRelationships = `SELECT * FROM relationship;`;
 const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES (1,2);`;
 
 const deleteRelationship = `DELETE FROM relationship WHERE id = 23`;
-//runQuery(createReply);
+
+//                  Messages 
+
+const createMessagesTable = `CREATE TABLE IF NOT EXISTS messages
+(
+    id SERIAL PRIMARY KEY,
+    user_sent_message integer,
+    message character varying(240) NOT NULL,
+    room_number integer,
+    liked integer,
+    created_at timestamp without time zone DEFAULT now()
+);`
+
+const alterMessagesFKAccount = `ALTER TABLE IF EXISTS messages
+ADD CONSTRAINT fk_accounts FOREIGN KEY (user_sent_message)
+REFERENCES public.accounts (id) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION;`
+
+const alterMessagesFKRoom = `ALTER TABLE IF EXISTS messages
+ADD CONSTRAINT fk_room FOREIGN KEY (room_number)
+REFERENCES public.room (id) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION;`
+//                  Room for socket io
+const createRoomTable = `CREATE TABLE IF NOT EXISTS room
+(
+    id SERIAL PRIMARY KEY,
+    room_name character varying(60),
+    created_at timestamp without time zone DEFAULT now()
+);`
+
+const insertValueIntoRoomForTest = `INSERT INTO room DEFAULT VALUES`;
+
+const test = `INSERT INTO room DEFAULT VALUES RETURNING id;`
+
+//                     Union Table for Messages and Room
+const createRoomAndMessagesUnionTable = `CREATE TABLE IF NOT EXISTS room_and_messages
+(
+    id SERIAL PRIMARY KEY,
+    room_id integer,
+    user_id integer,
+    created_at timestamp without time zone DEFAULT now()
+);`
+
+const alterMessagesAndRoomFKAccount = `ALTER TABLE IF EXISTS room_and_messages
+ADD CONSTRAINT fk_accounts FOREIGN KEY (user_id)
+REFERENCES public.accounts (id) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION;`
+
+const alterMessagesAndRoomFKRoom = `ALTER TABLE IF EXISTS room_and_messages
+ADD CONSTRAINT fk_room FOREIGN KEY (room_id)
+REFERENCES public.room (id) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION;`
+
+const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`
+
+const delete1 = "DELETE FROM accounts WHERE id = 3";
+//const delete1 = "DELETE FROM likes WHERE tweets_id = 23";
+runQuery(delete1);

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import CachedIcon from "@mui/icons-material/Cached";
 import axios from "axios";
 import route from "../../utils/server_router";
 import { useParams } from "react-router-dom";
+import ReplyModal from "./ReplyModal";
 
 export default function TweetActions({
   tweet,
@@ -19,14 +19,14 @@ export default function TweetActions({
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(tweetIsLiked);
   const [retweetCount, setRetweetCount] = useState(0);
-  const [replyCount, setReplyCount] = useState(0);
+  const [replyCount, setReplyCount] = useState(replies.length || 0);
   const {id} = useParams();
 
   useEffect(() => {
-    if(displayIconCount){
-      setReplyCount(replies.length);
-      setCount(likes.length);
-    }
+      if(displayIconCount){  
+        setCount(likes.length);
+        setReplyCount(replies.length);
+      }
   }, [id])
 
   
@@ -38,7 +38,7 @@ export default function TweetActions({
           accounts_id,
           tweets_id,
         })
-        .then((res) => {
+        .then(() => {
           setLiked(true);
           setCount((prev) => prev + 1);
         })
@@ -53,7 +53,7 @@ export default function TweetActions({
           accounts_id,
           tweets_id,
         })
-        .then((res) => {
+        .then(() => {
           setLiked(false);
           setCount((prev) => prev - 1);
         })
@@ -104,16 +104,17 @@ export default function TweetActions({
         </div>
 
         <div className="flex replyCol">
-          <ChatBubbleOutlineIcon
-            onClick={(event) => {
-              event.stopPropagation();
-              console.log("comment was clicked");
-            }}
+          <ReplyModal 
+          tweet_id={tweet.id}
+          first_name={tweet.first_name}
+          last_name={tweet.last_name}
+          username={tweet.username}
+          created_at={tweet.created_at}
+          content={tweet.content}
           />
-          <div className="replyCount">
-            {" "}
-            {replyCount === 0 ? "" : replyCount}{" "}
-          </div>
+          {!displayIconCount && Boolean(replyCount) && <div className="replyCount">
+            {replyCount === 0 ? "" : replyCount}
+          </div>}
         </div>
 
         <div className="flex retweetCol">
