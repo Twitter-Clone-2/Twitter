@@ -17,6 +17,7 @@ const Profile = () => {
   const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true)
   const [followingStatus, setFollowingStatus] = useState(false);
   const user = JSON.parse(localStorage.getItem("currUser"));
+  const [currentUser, setCurrentUser] = useState(user)
 
   const [editProfile, setEditProfile] = useState(false);
   const [settings, setSettings] = useState(false);
@@ -37,6 +38,7 @@ const Profile = () => {
       following : curr_id
     }).then(res=>{
       setFollowersInfo(res.data.rows)
+      setFollowingStatus(res.data.rows.filter((account) => account.id == user.id).length)
       setNumOfFollowers(res.data.rows.length)
     }).catch(e=>{
       console.log(e);
@@ -62,11 +64,33 @@ const Profile = () => {
     })
     .catch((e) => console.log(e));
   }
-  
+
+  const grabUserDetails = function(id){
+    axios
+      .post(route + "/api/user", {
+        id
+      })
+      .then(({ data }) => {
+        setCurrentUser(data[0]);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
   useEffect(() => {
-    
-    grabRelationshipsAndTweets( id ? id : user.id);
-  }, []);
+    if(id){
+      if (user.id == id) {
+        navigate("/profile/page");
+      }
+      grabRelationshipsAndTweets(id);
+      grabUserDetails(id);
+      setUserProfileCheck(false);
+      
+    }else{
+      grabRelationshipsAndTweets(user.id);
+      setUserProfileCheck(true);
+    }
+  }, [id]);
 
   const followButton = () => {
     //unfollow
@@ -93,16 +117,14 @@ const Profile = () => {
     }
   };
 
-    if (user.id === id) {
-      navigate("/profile/page");
-    }
+    
   return (
     <div id="profilePage">
       <div id="profilePageUser">
         <div id="profilePageHeader">
           <div>
             <h3>
-              {user.first_name} {user.last_name}
+              {currentUser.first_name} {currentUser.last_name}
             </h3>
             <p>{allTweets} tweets</p>
           </div>
@@ -123,11 +145,11 @@ const Profile = () => {
             </button>}
           </div>
           <h2>
-            {user.first_name} {user.last_name}
+            {currentUser.first_name} {currentUser.last_name}
           </h2>
-          <p>{user.bio}</p>
-          <p>@{user.username}</p>
-          <p>Joined , {format(new Date(user.created_at), "PPpp")}</p>
+          <p>{currentUser.bio}</p>
+          <p>@{currentUser.username}</p>
+          <p>Joined , {format(new Date(currentUser.created_at), "PPpp")}</p>
           <div className="flex" id="follows">
             <div>
                <FollowersAndFollowingModal

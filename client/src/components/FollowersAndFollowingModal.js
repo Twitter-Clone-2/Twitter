@@ -40,17 +40,18 @@ const FollowersAndFollowingModal = ({
         boxShadow: 24,
       };
 
-      let handleFunction = (id)=>{
+      let handleFunction = (item)=>{
         if(handle){
           setAccountClicked(true)
+          setAccountBeingMessaged(item)
           axios.post(route + "/api/create/room",{
             curr_user_id : user_id,
-            other_user_id : id
+            other_user_id : item.id
           })
           .then(res=>console.log(res.data))
           .catch(e=>console.error(e))
         }else{
-          navigate("/profile/page/" + id)
+          navigate("/profile/page/" + item.id)
         }
       }
 
@@ -62,7 +63,10 @@ const FollowersAndFollowingModal = ({
     <Button onClick={handleOpen}>{num}</Button>
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={(event)=>{
+        event.stopPropagation();
+          handleClose();
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -89,8 +93,8 @@ const FollowersAndFollowingModal = ({
                 sx={{ mt: 2 }} 
                 className="modalProfileCard"
                 onClick={()=> {
-                  handleFunction(item.id)
-                  setAccountBeingMessaged(item)
+                  handleFunction(item)
+                  handleClose();
                 }}
                 >
 
