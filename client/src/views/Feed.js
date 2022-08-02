@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
+import InputBase from '@mui/material/InputBase';
 
-const Feed = (props) => {
+const Feed = () => {
   const navigate = useNavigate();
-  const id = JSON.parse(localStorage.getItem("currUser")).id;
+  const user = JSON.parse(localStorage.getItem("currUser"));
   const [tweet, setTweet] = useState("");
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -16,7 +17,7 @@ const Feed = (props) => {
 
   const fetchAllTweetsForFeed = () =>{
     axios
-      .get(route + "/api/findAllTweetsFromFollowing/" + id)
+      .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
@@ -39,7 +40,7 @@ const Feed = (props) => {
     axios
       .post(route + "/api/create/tweet", {
         tweet,
-        id,
+        id : user.id,
       })
       .then(() =>{
         setTweet("");
@@ -58,15 +59,24 @@ const Feed = (props) => {
               onClick={takeToProfile}
               sx={{ fontSize: 100 }}
             />
-            <input
-              style={{ flexGrow: 1 }}
-              placeholder="What's happening?"
-              onChange={(e) => setTweet(e.target.value)}
-              value={tweet}
+
+            <InputBase 
+            placeholder="What's happening?"
+            onChange={(e) => setTweet(e.target.value)}
+            value={tweet}
+            multiline={true} 
+            sx={{
+              fontSize:"33px",
+              fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
+              width: "100%",
+              flexGrow : "1",
+              }}
             />
             <button onClick={createTweet} id="feedTweetButton" className={tweet.length == 0 ? "incompleteColor" : ""}>Tweet</button>
           </div>
+
         </div>
+
         <div id="content">
           {feed.map((tweet, i) =>
           <Tweet
@@ -76,6 +86,7 @@ const Feed = (props) => {
           key={i}
           fetchAllTweetsForFeed={fetchAllTweetsForFeed}
           replies={replies}
+          feed={feed}
           />)}
         </div>
       </div>

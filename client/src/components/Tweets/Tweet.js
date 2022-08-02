@@ -12,6 +12,7 @@ export default function Tweet({
   replyingTo = false,
   fetchAllTweetsForFeed,
   replies,
+  feed,
  }) {
   const navigate = useNavigate();
   const id = JSON.parse(localStorage.getItem("currUser")).id;
@@ -57,7 +58,12 @@ export default function Tweet({
         onClick={(event) => event.stopPropagation()}
         />}
       </div>
-      <TweetActions tweet={tweet} likes={filteredLikes} replies={filteredReplies}/>
+      <TweetActions 
+      tweet={tweet} 
+      likes={filteredLikes} 
+      replies={filteredReplies}
+      feed={feed}
+      />
     </div>
   );
 }

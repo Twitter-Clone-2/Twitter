@@ -11,6 +11,7 @@ export default function TweetActions({
   likes,
   displayIconCount = false,
   replies,
+  feed,
 }) {
   const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
   const tweetIsLiked = likes.some(
@@ -23,11 +24,16 @@ export default function TweetActions({
   const {id} = useParams();
 
   useEffect(() => {
+      setCount(likes.length)
+      setLiked(tweetIsLiked)
+      setReplyCount(replies.length || 0)
+
       if(displayIconCount){  
         setCount(likes.length);
         setReplyCount(replies.length);
+        console.log("hi")
       }
-  }, [id])
+  }, [id, feed])
 
   
 
