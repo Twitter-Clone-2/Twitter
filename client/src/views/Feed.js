@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
+import InputBase from '@mui/material/InputBase';
 
-const Feed = (props) => {
+const Feed = () => {
   const navigate = useNavigate();
   const id = JSON.parse(localStorage.getItem("currUser")).id;
   const [tweet, setTweet] = useState("");
@@ -58,15 +59,24 @@ const Feed = (props) => {
               onClick={takeToProfile}
               sx={{ fontSize: 100 }}
             />
-            <input
-              style={{ flexGrow: 1 }}
-              placeholder="What's happening?"
-              onChange={(e) => setTweet(e.target.value)}
-              value={tweet}
+
+            <InputBase 
+            placeholder="What's happening?"
+            onChange={(e) => setTweet(e.target.value)}
+            value={tweet}
+            multiline={true} 
+            sx={{
+              fontSize:"33px",
+              fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
+              width: "100%",
+              flexGrow : "1",
+              }}
             />
             <button onClick={createTweet} id="feedTweetButton" className={tweet.length == 0 ? "incompleteColor" : ""}>Tweet</button>
           </div>
+
         </div>
+
         <div id="content">
           {feed.map((tweet, i) =>
           <Tweet
