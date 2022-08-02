@@ -9,7 +9,7 @@ import InputBase from '@mui/material/InputBase';
 
 const Feed = () => {
   const navigate = useNavigate();
-  const id = JSON.parse(localStorage.getItem("currUser")).id;
+  const user = JSON.parse(localStorage.getItem("currUser"));
   const [tweet, setTweet] = useState("");
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -17,7 +17,7 @@ const Feed = () => {
 
   const fetchAllTweetsForFeed = () =>{
     axios
-      .get(route + "/api/findAllTweetsFromFollowing/" + id)
+      .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at)
         data.tweets.reverse();
@@ -40,7 +40,7 @@ const Feed = () => {
     axios
       .post(route + "/api/create/tweet", {
         tweet,
-        id,
+        id : user.id,
       })
       .then(() =>{
         setTweet("");
@@ -86,6 +86,7 @@ const Feed = () => {
           key={i}
           fetchAllTweetsForFeed={fetchAllTweetsForFeed}
           replies={replies}
+          feed={feed}
           />)}
         </div>
       </div>
