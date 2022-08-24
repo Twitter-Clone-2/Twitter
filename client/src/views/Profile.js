@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/ProfilePage.css";
 import axios from "axios";
-import Logout from "../components/Logout";
-import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
@@ -148,11 +146,18 @@ const Profile = () => {
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
             {userProfileCheck ? (
               <div onClick={() => setEditProfile(true)}>
-                <button id="profileEditProfileButton">Edit Profile</button>
+                <button className="profileEditOrFollowButton">
+                  Edit Profile
+                </button>
               </div>
             ) : (
-              <button onClick={() => followButton()}>
-                {followingStatus ? "Unfollow" : "Follow"}
+              <button
+                onClick={() => followButton()}
+                className={`status ${followingStatus ? "following" : "follow"}`}
+              >
+                <span id="statusText">
+                  {followingStatus ? "Following" : "Follow"}
+                </span>
               </button>
             )}
           </div>
