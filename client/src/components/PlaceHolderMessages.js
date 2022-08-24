@@ -7,6 +7,8 @@ const PlaceHolderMessages = ({
   setAccountClicked,
   setAccountBeingMessaged,
   user_id,
+  conversations,
+  setRoomId,
 }) => {
   return (
     <div className="messagesConvoSection">
@@ -20,6 +22,8 @@ const PlaceHolderMessages = ({
             setAccountClicked={setAccountClicked}
             setAccountBeingMessaged={setAccountBeingMessaged}
             user_id={user_id}
+            conversations={conversations}
+            setRoomId={setRoomId}
             />
         </div>
   </div>

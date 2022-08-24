@@ -16,6 +16,8 @@ const FollowersAndFollowingModal = ({
   setAccountClicked,
   setAccountBeingMessaged,
   user_id,
+  conversations=[],
+  setRoomId = null
 }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -42,13 +44,16 @@ const FollowersAndFollowingModal = ({
 
       let handleFunction = (item)=>{
         if(handle){
-          setAccountClicked(true)
-          setAccountBeingMessaged(item)
           axios.post(route + "/api/create/room",{
             curr_user_id : user_id,
             other_user_id : item.id
           })
-          .then(res=>console.log(res.data))
+          .then(res=>{
+              console.log(res.data[0].room_id)
+              setAccountClicked(true)
+              setAccountBeingMessaged(item)
+              setRoomId(res.data[0].room_id)
+          })
           .catch(e=>console.error(e))
         }else{
           navigate("/profile/page/" + item.id)

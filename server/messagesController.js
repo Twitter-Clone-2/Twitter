@@ -35,6 +35,7 @@ async function createRoom(req,res){
         resultForAllRooms = await db.query(queryToFindAllRoomsUserIsIn);
         roomIdArr = resultForAllRooms.rows.map((room) => room.room_id);
         const queryToGetOtherUsersInTheSameRoom = `SELECT * FROM room_and_messages WHERE room_id = ANY(ARRAY[${roomIdArr}]) AND user_id != ${curr_user_id};`;
+
         resultForAllOtherUsers = await db.query(queryToGetOtherUsersInTheSameRoom);
         otherUsersArr = resultForAllOtherUsers.rows.filter((user)=> user.user_id == other_user_id);
         if(otherUsersArr.length === 0){
@@ -45,12 +46,10 @@ async function createRoom(req,res){
             (${id.rows[0].id}, ${other_user_id});`;
 
             await db.query(queryToAddUsersToNewRoom)
-            console.log("new room created");
             res.status(200).send(true);
             endPool(db)
         }else{
-            res.status(200).send(false)
-            console.log("room already exist")
+            res.status(200).send(otherUsersArr)
             endPool(db)
         }
     }catch(e){

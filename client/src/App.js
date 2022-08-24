@@ -8,27 +8,24 @@ import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
 import Messages from "./views/Messages";
+import Test from "./views/Test";
 
 function App() {
-
   return (
     <div className={"mainContainer"}>
       <BrowserRouter>
-      <IconNav/>
+        <IconNav />
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/profile/page" element={<Profile />} />
-          <Route
-            exact
-            path="/profile/page/:id"
-            element={<Profile/>}
-          />
+          <Route exact path="/profile/page/:id" element={<Profile />} />
           <Route exact path="/main/feed" element={<Feed />} />
-          <Route exact path = "/tweet/:id" element={<ViewTweet/>}/>
-          <Route exact path="/messages" element={<Messages/>}/>
+          <Route exact path="/tweet/:id" element={<ViewTweet />} />
+          <Route exact path="/messages" element={<Messages />} />
+          <Route exact path="/test" element={<Test />} />
         </Routes>
-        <NewsAPI/>
+        <NewsAPI />
       </BrowserRouter>
     </div>
   );

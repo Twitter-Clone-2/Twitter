@@ -64,6 +64,8 @@ const Messages = () => {
       setAccountClicked={setAccountClicked}
       setAccountBeingMessaged={setAccountBeingMessaged}
       user_id={user.id}
+      conversations={conversations}
+      setRoomId={setRoomId}
       />}
 
       {accountClicked && <Conversation 
