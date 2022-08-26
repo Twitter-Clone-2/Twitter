@@ -24,7 +24,7 @@
   position: relative;
   margin: 10px 0px 15px 0px;
 }
-.profileEditOrFollowButton {
+.profileEdit {
   border-radius: 25px;
   border: 2px solid rgb(207, 217, 222);
   background-color: white;
@@ -32,7 +32,11 @@
   font-size: 18px;
   font-weight: 700;
   padding: 5px 20px;
-  width: 130px;
+}
+
+.profileEdit:hover {
+  cursor: pointer;
+  background-color: rgb(231, 231, 231);
 }
 .status {
   border-radius: 25px;

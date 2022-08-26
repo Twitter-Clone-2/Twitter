@@ -1,0 +1,46 @@
+.editProfileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+.editProfileLeftHeader {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  font-size: 22px;
+  font-weight: 700;
+}
+#editProfileSaveButton {
+  border: none;
+  border-radius: 25px;
+  background-color: black;
+  color: white;
+  padding: 8px 15px;
+  font-size: 18px;
+  font-weight: 700;
+}
+#editProfileSaveButton:hover {
+  cursor: pointer;
+  background-color: rgb(43, 43, 43);
+}
+#editProfileGreyBackground {
+  background-color: rgb(178, 178, 178);
+  height: 250px;
+}
+
+.editProfileCameraIcon {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 100px;
+  bottom: 0;
+  margin: auto auto;
+  border-radius: 50px;
+  background-color: rgb(87, 87, 87);
+  padding: 10px;
+}
+.editProfileCameraIcon:hover {
+  cursor: pointer;
+  background-color: rgb(110, 110, 110);
+}

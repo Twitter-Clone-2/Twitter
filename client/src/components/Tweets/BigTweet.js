@@ -8,29 +8,29 @@ import TweetActions from "./TweetActions";
 import ReplyBox from "./ReplyBox";
 import Tweet from "./Tweet";
 
-const BigTweet = ({ tweet, likes, replies, replyLikes,replyReplies }) => {
+const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
   const navigate = useNavigate();
 
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
 
-  const backToFeed = () =>{
+  const backToFeed = () => {
     navigate(-1);
-  }
+  };
   return (
     <div className="bigTweet">
       <div className="bigTweetHeader">
         <KeyboardBackspaceIcon
           className="backButton  cursorPointer"
           sx={{ fontSize: 40 }}
-          onClick={()=>backToFeed()}
+          onClick={() => backToFeed()}
         />
         <div id="thread">Tweet</div>
       </div>
 
       <div className="bigTweetPicAndNames paddingLeft">
-        <div className="leftTweet cursorPointer" >
+        <div className="leftTweet cursorPointer">
           <PersonIcon
             sx={{ fontSize: 60 }}
             onClick={() => takeToProfile(tweet.accounts_id)}
@@ -38,10 +38,16 @@ const BigTweet = ({ tweet, likes, replies, replyLikes,replyReplies }) => {
         </div>
 
         <div>
-          <p className="bold tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
+          <p
+            className="bold tweetNames"
+            onClick={() => takeToProfile(tweet.accounts_id)}
+          >
             {tweet.first_name} {tweet.last_name}
           </p>
-          <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
+          <p
+            className="tweetNames"
+            onClick={() => takeToProfile(tweet.accounts_id)}
+          >
             @{tweet.username}
           </p>
         </div>
@@ -53,11 +59,24 @@ const BigTweet = ({ tweet, likes, replies, replyLikes,replyReplies }) => {
         {format(new Date(tweet.created_at), "PPpp")}
       </div>
 
-      <TweetActions tweet={tweet} likes={likes} displayIconCount={true} replies={replies}/>
+      <TweetActions
+        tweet={tweet}
+        likes={likes}
+        displayIconCount={true}
+        replies={replies}
+      />
 
-      <ReplyBox tweet={tweet}/>
+      <ReplyBox tweet={tweet} />
 
-      {replies.map((reply, i) => <Tweet key={i} tweet={reply} likes={replyLikes} replyingTo={true} replies={replyReplies}/> )}
+      {replies.map((reply, i) => (
+        <Tweet
+          key={i}
+          tweet={reply}
+          likes={replyLikes}
+          replyingTo={true}
+          replies={replyReplies}
+        />
+      ))}
     </div>
   );
 };

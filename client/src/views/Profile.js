@@ -7,6 +7,7 @@ import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
 import { format } from "date-fns";
 import { useParams, useNavigate } from "react-router-dom";
+import EditProfile from "../components/EditProfile";
 
 const Profile = () => {
   let { id } = useParams();
@@ -146,9 +147,7 @@ const Profile = () => {
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
             {userProfileCheck ? (
               <div onClick={() => setEditProfile(true)}>
-                <button className="profileEditOrFollowButton">
-                  Edit Profile
-                </button>
+                <EditProfile />
               </div>
             ) : (
               <button
