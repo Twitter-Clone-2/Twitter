@@ -3,6 +3,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+  position: absolute;
+  width: 89.3%;
+  top: 0px;
+  background-color: rgb(255, 255, 255, 0.93);
+  z-index: 1;
 }
 .editProfileLeftHeader {
   display: flex;
@@ -36,32 +41,29 @@
   background-color: rgb(178, 178, 178);
   height: 250px;
   margin-bottom: 80px;
+  margin-top: 80px;
 }
 
 .editProfileCameraIcon {
   border-radius: 50px;
-  background-color: rgb(87, 87, 87);
+  background-color: rgb(87, 87, 87, 0.5);
   padding: 10px;
 }
 .editProfileCameraIcon:hover {
   cursor: pointer;
-  background-color: rgb(110, 110, 110);
+  background-color: rgb(110, 110, 110, 0.5);
 }
 
 #editProfileCameraIconBackgroundPic {
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-  bottom: 550px;
+  position: relative;
+  left: 275px;
+  top: 100px;
   margin: auto auto;
 }
 #editProfileCameraIconProfilePic {
-  position: absolute;
-  right: 440px;
-  left: 0;
-  top: 0;
-  bottom: 270px;
+  position: relative;
+  right: 103px;
+  bottom: 200px;
   margin: auto auto;
 }
 
@@ -69,10 +71,20 @@
   width: 97%;
   margin: 20px 10px;
 }
-
+.editProfileInput {
+  margin-top: 30px !important;
+}
 .editProfileProfilePicture {
-  position: absolute;
-  top: 28%;
+  position: relative;
+  bottom: 150px;
   border-radius: 50%;
   border: 3px solid white;
+}
+.editProfileScrollBar {
+  height: 800px;
+  overflow-y: auto;
+}
+
+.editProfileRemoveMargin {
+  margin-bottom: -180px;
 }

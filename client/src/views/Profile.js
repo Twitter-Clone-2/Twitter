@@ -13,7 +13,7 @@ const Profile = () => {
   let { id } = useParams();
   const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true);
   const [followingStatus, setFollowingStatus] = useState(false);
-  const user = JSON.parse(localStorage.getItem("currUser"));
+  let user = JSON.parse(localStorage.getItem("currUser"));
   const [currentUser, setCurrentUser] = useState(user);
 
   const [editProfile, setEditProfile] = useState(false);
@@ -82,6 +82,7 @@ const Profile = () => {
         console.error(e);
       });
   };
+
   useEffect(() => {
     if (id) {
       if (user.id == id) {
@@ -95,6 +96,10 @@ const Profile = () => {
       setUserProfileCheck(true);
     }
   }, [id]);
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("currUser"));
+  }, [localStorage.getItem("currUser")]);
 
   const followButton = () => {
     //unfollow
@@ -147,7 +152,7 @@ const Profile = () => {
             <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
             {userProfileCheck ? (
               <div onClick={() => setEditProfile(true)}>
-                <EditProfile />
+                <EditProfile user={user} />
               </div>
             ) : (
               <button

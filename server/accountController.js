@@ -114,6 +114,29 @@ async function deleteUser(req, res) {
   }
 }
 
+async function updateAccountInformation(req, res) {
+  const db = await startPool();
+  const { id, first_name, last_name, username, bio, location } = req.body;
+  const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}' WHERE id = ${id} `;
+
+  console.log(query);
+  try {
+    await db.query(query);
+    try {
+      queryForAccountDetails = `SELECT * FROM accounts where id = ${id}`;
+      results = await db.query(queryForAccountDetails);
+      res.status(200).send(results);
+      endPool(db);
+    } catch (e) {
+      endPool(db);
+    }
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400).send(false);
+    endPool(db);
+  }
+}
+
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -121,4 +144,5 @@ module.exports = {
   login,
   deleteUser,
   getOneUserByEmail,
+  updateAccountInformation,
 };

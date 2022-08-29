@@ -14,6 +14,7 @@ const {
   login,
   deleteUser,
   getOneUserByEmail,
+  updateAccountInformation,
 } = require("./accountController");
 
 const {
@@ -44,6 +45,7 @@ const {
 } = require("./messagesController");
 
 app.options("*", cors());
+
 //get all users
 app.get("/api/users", cors(), getAllUsers);
 // get one user
@@ -51,6 +53,7 @@ app.get("/api/users", cors(), getAllUsers);
 app.post("/api/user", cors(), getOneUser);
 //email
 app.post("/api/user/email", cors(), getOneUserByEmail);
+app.put("/api/update/account", cors(), updateAccountInformation);
 //login
 app.post("/api/login", cors(), login);
 //register
