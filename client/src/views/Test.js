@@ -34,7 +34,7 @@ const Test = () => {
 
   async function onChange(e) {
     const file = e.target.files[0];
-    const result = await Storage.put("filename.png", file);
+    const result = await Storage.put(file.name, file);
     console.log("Result : ", result);
     fetchImages();
   }

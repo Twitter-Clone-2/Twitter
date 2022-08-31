@@ -23,7 +23,7 @@ const style = {
   overflow: "hidden",
 };
 
-export default function EditProfile({ user }) {
+export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,22 +32,68 @@ export default function EditProfile({ user }) {
   const [username, setUsername] = useState(user.username);
   const [bio, setBio] = useState(user.bio);
   const [location, setLocation] = useState(user.location);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(
+    "Please enter fields correctly"
+  );
 
   function updateAccount() {
-    axios
-      .put(route + "/api/update/account", {
-        id: user.id,
-        first_name: firstName,
-        last_name: lastName,
-        username,
-        bio,
-        location,
-      })
-      .then((res) => {
-        localStorage.setItem("currUser", JSON.stringify(res.data.rows[0]));
-        handleClose();
-      })
-      .catch((e) => console.error(e));
+    if (
+      firstName.length == 0 ||
+      lastName.length == 0 ||
+      username.length == 0 ||
+      firstName.length > 50 ||
+      lastName.length > 50 ||
+      username.length > 50 ||
+      location.length > 50 ||
+      bio.length > 150
+    ) {
+      setError(true);
+    } else {
+      axios
+        .get(route + "/api/user/" + username)
+        .then((res) => {
+          if (res.data.rows.length === 0 || res.data.rows[0].id == user.id) {
+            axios
+              .put(route + "/api/update/account", {
+                id: user.id,
+                first_name: firstName,
+                last_name: lastName,
+                username,
+                bio,
+                location,
+              })
+              .then((res) => {
+                localStorage.setItem(
+                  "currUser",
+                  JSON.stringify(res.data.rows[0])
+                );
+                setCurrentUser(res.data.rows[0]);
+                setError(false);
+                setFeed(
+                  feed.map((tweet) => ({
+                    accounts_id: tweet.accounts_id,
+                    content: tweet.content,
+                    created_at: tweet.created_at,
+                    first_name: res.data.rows[0].first_name,
+                    id: tweet.id,
+                    last_name: res.data.rows[0].last_name,
+                    reply_id: tweet.reply_id,
+                    username: res.data.rows[0].username,
+                  }))
+                );
+                handleClose();
+              })
+              .catch((e) => console.error(e));
+          } else {
+            setError(true);
+            setErrorMessage("Username has already been taken");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   }
 
   return (
@@ -96,6 +142,9 @@ export default function EditProfile({ user }) {
               </div>
 
               <div className="editProfileInputs">
+                {error && (
+                  <div id="editProfileErrorMessage">{errorMessage}</div>
+                )}
                 <TextField
                   id="outlined-textarea"
                   className="editProfileInput"
@@ -104,6 +153,11 @@ export default function EditProfile({ user }) {
                   onChange={(e) => setfirstName(e.target.value)}
                   multiline
                   fullWidth
+                  error={
+                    firstName.length > 50 || firstName.length == 0
+                      ? true
+                      : false
+                  }
                 />
 
                 <TextField
@@ -114,6 +168,9 @@ export default function EditProfile({ user }) {
                   onChange={(e) => setLastName(e.target.value)}
                   multiline
                   fullWidth
+                  error={
+                    lastName.length > 50 || lastName.length == 0 ? true : false
+                  }
                 />
 
                 <TextField
@@ -124,6 +181,9 @@ export default function EditProfile({ user }) {
                   onChange={(e) => setUsername(e.target.value)}
                   multiline
                   fullWidth
+                  error={
+                    username.length > 50 || username.length == 0 ? true : false
+                  }
                 />
                 <TextField
                   id="outlined-textarea"
@@ -134,6 +194,7 @@ export default function EditProfile({ user }) {
                   multiline
                   fullWidth
                   rows={3}
+                  error={username.length > 150 ? true : false}
                 />
                 <TextField
                   id="outlined-textarea"
@@ -143,6 +204,9 @@ export default function EditProfile({ user }) {
                   onChange={(e) => setLocation(e.target.value)}
                   multiline
                   fullWidth
+                  error={
+                    location.length > 50 || location.length == 0 ? true : false
+                  }
                 />
               </div>
             </div>

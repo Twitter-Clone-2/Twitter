@@ -47,6 +47,22 @@ async function getOneUserByEmail(req, res) {
   }
 }
 
+async function getOneUserByUsername(req, res) {
+  const db = await startPool();
+  const { username } = req.params;
+  const query = `SELECT * FROM accounts where username = '${username}';`;
+
+  try {
+    const results = await db.query(query);
+    res.status(200).send(results);
+    endPool(db);
+  } catch (e) {
+    endPool(db);
+    res.status(400).send(false);
+    console.error(e.stack);
+  }
+}
+
 async function register(req, res) {
   const db = await startPool();
   let { first_name, last_name, email, password, username, bio, location } =
@@ -145,4 +161,5 @@ module.exports = {
   deleteUser,
   getOneUserByEmail,
   updateAccountInformation,
+  getOneUserByUsername,
 };

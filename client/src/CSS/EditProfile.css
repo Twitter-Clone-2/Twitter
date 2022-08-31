@@ -88,3 +88,9 @@
 .editProfileRemoveMargin {
   margin-bottom: -180px;
 }
+#editProfileErrorMessage {
+  color: rgb(255, 81, 81);
+  font-size: 20px;
+  margin: 20px 10px 5px 10px;
+  font-weight: 700;
+}
