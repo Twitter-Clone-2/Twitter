@@ -1,42 +1,218 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import CloseIcon from "@mui/icons-material/Close";
+import TextField from "@mui/material/TextField";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/EditProfile.css";
+import route from "../utils/server_router";
+import axios from "axios";
 
-const EditProfile = (props) => {
-  return (
-    <body class="center">
-      <p class="pic">PROFILE IMAGE </p>
-
-      <form class="">
-        <div class="input ">
-          <input type="text" className="text" placeholder="Name" />
-        </div>
-
-        <div class="input ">
-          <input type="text" className="text" placeholder="Bio:" />
-        </div>
-
-        <div class="input ">
-          <input type="text" className="text" placeholder="Location:" />
-        </div>
-
-        <button className="edit-btn">Submit</button>
-      </form>
-
-      <button
-        className="edit-btn btm"
-        onClick={() => {
-          props.setEditProfile(false);
-          props.setSettings(true);
-        }}
-      >
-        Adjust Your Settings!
-      </button>
-      <br />
-      <button className="cancel" onClick={() => props.setEditProfile(false)}>
-        Cancel
-      </button>
-    </body>
-  );
+const style = {
+  position: "absolute",
+  top: "35%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "background.paper",
+  border: "2px solid none",
+  borderRadius: 5,
+  boxShadow: 24,
+  p: 0.5,
+  overflow: "hidden",
 };
-export default EditProfile;
+
+export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [firstName, setfirstName] = useState(user.first_name);
+  const [lastName, setLastName] = useState(user.last_name);
+  const [username, setUsername] = useState(user.username);
+  const [bio, setBio] = useState(user.bio);
+  const [location, setLocation] = useState(user.location);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(
+    "Please enter fields correctly"
+  );
+
+  function updateAccount() {
+    if (
+      firstName.length == 0 ||
+      lastName.length == 0 ||
+      username.length == 0 ||
+      firstName.length > 50 ||
+      lastName.length > 50 ||
+      username.length > 50 ||
+      location.length > 50 ||
+      bio.length > 150
+    ) {
+      setError(true);
+    } else {
+      axios
+        .get(route + "/api/user/" + username)
+        .then((res) => {
+          if (res.data.rows.length === 0 || res.data.rows[0].id == user.id) {
+            axios
+              .put(route + "/api/update/account", {
+                id: user.id,
+                first_name: firstName,
+                last_name: lastName,
+                username,
+                bio,
+                location,
+              })
+              .then((res) => {
+                localStorage.setItem(
+                  "currUser",
+                  JSON.stringify(res.data.rows[0])
+                );
+                setCurrentUser(res.data.rows[0]);
+                setError(false);
+                setFeed(
+                  feed.map((tweet) => ({
+                    accounts_id: tweet.accounts_id,
+                    content: tweet.content,
+                    created_at: tweet.created_at,
+                    first_name: res.data.rows[0].first_name,
+                    id: tweet.id,
+                    last_name: res.data.rows[0].last_name,
+                    reply_id: tweet.reply_id,
+                    username: res.data.rows[0].username,
+                  }))
+                );
+                handleClose();
+              })
+              .catch((e) => console.error(e));
+          } else {
+            setError(true);
+            setErrorMessage("Username has already been taken");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }
+
+  return (
+    <div>
+      <button className="profileEdit" onClick={handleOpen}>
+        Edit Profile
+      </button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className="editProfileScrollBar">
+            <div>
+              <div className="editProfileHeader">
+                <div className="editProfileLeftHeader">
+                  <CloseIcon id="editProfileCloseIcon" onClick={handleClose} />
+                  <div> Edit Profile</div>
+                </div>
+
+                <button id="editProfileSaveButton" onClick={updateAccount}>
+                  Save
+                </button>
+              </div>
+
+              <div id="editProfileGreyBackground">
+                <CameraAltIcon
+                  className="editProfileCameraIcon"
+                  id="editProfileCameraIconBackgroundPic"
+                  sx={{ fontSize: "30px" }}
+                />
+              </div>
+
+              <div className="editProfileRemoveMargin">
+                <PersonIcon
+                  sx={{ fontSize: 150 }}
+                  className="editProfileProfilePicture"
+                />
+                <CameraAltIcon
+                  className="editProfileCameraIcon"
+                  id="editProfileCameraIconProfilePic"
+                  sx={{ fontSize: "30px" }}
+                />
+              </div>
+
+              <div className="editProfileInputs">
+                {error && (
+                  <div id="editProfileErrorMessage">{errorMessage}</div>
+                )}
+                <TextField
+                  id="outlined-textarea"
+                  className="editProfileInput"
+                  label="First Name"
+                  value={firstName}
+                  onChange={(e) => setfirstName(e.target.value)}
+                  multiline
+                  fullWidth
+                  error={
+                    firstName.length > 50 || firstName.length == 0
+                      ? true
+                      : false
+                  }
+                />
+
+                <TextField
+                  id="outlined-textarea"
+                  className="editProfileInput"
+                  label="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  multiline
+                  fullWidth
+                  error={
+                    lastName.length > 50 || lastName.length == 0 ? true : false
+                  }
+                />
+
+                <TextField
+                  id="outlined-textarea"
+                  className="editProfileInput"
+                  label="UserName"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  multiline
+                  fullWidth
+                  error={
+                    username.length > 50 || username.length == 0 ? true : false
+                  }
+                />
+                <TextField
+                  id="outlined-textarea"
+                  className="editProfileInput"
+                  label="Bio"
+                  value={bio ? bio : ""}
+                  onChange={(e) => setBio(e.target.value)}
+                  multiline
+                  fullWidth
+                  rows={3}
+                  error={username.length > 150 ? true : false}
+                />
+                <TextField
+                  id="outlined-textarea"
+                  className="editProfileInput"
+                  label="Location"
+                  value={location ? location : ""}
+                  onChange={(e) => setLocation(e.target.value)}
+                  multiline
+                  fullWidth
+                  error={
+                    location.length > 50 || location.length == 0 ? true : false
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+    </div>
+  );
+}

@@ -9,7 +9,7 @@ const FormUserName = ({
   bio,
   setBio,
   location,
-  setLocation
+  setLocation,
 }) => {
   return (
     <form className="accountDetails">

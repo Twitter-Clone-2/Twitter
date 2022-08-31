@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import "../CSS/Register.css";
-//VALIDATIONS STILL NEED TO BE ADDED FOR EVERYTHING
+
 const FormAccountInfo = ({
   firstName,
   setFirstName,
@@ -16,14 +16,14 @@ const FormAccountInfo = ({
   confirm,
   setConfirm,
 }) => {
-
   return (
     <div className="accountDetails">
       <div>
         <label>First Name </label>
-        <TextField 
-        value={firstName} 
-        onChange={(e) => setFirstName(e.target.value)} />
+        <TextField
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
       </div>
 
       <div>

@@ -3,7 +3,6 @@ const cors = require("cors");
 
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +14,11 @@ const {
   login,
   deleteUser,
   getOneUserByEmail,
+  updateAccountInformation,
+  getOneUserByUsername,
+} = require("./accountController");
+
+const {
   createTweet,
   findAllTweetsFromOneUser,
   unFollowAnotherUser,
@@ -42,6 +46,7 @@ const {
 } = require("./messagesController");
 
 app.options("*", cors());
+
 //get all users
 app.get("/api/users", cors(), getAllUsers);
 // get one user
@@ -49,6 +54,9 @@ app.get("/api/users", cors(), getAllUsers);
 app.post("/api/user", cors(), getOneUser);
 //email
 app.post("/api/user/email", cors(), getOneUserByEmail);
+//username
+app.get("/api/user/:username", cors(), getOneUserByUsername);
+app.put("/api/update/account", cors(), updateAccountInformation);
 //login
 app.post("/api/login", cors(), login);
 //register
@@ -56,10 +64,18 @@ app.post("/api/register", cors(), register);
 //tweet
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
-app.get("/api/findAllTweetsFromFollowing/:id", cors(), findAllTweetsFromFollowing);
+app.get(
+  "/api/findAllTweetsFromFollowing/:id",
+  cors(),
+  findAllTweetsFromFollowing
+);
 app.post("/api/currUser/tweets", cors(), findCurrUserAndTweets);
 app.post("/api/view/tweet", cors(), getOneTweetAndAllData);
-app.delete("/api/delete/tweet/:tweet_id", cors(), deleteTweetAndEverythingRelated);
+app.delete(
+  "/api/delete/tweet/:tweet_id",
+  cors(),
+  deleteTweetAndEverythingRelated
+);
 //likes
 app.post("/api/likeTweet", cors(), likeATweet);
 app.post("/api/removeLike", cors(), removeLike);
@@ -74,8 +90,16 @@ app.post("/api/findAllRelationships", cors(), findAllRelationshipStatus);
 app.post("/api/follow", cors(), followAnotherUser);
 app.post("/api/unfollow", cors(), unFollowAnotherUser);
 app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
-app.post("/api/selectAllFollowersAndTheirAccounts", cors(), selectAllFollowersAndTheirAccounts);
-app.post("/api/selectAllFollowingAndTheirAccounts", cors(), selectAllFollowingAndTheirAccounts);
+app.post(
+  "/api/selectAllFollowersAndTheirAccounts",
+  cors(),
+  selectAllFollowersAndTheirAccounts
+);
+app.post(
+  "/api/selectAllFollowingAndTheirAccounts",
+  cors(),
+  selectAllFollowingAndTheirAccounts
+);
 
 //messages
 app.get("/api/findConversations/:id", cors(), findConversations);
@@ -89,22 +113,18 @@ const server = app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${process.env.PORT || 8080}`);
 });
 
+const io = require("socket.io")(server, { cors: true });
 
-const io = require('socket.io')(server, {cors : true});
+io.on("connection", (socket) => {
+  console.log("server side connection");
 
-io.on("connection", (socket) =>{
-  console.log("server side connection")
- 
-  socket.on("join_room", room =>{
-    socket.join(room)
+  socket.on("join_room", (room) => {
+    socket.join(room);
     console.log("joined room " + room);
-  })
-
-  socket.on("send_message", ({roomId, message}) =>{
-
-    console.log("Sending message : " + message + " in room " + roomId)
-    socket.to(roomId).emit("receive-message", (message))
   });
 
- 
+  socket.on("send_message", ({ roomId, message }) => {
+    console.log("Sending message : " + message + " in room " + roomId);
+    socket.to(roomId).emit("receive-message", message);
+  });
 });

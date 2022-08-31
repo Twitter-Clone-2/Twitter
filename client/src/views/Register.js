@@ -8,7 +8,7 @@ import FormUserName from "../components/FormUserName";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
-import "../CSS/Register.css"
+import "../CSS/Register.css";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -29,81 +29,70 @@ const Register = () => {
     let meetsAllReq = true;
     let tempErrorMessage = [];
 
-    if(currentStep == 0){
+    if (currentStep == 0) {
       if (firstName.length < 2) {
-        tempErrorMessage.push('First name needs to be at least 2 characters.')
+        tempErrorMessage.push("First name needs to be at least 2 characters.");
         meetsAllReq = false;
       }
-  
+
       if (lastName.length < 2) {
-        tempErrorMessage.push(
-          "Last name needs to be at least 2 characters."
-        );
+        tempErrorMessage.push("Last name needs to be at least 2 characters.");
         meetsAllReq = false;
       }
-  
-       if(!/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email) || email.length == 0){
-        tempErrorMessage.push(
-          "Must be a valid email."
-        );
+
+      if (!/^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(email) || email.length == 0) {
+        tempErrorMessage.push("Must be a valid email.");
         meetsAllReq = false;
-       }
-  
+      }
+
       if (password !== confirm) {
-        tempErrorMessage.push(
-          "Passwords must match."
-        );
+        tempErrorMessage.push("Passwords must match.");
         meetsAllReq = false;
       }
-  
+
       if (password.length <= 7) {
-        tempErrorMessage.push(
-          "Password needs to be at least 8 characters."
-        );
+        tempErrorMessage.push("Password needs to be at least 8 characters.");
         meetsAllReq = false;
       }
-  
+
       if (meetsAllReq) {
         setCurrentStep((prev) => prev + 1);
-        setErrorMessages([])
+        setErrorMessages([]);
       } else {
         setErrorMessages(tempErrorMessage);
       }
       tempErrorMessage = [];
     }
-    
-    if(currentStep == 1){
-      if(userName.length === 0){
-        tempErrorMessage.push(
-          "Must enter a username."
-        )
+
+    if (currentStep == 1) {
+      if (userName.length === 0) {
+        tempErrorMessage.push("Must enter a username.");
         meetsAllReq = false;
       }
 
       if (meetsAllReq) {
         axios
-      .post(route + "/api/register", {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: password,
-        username: userName,
-        bio: bio,
-        location: location,
-      })
-      .then(() => {
-        axios
-          .post(route + "/api/user/email", {
+          .post(route + "/api/register", {
+            first_name: firstName,
+            last_name: lastName,
             email: email,
+            password: password,
+            username: userName,
+            bio: bio,
+            location: location,
           })
-          .then((res) => {
-            console.log(email);
-            localStorage.setItem("currUser", JSON.stringify(res.data[0]));
-            navigate("/main/feed");
-          });
-      })
-      .catch((err) => console.log(err));
-        
+          .then(() => {
+            axios
+              .post(route + "/api/user/email", {
+                email: email,
+              })
+              .then((res) => {
+                console.log(email);
+                localStorage.setItem("currUser", JSON.stringify(res.data[0]));
+                navigate("/main/feed");
+              });
+          })
+          .catch((err) => console.log(err));
       } else {
         setErrorMessages(tempErrorMessage);
       }
@@ -113,20 +102,22 @@ const Register = () => {
   const steps = ["Account Details", "User Name"];
   return (
     <div id="registerMainDiv">
-    <div>
-      <Stepper activeStep={currentStep} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    </div>
-          <div>
-            <ul>
-              {errorMessages.map((error, i) => <li key={i}>{error}</li>)}
-            </ul>
-          </div>
+      <div>
+        <Stepper activeStep={currentStep} alternativeLabel>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      </div>
+      <div>
+        <ul>
+          {errorMessages.map((error, i) => (
+            <li key={i}>{error}</li>
+          ))}
+        </ul>
+      </div>
       {currentStep === 0 && (
         <FormAccountInfo
           firstName={firstName}
@@ -154,7 +145,11 @@ const Register = () => {
           setLocation={setLocation}
         />
       )}
-      <Button id="stepperButton" variant="contained" onClick={() => handleButton()}>
+      <Button
+        id="stepperButton"
+        variant="contained"
+        onClick={() => handleButton()}
+      >
         {currentStep === 1 ? "Completed" : "Next"}
       </Button>
     </div>

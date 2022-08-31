@@ -24,15 +24,54 @@
   position: relative;
   margin: 10px 0px 15px 0px;
 }
-#profileEditProfileButton{
+.profileEdit {
   border-radius: 25px;
-  border : 2px solid  rgb(207,217,222);
+  border: 2px solid rgb(207, 217, 222);
   background-color: white;
-  color : black;
+  color: black;
   font-size: 18px;
   font-weight: 700;
   padding: 5px 20px;
 }
+
+.profileEdit:hover {
+  cursor: pointer;
+  background-color: rgb(231, 231, 231);
+}
+.status {
+  border-radius: 25px;
+  border: 2px solid rgb(207, 217, 222);
+  background-color: white;
+  color: black;
+  font-size: 18px;
+  font-weight: 700;
+  width: 130px;
+  padding: 5px 20px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.follow {
+  background-color: black;
+  color: white;
+  width: 100px !important;
+}
+.follow:hover {
+  background-color: rgb(41, 38, 38);
+}
+.following:hover span {
+  display: none;
+}
+.following:hover:before {
+  content: "Unfollow";
+}
+.following:hover {
+  background-color: rgb(253, 185, 185);
+  color: rgb(252, 59, 59);
+  border-color: rgb(250, 166, 166) !important;
+}
+
 .flex {
   display: flex;
 }
@@ -40,4 +79,3 @@
 #follows {
   gap: 20px;
 }
-

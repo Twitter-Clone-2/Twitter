@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
-import InputBase from '@mui/material/InputBase';
+import InputBase from "@mui/material/InputBase";
 
 const Feed = () => {
   const navigate = useNavigate();
@@ -13,20 +13,19 @@ const Feed = () => {
   const [tweet, setTweet] = useState("");
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
-  const [replies, setReplies] = useState([])
+  const [replies, setReplies] = useState([]);
 
-  const fetchAllTweetsForFeed = () =>{
+  const fetchAllTweetsForFeed = () => {
     axios
       .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
       .then(({ data }) => {
-        data.tweets.sort((x, y) => x.created_at - y.created_at)
-        data.tweets.reverse();
+        data.tweets.sort((x, y) => x.created_at - y.created_at);
         setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
       })
       .catch((e) => console.log(e));
-  }
+  };
   useEffect(() => {
     fetchAllTweetsForFeed();
   }, []);
@@ -36,18 +35,17 @@ const Feed = () => {
   };
 
   const createTweet = () => {
-    if(tweet.length == 0) return
+    if (tweet.length == 0) return;
     axios
       .post(route + "/api/create/tweet", {
         tweet,
-        id : user.id,
+        id: user.id,
       })
-      .then(() =>{
+      .then(() => {
         setTweet("");
         fetchAllTweetsForFeed();
       })
       .catch((err) => console.log(err));
-      
   };
   return (
     <div id="feed">
@@ -55,39 +53,42 @@ const Feed = () => {
         <div id="feedContainer">
           <h2>Home</h2>
           <div id="feedCreateTweet">
-            <PersonIcon
-              onClick={takeToProfile}
-              sx={{ fontSize: 100 }}
-            />
+            <PersonIcon onClick={takeToProfile} sx={{ fontSize: 100 }} />
 
-            <InputBase 
-            placeholder="What's happening?"
-            onChange={(e) => setTweet(e.target.value)}
-            value={tweet}
-            multiline={true} 
-            sx={{
-              fontSize:"33px",
-              fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
-              width: "100%",
-              flexGrow : "1",
+            <InputBase
+              placeholder="What's happening?"
+              onChange={(e) => setTweet(e.target.value)}
+              value={tweet}
+              multiline={true}
+              sx={{
+                fontSize: "33px",
+                fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
+                width: "100%",
+                flexGrow: "1",
               }}
             />
-            <button onClick={createTweet} id="feedTweetButton" className={tweet.length == 0 ? "incompleteColor" : ""}>Tweet</button>
+            <button
+              onClick={createTweet}
+              id="feedTweetButton"
+              className={tweet.length == 0 ? "incompleteColor" : ""}
+            >
+              Tweet
+            </button>
           </div>
-
         </div>
 
         <div id="content">
-          {feed.map((tweet, i) =>
-          <Tweet
-          className="tweet"
-          tweet={tweet}
-          likes={likes.filter((like) => like.tweets_id === tweet.id)}
-          key={i}
-          fetchAllTweetsForFeed={fetchAllTweetsForFeed}
-          replies={replies}
-          feed={feed}
-          />)}
+          {feed.map((tweet, i) => (
+            <Tweet
+              className="tweet"
+              tweet={tweet}
+              likes={likes.filter((like) => like.tweets_id === tweet.id)}
+              key={i}
+              fetchAllTweetsForFeed={fetchAllTweetsForFeed}
+              replies={replies}
+              feed={feed}
+            />
+          ))}
         </div>
       </div>
     </div>
