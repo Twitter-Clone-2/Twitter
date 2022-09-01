@@ -13,9 +13,10 @@ export default function Tweet({
   fetchAllTweetsForFeed,
   replies,
   feed,
+  id,
+  picture,
 }) {
   const navigate = useNavigate();
-  const id = JSON.parse(localStorage.getItem("currUser")).id;
 
   const loadTweet = (tweet_id) => {
     navigate(`/tweet/${tweet_id}`);
@@ -37,10 +38,15 @@ export default function Tweet({
       <div className="tweetTopHalf">
         <div className="flex">
           <div className="paddingLeft">
-            <PersonIcon
-              sx={{ fontSize: 60 }}
-              onClick={() => takeToProfile(tweet.accounts_id)}
-            />
+            {!picture ? (
+              <PersonIcon
+                sx={{ fontSize: 60 }}
+                className="tweetUserPic"
+                onClick={() => takeToProfile(tweet.accounts_id)}
+              />
+            ) : (
+              <img src={picture} className="tweetUserPic" />
+            )}
           </div>
           <div className="rightTweet">
             <div className="rightTweetHeader">

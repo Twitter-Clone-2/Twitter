@@ -132,8 +132,16 @@ async function deleteUser(req, res) {
 
 async function updateAccountInformation(req, res) {
   const db = await startPool();
-  const { id, first_name, last_name, username, bio, location } = req.body;
-  const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}' WHERE id = ${id} `;
+  const {
+    id,
+    first_name,
+    last_name,
+    username,
+    bio,
+    location,
+    profile_picture,
+  } = req.body;
+  const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}', profile_picture = '${profile_picture}' WHERE id = ${id} `;
 
   console.log(query);
   try {

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import PersonIcon from "@mui/icons-material/Person";
 import "../CSS/EditProfile.css";
 import route from "../utils/server_router";
 import axios from "axios";
+import ImageUploadButton from "./ImageUploadButton";
 
 const style = {
   position: "absolute",
@@ -27,15 +27,14 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [firstName, setfirstName] = useState(user.first_name);
+  const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
   const [username, setUsername] = useState(user.username);
   const [bio, setBio] = useState(user.bio);
   const [location, setLocation] = useState(user.location);
+  const [profilePicture, setProfilePicture] = useState(user.profile_picture);
   const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(
-    "Please enter fields correctly"
-  );
+  const [errorMessage, setErrorMessage] = useState();
 
   function updateAccount() {
     if (
@@ -49,6 +48,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       bio.length > 150
     ) {
       setError(true);
+      setErrorMessage("Please enter fields correctly");
     } else {
       axios
         .get(route + "/api/user/" + username)
@@ -62,6 +62,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                 username,
                 bio,
                 location,
+                profile_picture: profilePicture || null,
               })
               .then((res) => {
                 localStorage.setItem(
@@ -122,10 +123,10 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
               </div>
 
               <div id="editProfileGreyBackground">
-                <CameraAltIcon
-                  className="editProfileCameraIcon"
-                  id="editProfileCameraIconBackgroundPic"
-                  sx={{ fontSize: "30px" }}
+                <ImageUploadButton
+                  id={"editProfileCameraIconBackgroundPic"}
+                  setProfilePicture={setProfilePicture}
+                  user={user}
                 />
               </div>
 
@@ -134,10 +135,10 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                   sx={{ fontSize: 150 }}
                   className="editProfileProfilePicture"
                 />
-                <CameraAltIcon
-                  className="editProfileCameraIcon"
-                  id="editProfileCameraIconProfilePic"
-                  sx={{ fontSize: "30px" }}
+                <ImageUploadButton
+                  id={"editProfileCameraIconProfilePic"}
+                  setProfilePicture={setProfilePicture}
+                  user={user}
                 />
               </div>
 
@@ -150,7 +151,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                   className="editProfileInput"
                   label="First Name"
                   value={firstName}
-                  onChange={(e) => setfirstName(e.target.value)}
+                  onChange={(e) => setFirstName(e.target.value)}
                   multiline
                   fullWidth
                   error={

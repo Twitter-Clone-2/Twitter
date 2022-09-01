@@ -21,6 +21,7 @@ const Feed = () => {
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at);
         setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
+        console.log(data.tweets);
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
       })
@@ -87,6 +88,8 @@ const Feed = () => {
               fetchAllTweetsForFeed={fetchAllTweetsForFeed}
               replies={replies}
               feed={feed}
+              id={tweet.accounts_id}
+              picture={tweet.profile_picture}
             />
           ))}
         </div>
