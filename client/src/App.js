@@ -8,8 +8,6 @@ import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
 import Messages from "./views/Messages";
-import Test from "./views/Test";
-// import config from ".aws/exports";
 
 function App() {
   return (
@@ -24,7 +22,6 @@ function App() {
           <Route exact path="/main/feed" element={<Feed />} />
           <Route exact path="/tweet/:id" element={<ViewTweet />} />
           <Route exact path="/messages" element={<Messages />} />
-          <Route exact path="/test" element={<Test />} />
         </Routes>
         <NewsAPI />
       </BrowserRouter>
