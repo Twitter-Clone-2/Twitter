@@ -20,7 +20,6 @@ const {
 
 const {
   deleteTweetAndEverythingRelated,
-  findAllTweetsFromOneUser,
   createTweet,
   createAComment,
   removeLike,
@@ -33,10 +32,6 @@ const {
 const {
   unFollowAnotherUser,
   followAnotherUser,
-  findFollowers,
-  findFollowing,
-  checkFollowStatus,
-  findAllRelationshipStatus,
   selectAllFollowersAndTheirAccounts,
   selectAllFollowingAndTheirAccounts,
 } = require("./relationshipsController");
@@ -51,8 +46,8 @@ const {
 app.options("*", cors());
 //                        ACCOUNT ROUTES
 app.get("/api/users", cors(), getAllUsers);
-app.post("/api/user", cors(), getOneUser);
-app.post("/api/user/email", cors(), getOneUserByEmail);
+app.get("/api/user/details/:id", cors(), getOneUser);
+app.get("/api/user/email/:email", cors(), getOneUserByEmail);
 app.get("/api/user/:username", cors(), getOneUserByUsername);
 app.put("/api/update/account", cors(), updateAccountInformation);
 app.post("/api/login", cors(), login);
@@ -61,14 +56,13 @@ app.delete("/api/delete/account", cors(), deleteUser);
 
 //                      TWEET ROUTES
 app.post("/api/create/tweet", cors(), createTweet);
-app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
 app.get(
   "/api/findAllTweetsFromFollowing/:id",
   cors(),
   findAllTweetsFromFollowing
 );
-app.post("/api/currUser/tweets", cors(), findCurrUserAndTweets);
-app.post("/api/view/tweet", cors(), getOneTweetAndAllData);
+app.get("/api/currUser/tweets/:id", cors(), findCurrUserAndTweets);
+app.get("/api/view/tweet/:id", cors(), getOneTweetAndAllData);
 app.delete(
   "/api/delete/tweet/:tweet_id",
   cors(),
@@ -79,19 +73,15 @@ app.post("/api/removeLike", cors(), removeLike);
 app.post("/api/reply", cors(), createAComment);
 
 //                      RELATIONSHIP ROUTES
-app.post("/api/findFollowers", cors(), findFollowers);
-app.post("/api/findFollowing", cors(), findFollowing);
-app.post("/api/findAllRelationships", cors(), findAllRelationshipStatus);
 app.post("/api/follow", cors(), followAnotherUser);
 app.post("/api/unfollow", cors(), unFollowAnotherUser);
-app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
-app.post(
-  "/api/selectAllFollowersAndTheirAccounts",
+app.get(
+  "/api/selectAllFollowersAndTheirAccounts/:following",
   cors(),
   selectAllFollowersAndTheirAccounts
 );
-app.post(
-  "/api/selectAllFollowingAndTheirAccounts",
+app.get(
+  "/api/selectAllFollowingAndTheirAccounts/:follower",
   cors(),
   selectAllFollowingAndTheirAccounts
 );

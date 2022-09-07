@@ -32,9 +32,7 @@ const Profile = () => {
 
   const grabRelationshipsAndTweets = function (curr_id) {
     axios
-      .post(route + "/api/selectAllFollowersAndTheirAccounts", {
-        following: curr_id,
-      })
+      .get(route + "/api/selectAllFollowersAndTheirAccounts/" + curr_id)
       .then((res) => {
         setFollowersInfo(res.data.rows);
         setFollowingStatus(
@@ -47,9 +45,7 @@ const Profile = () => {
       });
 
     axios
-      .post(route + "/api/selectAllFollowingAndTheirAccounts", {
-        follower: curr_id,
-      })
+      .get(route + "/api/selectAllFollowingAndTheirAccounts/" + curr_id)
       .then((res) => {
         setFollowingInfo(res.data.rows);
         setNumOfFollowing(res.data.rows.length);
@@ -59,7 +55,7 @@ const Profile = () => {
       });
 
     axios
-      .post(route + "/api/currUser/tweets", { id: curr_id })
+      .get(route + "/api/currUser/tweets/" + curr_id)
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at);
         data.tweets.reverse();
@@ -73,9 +69,7 @@ const Profile = () => {
 
   const grabUserDetails = function (id) {
     axios
-      .post(route + "/api/user", {
-        id,
-      })
+      .get(route + "/api/user/details/" + id)
       .then(({ data }) => {
         setCurrentUser(data[0]);
       })

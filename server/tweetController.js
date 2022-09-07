@@ -22,22 +22,6 @@ async function deleteTweetAndEverythingRelated(req, res) {
   }
 }
 
-async function findAllTweetsFromOneUser(req, res) {
-  const db = await startPool();
-  const { id } = req.body;
-  const query = `SELECT content, created_at FROM tweets WHERE accounts_id = ${id};`;
-
-  try {
-    const results = await db.query(query);
-    res.status(200).send(results);
-    endPool(db);
-  } catch (e) {
-    console.error(e.stack);
-    res.status(400);
-    endPool(db);
-  }
-}
-
 async function createTweet(req, res) {
   const db = await startPool();
   const { tweet, id } = req.body;
@@ -88,7 +72,7 @@ async function findAllTweetsFromFollowing(req, res) {
 
 async function findCurrUserAndTweets(req, res) {
   const db = await startPool();
-  const { id } = req.body;
+  const { id } = req.params;
   const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id,  tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username, accounts.profile_picture FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
 
   try {
@@ -113,7 +97,7 @@ async function findCurrUserAndTweets(req, res) {
 
 async function getOneTweetAndAllData(req, res) {
   const db = await startPool();
-  const { id } = req.body;
+  const { id } = req.params;
   const queryForTweet = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE tweets.id = ${id};`;
 
   const queryForReplies = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, accounts.first_name, accounts.last_name , accounts.username FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE tweets.reply_id = ${id};`;
@@ -203,7 +187,6 @@ async function createAComment(req, res) {
 }
 module.exports = {
   deleteTweetAndEverythingRelated,
-  findAllTweetsFromOneUser,
   createTweet,
   createAComment,
   removeLike,

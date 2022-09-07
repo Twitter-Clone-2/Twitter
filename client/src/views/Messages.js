@@ -16,9 +16,7 @@ const Messages = () => {
 
   const grabAllInfoForMessages = function () {
     axios
-      .post(route + "/api/selectAllFollowingAndTheirAccounts", {
-        follower: user.id,
-      })
+      .get(route + "/api/selectAllFollowingAndTheirAccounts/" + user.id)
       .then((res) => {
         setFollowingInfo(res.data.rows);
       })

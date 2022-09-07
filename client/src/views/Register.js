@@ -82,15 +82,11 @@ const Register = () => {
             location: location,
           })
           .then(() => {
-            axios
-              .post(route + "/api/user/email", {
-                email: email,
-              })
-              .then((res) => {
-                console.log(email);
-                localStorage.setItem("currUser", JSON.stringify(res.data[0]));
-                navigate("/main/feed");
-              });
+            axios.get(route + "/api/user/email/" + email).then((res) => {
+              console.log(email);
+              localStorage.setItem("currUser", JSON.stringify(res.data[0]));
+              navigate("/main/feed");
+            });
           })
           .catch((err) => console.log(err));
       } else {

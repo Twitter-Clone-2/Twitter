@@ -18,7 +18,7 @@ async function getAllUsers(req, res) {
 
 async function getOneUser(req, res) {
   const db = await startPool();
-  let { id } = req.body;
+  let { id } = req.params;
   const query = `SELECT * FROM accounts WHERE id = ${id}`;
   try {
     const results = await db.query(query);
@@ -33,9 +33,9 @@ async function getOneUser(req, res) {
 
 async function getOneUserByEmail(req, res) {
   const db = await startPool();
-  let { email } = req.body;
+  let { email } = req.params;
   const query = `SELECT * FROM accounts WHERE email = '${email}'`;
-
+  console.log(query);
   try {
     const results = await db.query(query);
     res.send(results.rows);
