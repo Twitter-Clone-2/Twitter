@@ -13,10 +13,13 @@
   background-color: #7bc2f8;
   border: 4px solid grey;
 }
-#userPic {
+.userPic {
   position: absolute;
   left: 0px;
   bottom: 0px;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
 }
 #bottomOfPicture {
   display: flex;

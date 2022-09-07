@@ -10,7 +10,7 @@ import Tweet from "./Tweet";
 
 const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
   const navigate = useNavigate();
-
+  console.log(replies);
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
@@ -75,6 +75,8 @@ const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
           likes={replyLikes}
           replyingTo={true}
           replies={replyReplies}
+          id={reply.accounts_id}
+          picture={reply.profile_picture}
         />
       ))}
     </div>

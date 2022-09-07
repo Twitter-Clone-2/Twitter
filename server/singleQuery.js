@@ -40,7 +40,8 @@ const createAccountsTable = `CREATE TABLE IF NOT EXISTS accounts
 
 const selectAllFromAccounts = `SELECT * FROM accounts;`;
 
-const addProfilePicColumn = `ALTER TABLE accounts ADD profile_picture character varying(240) `;
+//const addProfilePicColumn = `ALTER TABLE accounts DROP profile_picture`;
+const addProfilePicColumn = `ALTER TABLE accounts ADD profile_picture character varying(3500) `;
 
 const dropAccounts = `DROP TABLE accounts;`;
 //                  TWEETS queries

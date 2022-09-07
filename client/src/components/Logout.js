@@ -42,7 +42,14 @@ const Logout = () => {
     <div>
       <div id="iconNavBarSignout" onClick={handleOpen}>
         <div>
-          <PersonIcon sx={{ fontSize: 50 }} />
+          {JSON.parse(localStorage.getItem("currUser")).profile_picture ? (
+            <img
+              src={JSON.parse(localStorage.getItem("currUser")).profile_picture}
+              className="tweetUserPic"
+            />
+          ) : (
+            <PersonIcon sx={{ fontSize: 50 }} />
+          )}
         </div>
         <div id="iconNavBarNames">
           <span id="iconNavBarName" className="iconNavBarFont">

@@ -146,7 +146,12 @@ const Profile = () => {
           <div id="tempImage"></div>
           {/* SMALL IMAGE HERE */}
           <div id="bottomOfPicture">
-            <PersonIcon sx={{ fontSize: 100 }} id="userPic" />
+            {currentUser.profile_picture ? (
+              <img src={currentUser.profile_picture} className="userPic" />
+            ) : (
+              <PersonIcon sx={{ fontSize: 100 }} className="userPic" />
+            )}
+
             {userProfileCheck ? (
               <div onClick={() => setEditProfile(true)}>
                 <EditProfile
@@ -191,7 +196,14 @@ const Profile = () => {
           <h1>Tweets</h1>
           <hr />
           {feed.map((tweet, i) => (
-            <Tweet tweet={tweet} likes={likes} replies={replies} key={i} />
+            <Tweet
+              tweet={tweet}
+              likes={likes}
+              replies={replies}
+              key={i}
+              id={currentUser.id}
+              picture={tweet.profile_picture}
+            />
           ))}
         </div>
       </div>
