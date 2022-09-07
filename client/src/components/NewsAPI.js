@@ -4,9 +4,11 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import NewsArticle from "./NewsPost";
 import "../CSS/News.css";
+import FindAUserModal from "./FindAUserModal";
 
 const NewsAPI = () => {
   const [news, setNews] = useState([]);
+
   const { pathname } = useLocation();
   const displayNews =
     pathname !== "/" &&
@@ -21,7 +23,6 @@ const NewsAPI = () => {
       .get(url)
       .then(({ data }) => {
         setNews(data.results.filter((article) => article.media.length));
-        console.log(data);
       })
       .catch((err) => console.log(err));
   };
@@ -34,6 +35,7 @@ const NewsAPI = () => {
     <div id="mainNewsContainer">
       {displayNews && (
         <>
+          <FindAUserModal />
           <div className="newsComponentTitle">What's happening?</div>
           <div id="newsArticlesContainer">
             {news.length === 0 && (

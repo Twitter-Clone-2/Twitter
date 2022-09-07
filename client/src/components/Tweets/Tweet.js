@@ -17,7 +17,6 @@ export default function Tweet({
   picture,
 }) {
   const navigate = useNavigate();
-  console.log(picture);
   const loadTweet = (tweet_id) => {
     navigate(`/tweet/${tweet_id}`);
   };

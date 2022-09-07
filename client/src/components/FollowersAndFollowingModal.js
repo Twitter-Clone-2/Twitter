@@ -16,7 +16,6 @@ const FollowersAndFollowingModal = ({
   setAccountClicked,
   setAccountBeingMessaged,
   user_id,
-  conversations = [],
   setRoomId = null,
 }) => {
   const [open, setOpen] = useState(false);
@@ -24,7 +23,6 @@ const FollowersAndFollowingModal = ({
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
   const [searchArr, setSearchArr] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     setSearchArr([...relationship]);
