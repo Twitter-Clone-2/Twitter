@@ -19,8 +19,18 @@ const {
 } = require("./accountController");
 
 const {
-  createTweet,
+  deleteTweetAndEverythingRelated,
   findAllTweetsFromOneUser,
+  createTweet,
+  createAComment,
+  removeLike,
+  likeATweet,
+  getOneTweetAndAllData,
+  findCurrUserAndTweets,
+  findAllTweetsFromFollowing,
+} = require("./tweetController");
+
+const {
   unFollowAnotherUser,
   followAnotherUser,
   findFollowers,
@@ -29,14 +39,7 @@ const {
   findAllRelationshipStatus,
   selectAllFollowersAndTheirAccounts,
   selectAllFollowingAndTheirAccounts,
-  findAllTweetsFromFollowing,
-  likeATweet,
-  removeLike,
-  findCurrUserAndTweets,
-  createAComment,
-  getOneTweetAndAllData,
-  deleteTweetAndEverythingRelated,
-} = require("./controllers");
+} = require("./relationshipsController");
 
 const {
   findConversations,
@@ -46,22 +49,17 @@ const {
 } = require("./messagesController");
 
 app.options("*", cors());
-
-//get all users
+//                        ACCOUNT ROUTES
 app.get("/api/users", cors(), getAllUsers);
-// get one user
-//id
 app.post("/api/user", cors(), getOneUser);
-//email
 app.post("/api/user/email", cors(), getOneUserByEmail);
-//username
 app.get("/api/user/:username", cors(), getOneUserByUsername);
 app.put("/api/update/account", cors(), updateAccountInformation);
-//login
 app.post("/api/login", cors(), login);
-//register
 app.post("/api/register", cors(), register);
-//tweet
+app.delete("/api/delete/account", cors(), deleteUser);
+
+//                      TWEET ROUTES
 app.post("/api/create/tweet", cors(), createTweet);
 app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
 app.get(
@@ -76,14 +74,11 @@ app.delete(
   cors(),
   deleteTweetAndEverythingRelated
 );
-//likes
 app.post("/api/likeTweet", cors(), likeATweet);
 app.post("/api/removeLike", cors(), removeLike);
-//retweets
-
-//reply
 app.post("/api/reply", cors(), createAComment);
-//follow status
+
+//                      RELATIONSHIP ROUTES
 app.post("/api/findFollowers", cors(), findFollowers);
 app.post("/api/findFollowing", cors(), findFollowing);
 app.post("/api/findAllRelationships", cors(), findAllRelationshipStatus);
@@ -101,18 +96,17 @@ app.post(
   selectAllFollowingAndTheirAccounts
 );
 
-//messages
+//                      MESSAGES ROUTES
 app.get("/api/findConversations/:id", cors(), findConversations);
 app.post("/api/create/room", cors(), createRoom);
 app.post("/api/create/message", cors(), createMessage);
 app.get("/api/find/messages/:room_number", cors(), findMessagesForTheRoom);
-//delete an account
-app.delete("/api/delete/account", cors(), deleteUser);
 
 const server = app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${process.env.PORT || 8080}`);
 });
 
+//                      SOCKET.IO
 const io = require("socket.io")(server, { cors: true });
 
 io.on("connection", (socket) => {
