@@ -9,6 +9,7 @@ import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
 import Messages from "./views/Messages";
 import Test from "./views/Test";
+// import config from ".aws/exports";
 
 function App() {
   return (
