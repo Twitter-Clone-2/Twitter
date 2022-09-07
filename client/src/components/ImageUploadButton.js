@@ -1,31 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import "../CSS/EditProfile.css";
-import { Storage } from "aws-amplify";
+import AWS from "aws-sdk";
 
 const ImageUploadButton = ({ id, setProfilePicture, user }) => {
+  useEffect(() => {
+    AWS.config.update({
+      accessKeyId: process.env.REACT_APP_accessKeyId,
+      secretAccessKey: process.env.REACT_APP_secretAccessKey,
+    });
+  }, []);
+
   const hiddenFileInput = useRef(null);
 
   const handleClick = (e) => {
     hiddenFileInput.current.click();
   };
 
-  async function handleChange(e) {
-    const file = e.target.files[0];
-    const currentDate = new Date();
-    const timestamp = currentDate.getTime();
-    let fileName = `${user.id}_${timestamp}_${file.name}`;
-    fileName = fileName.replace(/ /g, "_");
-    await Storage.put(fileName, file);
-    let imageKeys = await Storage.list(fileName);
-    imageKeys = await Promise.all(
-      imageKeys.map(async (k) => {
-        const signedUrl = await Storage.get(k.key);
-        return signedUrl;
-      })
-    );
-    setProfilePicture(imageKeys[0]);
-    console.log(imageKeys[0]);
+  function handleChange(e) {
+    setProfilePicture(e.target.files[0]);
+    console.log("set State");
   }
 
   return (

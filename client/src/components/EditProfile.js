@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,6 +8,7 @@ import "../CSS/EditProfile.css";
 import route from "../utils/server_router";
 import axios from "axios";
 import ImageUploadButton from "./ImageUploadButton";
+import AWS from "aws-sdk";
 
 const style = {
   position: "absolute",
@@ -33,8 +34,33 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
   const [bio, setBio] = useState(user.bio);
   const [location, setLocation] = useState(user.location);
   const [profilePicture, setProfilePicture] = useState(user.profile_picture);
+  const [profilePictureFileName, setProfilePictureFileName] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+
+  function updateProfilePicture() {
+    const myBucket = new AWS.S3({
+      params: { Bucket: process.env.REACT_APP_S3_BUCKET },
+      region: process.env.REACT_APP_REGION,
+    });
+
+    const currentDate = new Date();
+    const timestamp = currentDate.getTime();
+
+    let fileName = `${user.id}_${timestamp}_${profilePicture.name}`;
+    console.log(fileName);
+    const params = {
+      ACL: "public-read",
+      Body: profilePicture,
+      Bucket: process.env.REACT_APP_S3_BUCKET,
+      Key: fileName,
+    };
+
+    myBucket.putObject(params).send((err) => {
+      if (err) console.log(err);
+    });
+    return fileName;
+  }
 
   function updateAccount() {
     if (
@@ -54,6 +80,8 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
         .get(route + "/api/user/" + username)
         .then((res) => {
           if (res.data.rows.length === 0 || res.data.rows[0].id == user.id) {
+            let fileName = updateProfilePicture();
+
             axios
               .put(route + "/api/update/account", {
                 id: user.id,
@@ -62,15 +90,19 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                 username,
                 bio,
                 location,
-                profile_picture: profilePicture || null,
+                profile_picture: profilePicture
+                  ? `${process.env.REACT_APP_BUCKET_LINK}${fileName}`
+                  : null,
               })
               .then((res) => {
                 localStorage.setItem(
                   "currUser",
                   JSON.stringify(res.data.rows[0])
                 );
+
                 setCurrentUser(res.data.rows[0]);
                 setError(false);
+                console.log(feed);
                 setFeed(
                   feed.map((tweet) => ({
                     accounts_id: tweet.accounts_id,
@@ -81,6 +113,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                     last_name: res.data.rows[0].last_name,
                     reply_id: tweet.reply_id,
                     username: res.data.rows[0].username,
+                    profile_picture: res.data.rows[0].profile_picture,
                   }))
                 );
                 handleClose();

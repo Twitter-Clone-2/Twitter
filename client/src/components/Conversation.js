@@ -65,7 +65,7 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
   return (
     <div className="conversationBody">
       <div className="convoHeader">
-        <PersonIcon sx={{ fontSize: 45 }} />
+        {<PersonIcon sx={{ fontSize: 45 }} />}
         <div className="convoHeaderNames">
           <span id="convoHeaderRealNames">
             {accountBeingMessaged.first_name} {accountBeingMessaged.last_name}
