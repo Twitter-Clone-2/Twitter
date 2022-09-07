@@ -146,11 +146,12 @@ const Profile = () => {
           <div id="tempImage"></div>
           {/* SMALL IMAGE HERE */}
           <div id="bottomOfPicture">
-            {currentUser.profile_picture == null ? (
-              <PersonIcon sx={{ fontSize: 100 }} className="userPic" />
-            ) : (
+            {currentUser.profile_picture ? (
               <img src={currentUser.profile_picture} className="userPic" />
+            ) : (
+              <PersonIcon sx={{ fontSize: 100 }} className="userPic" />
             )}
+
             {userProfileCheck ? (
               <div onClick={() => setEditProfile(true)}>
                 <EditProfile

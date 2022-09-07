@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import {io} from 'socket.io-client';
+import { io } from "socket.io-client";
 
 const ProfileMessageCard = ({
   userObj,
@@ -9,24 +9,30 @@ const ProfileMessageCard = ({
   room_id,
   setRoomId,
 }) => {
-
   return (
-    <div 
-    className='messagesProfileCard'
-    onClick={()=> {
-      setAccountBeingMessaged(userObj)
-      setAccountClicked(true)
-      setRoomId(room_id)
-    }}
+    <div
+      className="messagesProfileCard"
+      onClick={() => {
+        setAccountBeingMessaged(userObj);
+        setAccountClicked(true);
+        setRoomId(room_id);
+        console.log(userObj);
+      }}
     >
-        <PersonIcon sx={{ fontSize: 70 }}/>
+      {userObj.profile_picture ? (
+        <img src={userObj.profile_picture} />
+      ) : (
+        <PersonIcon sx={{ fontSize: 70 }} />
+      )}
 
+      <div>
         <div>
-            <div>{userObj.first_name} {userObj.last_name} @{userObj.username}</div>
-            <div>Hey how is your day going</div>
+          {userObj.first_name} {userObj.last_name} @{userObj.username}
         </div>
+        <div>Hey how is your day going</div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfileMessageCard
+export default ProfileMessageCard;
