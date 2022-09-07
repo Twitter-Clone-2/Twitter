@@ -6,16 +6,18 @@ import "./tweets.css";
 import TweetActions from "./TweetActions";
 import DeleteTweet from "./DeleteTweet";
 
-export default function Tweet({ 
-  tweet, 
-  likes, 
+export default function Tweet({
+  tweet,
+  likes,
   replyingTo = false,
   fetchAllTweetsForFeed,
   replies,
- }) {
+  feed,
+  id,
+  picture,
+}) {
   const navigate = useNavigate();
-  const id = JSON.parse(localStorage.getItem("currUser")).id;
-
+  console.log(picture);
   const loadTweet = (tweet_id) => {
     navigate(`/tweet/${tweet_id}`);
   };
@@ -23,41 +25,69 @@ export default function Tweet({
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
-  const filteredLikes = likes.filter((like) => like.tweets_id == tweet.id)
-  const filteredReplies = replies.filter((reply) => reply.reply_id == tweet.id)
-  
+  const filteredLikes = likes.filter((like) => like.tweets_id == tweet.id);
+  const filteredReplies = replies.filter((reply) => reply.reply_id == tweet.id);
 
   return (
-    <div className="tweet" onClick={() =>{
-      loadTweet(tweet.id)
-    }}>
+    <div
+      className="tweet"
+      onClick={() => {
+        loadTweet(tweet.id);
+      }}
+    >
       <div className="tweetTopHalf">
         <div className="flex">
           <div className="paddingLeft">
-            <PersonIcon sx={{ fontSize: 60 }} onClick={() => takeToProfile(tweet.accounts_id)} />
+            {!picture ? (
+              <PersonIcon
+                sx={{ fontSize: 60 }}
+                className="tweetUserPic"
+                onClick={() => takeToProfile(tweet.accounts_id)}
+              />
+            ) : (
+              <img src={picture} className="tweetUserPic" />
+            )}
           </div>
           <div className="rightTweet">
             <div className="rightTweetHeader">
-              <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
+              <div
+                className="tweetNames"
+                id="tweetRealNames"
+                onClick={() => takeToProfile(tweet.accounts_id)}
+              >
                 {tweet.first_name} {tweet.last_name}
-              </p>
-              <p className="tweetNames" onClick={() => takeToProfile(tweet.accounts_id)}>
+              </div>
+              <p
+                className="tweetNames"
+                onClick={() => takeToProfile(tweet.accounts_id)}
+              >
                 @{tweet.username}
               </p>
               <p>{format(new Date(tweet.created_at), "PPpp")}</p>
             </div>
-              {replyingTo && <p>Replying to <span className="replyingToUsername">@{tweet.username}</span></p>}
-            <h3>{tweet.content}</h3>
+            {replyingTo && (
+              <p>
+                Replying to{" "}
+                <span className="replyingToUsername">@{tweet.username}</span>
+              </p>
+            )}
+            <div className="tweetContent">{tweet.content}</div>
           </div>
+        </div>
+        {tweet.accounts_id === id && (
+          <DeleteTweet
+            tweet_id={tweet.id}
+            fetchAllTweetsForFeed={fetchAllTweetsForFeed}
+            onClick={(event) => event.stopPropagation()}
+          />
+        )}
       </div>
-      {tweet.accounts_id === id && 
-        <DeleteTweet 
-        tweet_id={tweet.id} 
-        fetchAllTweetsForFeed={fetchAllTweetsForFeed}
-        onClick={(event) => event.stopPropagation()}
-        />}
-      </div>
-      <TweetActions tweet={tweet} likes={filteredLikes} replies={filteredReplies}/>
+      <TweetActions
+        tweet={tweet}
+        likes={filteredLikes}
+        replies={filteredReplies}
+        feed={feed}
+      />
     </div>
   );
 }

@@ -1,32 +1,26 @@
 //go into .env for DATABASE_URL
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 require("dotenv").config();
-
 
 const db = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 db.connect();
 
-
-
-
 async function runQuery(query) {
-    console.log(query)
-    try {
-        const {rows} = await db.query(query);
-        console.log(rows);
-    } catch (e) {
-        console.log(e);
-    }
-    db.end();
+  console.log(query);
+  try {
+    const { rows } = await db.query(query);
+    console.log(rows);
+  } catch (e) {
+    console.log(e);
+  }
+  db.end();
 }
-
-
 
 //                               ACCOUNT QUERIES
 const createAccountsTable = `CREATE TABLE IF NOT EXISTS accounts
@@ -44,9 +38,12 @@ const createAccountsTable = `CREATE TABLE IF NOT EXISTS accounts
     CONSTRAINT accounts_username_key UNIQUE (username)
 );`;
 
-const selectAllFromAccounts = `SELECT * FROM accounts;`
+const selectAllFromAccounts = `SELECT * FROM accounts;`;
 
-const dropAccounts = `DROP TABLE accounts;`
+//const addProfilePicColumn = `ALTER TABLE accounts DROP profile_picture`;
+const addProfilePicColumn = `ALTER TABLE accounts ADD profile_picture character varying(3500) `;
+
+const dropAccounts = `DROP TABLE accounts;`;
 //                  TWEETS queries
 const createTweet = `CREATE TABLE IF NOT EXISTS tweets
 (
@@ -56,7 +53,7 @@ const createTweet = `CREATE TABLE IF NOT EXISTS tweets
     created_at timestamp without time zone DEFAULT now()
 );`;
 
-const selectAllTweets= `SELECT * FROM tweets;`;
+const selectAllTweets = `SELECT * FROM tweets;`;
 
 const addingFKToTweetsForComments = `ALTER TABLE tweets ADD reply_id integer;`;
 
@@ -72,7 +69,7 @@ REFERENCES accounts (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
 
-const createReply = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('You're Great', 1 , 24);`
+const createReply = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('You're Great', 1 , 24);`;
 //                  Likes Queries
 const createLikesTable = `CREATE TABLE IF NOT EXISTS likes
 (
@@ -81,7 +78,7 @@ const createLikesTable = `CREATE TABLE IF NOT EXISTS likes
     id SERIAL PRIMARY KEY
 );`;
 
-const selectAllLikes= `SELECT * FROM likes;`
+const selectAllLikes = `SELECT * FROM likes;`;
 
 const alterLikesTableFKAccounts = `ALTER TABLE IF EXISTS likes
 ADD CONSTRAINT fk_accounts FOREIGN KEY (accounts_id)
@@ -93,24 +90,24 @@ const alterLikesTableFKTweets = `ALTER TABLE IF EXISTS likes
 ADD CONSTRAINT fk_tweets FOREIGN KEY (tweets_id)
 REFERENCES tweets (id) MATCH SIMPLE
 ON UPDATE NO ACTION
-ON DELETE NO ACTION;`
+ON DELETE NO ACTION;`;
 //                  Retweets Queries
-const createRetweetTable =`CREATE TABLE IF NOT EXISTS retweets
+const createRetweetTable = `CREATE TABLE IF NOT EXISTS retweets
 (
     accounts_id integer,
     tweets_id integer,
     id SERIAL PRIMARY KEY
 );`;
 
-const selectAllRetweets= `SELECT * FROM retweets;`;
+const selectAllRetweets = `SELECT * FROM retweets;`;
 
-const alterRetweetsTableFKAccount =`ALTER TABLE IF EXISTS retweets
+const alterRetweetsTableFKAccount = `ALTER TABLE IF EXISTS retweets
 ADD CONSTRAINT fk_accounts FOREIGN KEY (accounts_id)
 REFERENCES accounts (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
 
-const alterRetweetsTableFKTweets =`ALTER TABLE IF EXISTS retweets
+const alterRetweetsTableFKTweets = `ALTER TABLE IF EXISTS retweets
 ADD CONSTRAINT fk_tweets FOREIGN KEY (tweets_id)
 REFERENCES tweets (id) MATCH SIMPLE
 ON UPDATE NO ACTION
@@ -136,7 +133,7 @@ const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES
 
 const deleteRelationship = `DELETE FROM relationship WHERE id = 23`;
 
-//                  Messages 
+//                  Messages
 
 const createMessagesTable = `CREATE TABLE IF NOT EXISTS messages
 (
@@ -146,30 +143,30 @@ const createMessagesTable = `CREATE TABLE IF NOT EXISTS messages
     room_number integer,
     liked integer,
     created_at timestamp without time zone DEFAULT now()
-);`
+);`;
 
 const alterMessagesFKAccount = `ALTER TABLE IF EXISTS messages
 ADD CONSTRAINT fk_accounts FOREIGN KEY (user_sent_message)
 REFERENCES public.accounts (id) MATCH SIMPLE
 ON UPDATE NO ACTION
-ON DELETE NO ACTION;`
+ON DELETE NO ACTION;`;
 
 const alterMessagesFKRoom = `ALTER TABLE IF EXISTS messages
 ADD CONSTRAINT fk_room FOREIGN KEY (room_number)
 REFERENCES public.room (id) MATCH SIMPLE
 ON UPDATE NO ACTION
-ON DELETE NO ACTION;`
+ON DELETE NO ACTION;`;
 //                  Room for socket io
 const createRoomTable = `CREATE TABLE IF NOT EXISTS room
 (
     id SERIAL PRIMARY KEY,
     room_name character varying(60),
     created_at timestamp without time zone DEFAULT now()
-);`
+);`;
 
 const insertValueIntoRoomForTest = `INSERT INTO room DEFAULT VALUES`;
 
-const test = `INSERT INTO room DEFAULT VALUES RETURNING id;`
+const test = `INSERT INTO room DEFAULT VALUES RETURNING id;`;
 
 //                     Union Table for Messages and Room
 const createRoomAndMessagesUnionTable = `CREATE TABLE IF NOT EXISTS room_and_messages
@@ -178,22 +175,22 @@ const createRoomAndMessagesUnionTable = `CREATE TABLE IF NOT EXISTS room_and_mes
     room_id integer,
     user_id integer,
     created_at timestamp without time zone DEFAULT now()
-);`
+);`;
 
 const alterMessagesAndRoomFKAccount = `ALTER TABLE IF EXISTS room_and_messages
 ADD CONSTRAINT fk_accounts FOREIGN KEY (user_id)
 REFERENCES public.accounts (id) MATCH SIMPLE
 ON UPDATE NO ACTION
-ON DELETE NO ACTION;`
+ON DELETE NO ACTION;`;
 
 const alterMessagesAndRoomFKRoom = `ALTER TABLE IF EXISTS room_and_messages
 ADD CONSTRAINT fk_room FOREIGN KEY (room_id)
 REFERENCES public.room (id) MATCH SIMPLE
 ON UPDATE NO ACTION
-ON DELETE NO ACTION;`
+ON DELETE NO ACTION;`;
 
-const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`
+const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`;
 
 const delete1 = "DELETE FROM accounts WHERE id = 3";
 //const delete1 = "DELETE FROM likes WHERE tweets_id = 23";
-runQuery(delete1);
+//runQuery(addProfilePicColumn);

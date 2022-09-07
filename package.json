@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/RezaAmraei/Twitter#readme",
   "dependencies": {
+    "aws-amplify": "^4.3.33",
+    "dotenv": "^16.0.2",
     "prettier": "^2.7.1"
   },
   "devDependencies": {

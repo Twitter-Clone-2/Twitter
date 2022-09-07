@@ -10,11 +10,11 @@ import Button from "@mui/material/Button";
 import Logout from "./Logout";
 import "../CSS/IconNav.css";
 
-
 const IconNav = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const displayNav = pathname !== "/" && pathname !== "/login" && pathname !== "/register";
+  const displayNav =
+    pathname !== "/" && pathname !== "/login" && pathname !== "/register";
 
   return (
     <>
@@ -35,9 +35,9 @@ const IconNav = () => {
               <NotificationsIcon className="icon" />
               <div className="buttonLabel">Notifications</div>
             </Button>
-            <Button 
+            <Button
               className={"iconButton"}
-              onClick={()=> navigate("/messages")}
+              onClick={() => navigate("/messages")}
             >
               <ChatBubbleIcon className="icon" />
               <div className="buttonLabel">Messages</div>
@@ -53,16 +53,12 @@ const IconNav = () => {
               <SettingsSuggestIcon className="icon" />
               <div className="buttonLabel">Settings</div>
             </Button>
-            <Button
-              id="tweetButton"
-              variant="contained"
-            >
+            <Button id="tweetButton" variant="contained">
               Tweet
             </Button>
           </div>
 
-          <Logout/>
-
+          <Logout />
         </div>
       )}
     </>

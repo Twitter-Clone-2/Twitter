@@ -1,24 +1,21 @@
-import React, {useState} from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import "../CSS/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
 import axios from "axios";
 import "../CSS/Login.css";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: "550px",
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 2,
 };
@@ -49,11 +46,12 @@ export default function BasicModal() {
 
   return (
     <div>
-      <button 
-      id="mainPageSignInButton" 
-      className="mainPageButtonShape mainPageHeaderFont " 
-      onClick={handleOpen}
-      >Sign in
+      <button
+        id="mainPageSignInButton"
+        className="mainPageButtonShape mainPageHeaderFont "
+        onClick={handleOpen}
+      >
+        Sign in
       </button>
 
       <Modal
@@ -63,48 +61,56 @@ export default function BasicModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="box">
-                <div id='loginTopIcons'>
-                        <CloseIcon className='loginCloseButton' onClick={handleClose}/>
-                    <img id="loginTwitterLogo" src="https://www.iconpacks.net/icons/2/free-twitter-logo-icon-2429-thumb.png"/>
-                    <div></div>
-                </div>
+          <div id="loginTopIcons">
+            <CloseIcon className="loginCloseButton" onClick={handleClose} />
+            <img
+              id="loginTwitterLogo"
+              src="https://www.iconpacks.net/icons/2/free-twitter-logo-icon-2429-thumb.png"
+            />
+            <div></div>
+          </div>
 
-                <div id='loginHeader' className='loginFont middle'>Sign in to Twitter</div>
-            <Box >
-                <div className='loginFont middle' id='loginEmailInput'>
-                    <TextField 
-                    id="outlined-basic" 
-                    label="Email" 
-                    variant="outlined" 
-                    value={emailOrUserName}
-                    onChange={(e)=>setEmailOrUserName(e.target.value)}
-                    />
-                </div>
+          <div id="loginHeader" className="loginFont middle">
+            Sign in to Twitter
+          </div>
+          <Box>
+            <div className="loginFont middle" id="loginEmailInput">
+              <TextField
+                id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                value={emailOrUserName}
+                onChange={(e) => setEmailOrUserName(e.target.value)}
+              />
+            </div>
 
-                <div className='loginFont middle'>
-                    <TextField 
-                    id="outlined-basic" 
-                    label="Password" 
-                    variant="outlined"
-                    value={password} 
-                    onChange={(e)=> setPassword(e.target.value)}
-                    type="password"
-                    />
-                </div>
-            </Box>
-            <div className='middle'>
-              <button 
-              className='loginButtonShape middle loginFont' 
-              id='loginButton'
+            <div className="loginFont middle">
+              <TextField
+                id="outlined-basic"
+                label="Password"
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+              />
+            </div>
+          </Box>
+          <div className="middle">
+            <button
+              className="loginButtonShape middle loginFont"
+              id="loginButton"
               onClick={handleLogin}
-              >
+            >
               Sign In
-              </button>
-            </div>
+            </button>
+          </div>
 
-            <div className='middle loginFont' id='loginQuestion'>
-              Don't have an account? <Link id="registerLink" to="/register">Sign up</Link>
-            </div>
+          <div className="middle loginFont" id="loginQuestion">
+            Don't have an account?{" "}
+            <Link id="registerLink" to="/register">
+              Sign up
+            </Link>
+          </div>
         </Box>
       </Modal>
     </div>
