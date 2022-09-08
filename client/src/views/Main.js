@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import TextField from "@mui/material/TextField";
+import React from "react";
 import "../CSS/Main.css";
-import axios from "axios";
-import LoginModal from "../components/LoginModal";
+import LoginModal from "../components/LoginAndReg/LoginModal";
 import { useNavigate } from "react-router-dom";
 
 const Main = () => {

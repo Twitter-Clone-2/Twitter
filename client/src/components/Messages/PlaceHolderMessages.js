@@ -1,6 +1,6 @@
 import React from "react";
-import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
-import "../CSS/followersAndFollowingModal.css";
+import FollowersAndFollowingModal from "../FollowersAndFollowingModal";
+import "../../CSS/followersAndFollowingModal.css";
 
 const PlaceHolderMessages = ({
   followingInfo,

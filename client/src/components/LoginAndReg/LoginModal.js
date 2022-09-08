@@ -3,9 +3,9 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import { Link, useNavigate } from "react-router-dom";
-import route from "../utils/server_router";
+import route from "../../utils/server_router";
 import axios from "axios";
-import "../CSS/Login.css";
+import "../../CSS/Login.css";
 import CloseIcon from "@mui/icons-material/Close";
 
 const style = {

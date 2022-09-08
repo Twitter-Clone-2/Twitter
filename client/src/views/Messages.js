@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/Messages.css";
 import route from "../utils/server_router";
-import ProfileMessageCard from "../components/ProfileMessageCard";
+import ProfileMessageCard from "../components/Messages/ProfileMessageCard";
 import axios from "axios";
-import PlaceHolderMessages from "../components/PlaceHolderMessages";
-import Conversation from "../components/Conversation";
+import PlaceHolderMessages from "../components/Messages/PlaceHolderMessages";
+import Conversation from "../components/Messages/Conversation";
 
 const Messages = () => {
   const user = JSON.parse(localStorage.getItem("currUser"));

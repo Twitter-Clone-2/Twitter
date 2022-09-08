@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import "../CSS/Conversation.css";
+import "../../CSS/Conversation.css";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { format, set } from "date-fns";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import GifBoxIcon from "@mui/icons-material/GifBox";
 import SendIcon from "@mui/icons-material/Send";
 import { io } from "socket.io-client";
-import route from "../utils/server_router";
+import route from "../../utils/server_router";
 import axios from "axios";
 
 const socket = io(route);
