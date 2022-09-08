@@ -52,6 +52,9 @@ const FindAUserModal = () => {
                     .toUpperCase() == e.target.value.toUpperCase() ||
                   person.last_name
                     .slice(0, e.target.value.length)
+                    .toUpperCase() == e.target.value.toUpperCase() ||
+                  `${person.first_name} ${person.last_name}`
+                    .slice(0, e.target.value.length)
                     .toUpperCase() == e.target.value.toUpperCase()
                 );
               })

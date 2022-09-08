@@ -8,6 +8,9 @@
 #profilePageHeader {
   display: flex;
 }
+.profilePageHeaderNameAndTweets {
+  margin-left: 20px;
+}
 #tempImage {
   height: 250px;
   background-color: #7bc2f8;

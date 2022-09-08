@@ -8,6 +8,7 @@ import route from "../utils/server_router";
 import { format } from "date-fns";
 import { useParams, useNavigate } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Profile = () => {
   let { id } = useParams();
@@ -89,6 +90,7 @@ const Profile = () => {
     } else {
       grabRelationshipsAndTweets(user.id);
       setUserProfileCheck(true);
+      setCurrentUser(user);
     }
   }, [id]);
 
@@ -128,6 +130,13 @@ const Profile = () => {
       <div id="profilePageUser">
         <div id="profilePageHeader">
           <div>
+            <KeyboardBackspaceIcon
+              className="backButton  cursorPointer"
+              sx={{ fontSize: 40 }}
+              onClick={() => navigate(-1)}
+            />
+          </div>
+          <div className="profilePageHeaderNameAndTweets">
             <h3>
               {currentUser.first_name} {currentUser.last_name}
             </h3>
@@ -138,7 +147,6 @@ const Profile = () => {
           {/* BIG IMAGE HERE */}
           {/* DELETE THIS DIV WHEN IMAGE IS READY */}
           <div id="tempImage"></div>
-          {/* SMALL IMAGE HERE */}
           <div id="bottomOfPicture">
             {currentUser.profile_picture ? (
               <img src={currentUser.profile_picture} className="userPic" />

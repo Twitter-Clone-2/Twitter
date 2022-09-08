@@ -27,6 +27,7 @@ export default function BasicModal() {
   const navigate = useNavigate();
   const [emailOrUserName, setEmailOrUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -39,6 +40,8 @@ export default function BasicModal() {
         if (res.data) {
           navigate("/main/feed");
           localStorage.setItem("currUser", JSON.stringify(res.data.user));
+        } else {
+          setError(true);
         }
       })
       .catch((err) => console.log(err));
@@ -74,9 +77,18 @@ export default function BasicModal() {
             Sign in to Twitter
           </div>
           <Box>
+            {error && (
+              <ol>
+                <li className="middle loginErrorMessage">
+                  Email and/or Password is incorrect!
+                </li>
+              </ol>
+            )}
+
             <div className="loginFont middle" id="loginEmailInput">
               <TextField
                 id="outlined-basic"
+                error={error}
                 label="Email"
                 variant="outlined"
                 value={emailOrUserName}
@@ -86,7 +98,8 @@ export default function BasicModal() {
 
             <div className="loginFont middle">
               <TextField
-                id="outlined-basic"
+                id="outlined-error"
+                error={error}
                 label="Password"
                 variant="outlined"
                 value={password}

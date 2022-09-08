@@ -10,23 +10,23 @@
 }
 input {
   appearance: none;
-  outline: none !important;
+  outline: none;
   border: 0;
   outline: 0;
   font-size: 40px;
 }
-#feedContainer{
-  border: 1px solid  rgb(239,243,244);
+#feedContainer {
+  border: 1px solid rgb(239, 243, 244);
   padding: 10px 0px 0px 20px;
 }
-#feedCreateTweet{
+#feedCreateTweet {
   display: flex;
   align-items: center;
   justify-content: center;
   padding-bottom: 20px;
 }
-#feedTweetButton{
-  background-color: rgb(29,155,239);
+#feedTweetButton {
+  background-color: rgb(29, 155, 239);
   color: white;
   border: none;
   border-radius: 25px;
@@ -36,8 +36,8 @@ input {
   font-weight: 700;
   margin-right: 20px;
 }
-.incompleteColor{
-  background-color: rgb(154,205,248) !important;
+.incompleteColor {
+  background-color: rgb(154, 205, 248) !important;
   cursor: no-drop !important;
 }
 #mainBodyHomePage {
@@ -47,14 +47,4 @@ input {
 #allContent {
   /* border: 3px solid red; */
   flex: 6.5;
-}
-.flex {
-  display: flex;
-}
-input {
-  appearance: none;
-  outline: none !important;
-  border: 0;
-  outline: 0;
-  font-size: 40px;
 }
