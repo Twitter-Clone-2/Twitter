@@ -14,7 +14,6 @@ const ViewTweet = () => {
 
   useEffect(() => {
     axios.get(route + "/api/view/tweet/" + id).then(({ data }) => {
-      console.log(data);
       setTweet(data.tweet[0]);
       setLikes(data.likes);
       setReplies(data.replies);
