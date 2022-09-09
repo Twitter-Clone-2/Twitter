@@ -114,7 +114,14 @@ const FollowersAndFollowingModal = ({
               >
                 <div className="account">
                   <div>
-                    <PersonIcon sx={{ fontSize: 70 }} />
+                    {item.profile_picture ? (
+                      <img
+                        src={item.profile_picture}
+                        className="followerModalProfilePicture"
+                      />
+                    ) : (
+                      <PersonIcon sx={{ fontSize: 70 }} />
+                    )}
                   </div>
                   <div className="names">
                     <div className="followerModalAccountName followerModalFont">

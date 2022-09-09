@@ -8,6 +8,7 @@ const ProfileMessageCard = ({
   setAccountClicked,
   room_id,
   setRoomId,
+  message,
 }) => {
   return (
     <div
@@ -29,7 +30,7 @@ const ProfileMessageCard = ({
         <div>
           {userObj.first_name} {userObj.last_name} @{userObj.username}
         </div>
-        <div>Hey how is your day going</div>
+        <div>{message && message.message}</div>
       </div>
     </div>
   );

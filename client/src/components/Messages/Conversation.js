@@ -62,10 +62,18 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
         setMessage("");
       });
   };
+
   return (
     <div className="conversationBody">
       <div className="convoHeader">
-        {<PersonIcon sx={{ fontSize: 45 }} />}
+        {accountBeingMessaged.profile_picture ? (
+          <img
+            src={accountBeingMessaged.profile_picture}
+            className="convoProfilePicture"
+          />
+        ) : (
+          <PersonIcon sx={{ fontSize: 45 }} />
+        )}
         <div className="convoHeaderNames">
           <span id="convoHeaderRealNames">
             {accountBeingMessaged.first_name} {accountBeingMessaged.last_name}
@@ -75,7 +83,7 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
           </span>
         </div>
       </div>
-      <div className="convoBody">
+      <div className="convoBody" id="messageBody">
         <div className="convoAccountBeingMessagedDetails">
           <div>
             <span className="convoBodyAccountName">
@@ -96,6 +104,7 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
         {allMessages.map((currMessage, i) => (
           <div
             className={currMessage.sent ? "convoSentDiv" : "convoReceivedDiv"}
+            key={i}
           >
             {currMessage.sent && (
               <div className="convoSentMessage" key={i}>

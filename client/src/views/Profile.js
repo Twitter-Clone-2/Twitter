@@ -144,9 +144,14 @@ const Profile = () => {
           </div>
         </div>
         <div>
-          {/* BIG IMAGE HERE */}
-          {/* DELETE THIS DIV WHEN IMAGE IS READY */}
-          <div id="tempImage"></div>
+          {user.background_picture ? (
+            <img
+              src={user.background_picture}
+              id="profilePageRealBackgroundImage"
+            />
+          ) : (
+            <div id="tempImage"></div>
+          )}
           <div id="bottomOfPicture">
             {currentUser.profile_picture ? (
               <img src={currentUser.profile_picture} className="userPic" />

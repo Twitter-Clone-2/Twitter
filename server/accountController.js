@@ -140,8 +140,9 @@ async function updateAccountInformation(req, res) {
     bio,
     location,
     profile_picture,
+    background_picture,
   } = req.body;
-  const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}', profile_picture = '${profile_picture}' WHERE id = ${id} `;
+  const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}', profile_picture = '${profile_picture}', background_picture = '${background_picture}' WHERE id = ${id} `;
 
   console.log(query);
   try {

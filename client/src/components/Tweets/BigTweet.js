@@ -30,10 +30,18 @@ const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
 
       <div className="bigTweetPicAndNames paddingLeft">
         <div className="leftTweet cursorPointer">
-          <PersonIcon
-            sx={{ fontSize: 60 }}
-            onClick={() => takeToProfile(tweet.accounts_id)}
-          />
+          {tweet.profile_picture ? (
+            <img
+              src={tweet.profile_picture}
+              className="bigTweetProfilePicture"
+              onClick={() => takeToProfile(tweet.accounts_id)}
+            />
+          ) : (
+            <PersonIcon
+              sx={{ fontSize: 60 }}
+              onClick={() => takeToProfile(tweet.accounts_id)}
+            />
+          )}
         </div>
 
         <div>

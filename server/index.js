@@ -41,6 +41,7 @@ const {
   createRoom,
   createMessage,
   findMessagesForTheRoom,
+  findLastMessage,
 } = require("./messagesController");
 
 app.options("*", cors());
@@ -91,6 +92,7 @@ app.get("/api/findConversations/:id", cors(), findConversations);
 app.post("/api/create/room", cors(), createRoom);
 app.post("/api/create/message", cors(), createMessage);
 app.get("/api/find/messages/:room_number", cors(), findMessagesForTheRoom);
+app.get("/api/last/message/:room_numbers", cors(), findLastMessage);
 
 const server = app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${process.env.PORT || 8080}`);
