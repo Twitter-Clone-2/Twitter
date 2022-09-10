@@ -15,27 +15,27 @@ export default function TweetActions({
 }) {
   const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
   const tweetIsLiked = likes.some(
-    (like) => like.tweets_id == tweet.id && like.accounts_id === currentUserId || like.id === currentUserId
+    (like) =>
+      (like.tweets_id == tweet.id && like.accounts_id === currentUserId) ||
+      like.id === currentUserId
   );
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(tweetIsLiked);
   const [retweetCount, setRetweetCount] = useState(0);
   const [replyCount, setReplyCount] = useState(replies.length || 0);
-  const {id} = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-      setCount(likes.length)
-      setLiked(tweetIsLiked)
-      setReplyCount(replies.length || 0)
+    setCount(likes.length);
+    setLiked(tweetIsLiked);
+    setReplyCount(replies.length || 0);
 
-      if(displayIconCount){  
-        setCount(likes.length);
-        setReplyCount(replies.length);
-        console.log("hi")
-      }
-  }, [id, feed])
-
-  
+    if (displayIconCount) {
+      setCount(likes.length);
+      setReplyCount(replies.length);
+      console.log(replies.length);
+    }
+  }, [id, feed, tweet]);
 
   const likeFunction = (accounts_id, tweets_id) => {
     if (liked === false) {
@@ -76,21 +76,21 @@ export default function TweetActions({
           {count > 0 && (
             <div className="underline">
               <span className="bold">{count}</span>
-              <span>Likes</span>
+              <span> Likes</span>
             </div>
           )}
 
           {replyCount > 0 && (
             <div className="underline">
               <span className="bold">{replyCount}</span>
-              <span>Replies</span>
+              <span> Replies</span>
             </div>
           )}
 
           {retweetCount > 0 && (
             <div className="underline">
               <span className="bold">{retweetCount}</span>
-              <span>Retweets</span>
+              <span> Retweets</span>
             </div>
           )}
         </div>
@@ -110,17 +110,19 @@ export default function TweetActions({
         </div>
 
         <div className="flex replyCol">
-          <ReplyModal 
-          tweet_id={tweet.id}
-          first_name={tweet.first_name}
-          last_name={tweet.last_name}
-          username={tweet.username}
-          created_at={tweet.created_at}
-          content={tweet.content}
+          <ReplyModal
+            tweet_id={tweet.id}
+            first_name={tweet.first_name}
+            last_name={tweet.last_name}
+            username={tweet.username}
+            created_at={tweet.created_at}
+            content={tweet.content}
           />
-          {!displayIconCount && Boolean(replyCount) && <div className="replyCount">
-            {replyCount === 0 ? "" : replyCount}
-          </div>}
+          {!displayIconCount && Boolean(replyCount) && (
+            <div className="replyCount">
+              {replyCount === 0 ? "" : replyCount}
+            </div>
+          )}
         </div>
 
         <div className="flex retweetCol">

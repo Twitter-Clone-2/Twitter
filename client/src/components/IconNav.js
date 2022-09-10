@@ -7,7 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Logout from "./Logout";
+import Logout from "./LoginAndReg/Logout";
 import "../CSS/IconNav.css";
 
 const IconNav = () => {

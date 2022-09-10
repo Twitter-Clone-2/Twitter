@@ -3,8 +3,8 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import FormAccountInfo from "../components/FormAccountInfo";
-import FormUserName from "../components/FormUserName";
+import FormAccountInfo from "../components/LoginAndReg/FormAccountInfo";
+import FormUserName from "../components/LoginAndReg/FormUserName";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import route from "../utils/server_router";
@@ -82,15 +82,11 @@ const Register = () => {
             location: location,
           })
           .then(() => {
-            axios
-              .post(route + "/api/user/email", {
-                email: email,
-              })
-              .then((res) => {
-                console.log(email);
-                localStorage.setItem("currUser", JSON.stringify(res.data[0]));
-                navigate("/main/feed");
-              });
+            axios.get(route + "/api/user/email/" + email).then((res) => {
+              console.log(email);
+              localStorage.setItem("currUser", JSON.stringify(res.data[0]));
+              navigate("/main/feed");
+            });
           })
           .catch((err) => console.log(err));
       } else {

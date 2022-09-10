@@ -42,6 +42,7 @@ const selectAllFromAccounts = `SELECT * FROM accounts;`;
 
 //const addProfilePicColumn = `ALTER TABLE accounts DROP profile_picture`;
 const addProfilePicColumn = `ALTER TABLE accounts ADD profile_picture character varying(3500) `;
+const addBackgroundPicColumn = `ALTER TABLE accounts ADD background_picture character varying(3500) `;
 
 const dropAccounts = `DROP TABLE accounts;`;
 //                  TWEETS queries
@@ -192,5 +193,5 @@ ON DELETE NO ACTION;`;
 const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`;
 
 const delete1 = "DELETE FROM accounts WHERE id = 3";
-//const delete1 = "DELETE FROM likes WHERE tweets_id = 23";
-//runQuery(addProfilePicColumn);
+
+//runQuery(addBackgroundPicColumn);

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/Messages.css";
 import route from "../utils/server_router";
-import ProfileMessageCard from "../components/ProfileMessageCard";
+import ProfileMessageCard from "../components/Messages/ProfileMessageCard";
 import axios from "axios";
-import PlaceHolderMessages from "../components/PlaceHolderMessages";
-import Conversation from "../components/Conversation";
+import PlaceHolderMessages from "../components/Messages/PlaceHolderMessages";
+import Conversation from "../components/Messages/Conversation";
 
 const Messages = () => {
   const user = JSON.parse(localStorage.getItem("currUser"));
@@ -13,12 +13,12 @@ const Messages = () => {
   const [accountBeingMessaged, setAccountBeingMessaged] = useState({});
   const [conversations, setConversations] = useState([]);
   const [roomId, setRoomId] = useState(0);
+  const [lastMessages, setLastMessages] = useState({});
 
   const grabAllInfoForMessages = function () {
+    let room_numbers;
     axios
-      .post(route + "/api/selectAllFollowingAndTheirAccounts", {
-        follower: user.id,
-      })
+      .get(route + "/api/selectAllFollowingAndTheirAccounts/" + user.id)
       .then((res) => {
         setFollowingInfo(res.data.rows);
       })
@@ -29,7 +29,15 @@ const Messages = () => {
     axios
       .get(route + "/api/findConversations/" + user.id)
       .then((res) => {
+        console.log(res.data);
         setConversations(res.data);
+        room_numbers = res.data.map((room) => room.room_id);
+        axios
+          .get(route + "/api/last/message/" + room_numbers)
+          .then((res) => {
+            setLastMessages(res.data);
+          })
+          .catch((e) => console.error(e));
       })
       .catch((e) => {
         console.error(e);
@@ -38,7 +46,7 @@ const Messages = () => {
   useEffect(() => {
     grabAllInfoForMessages();
   }, []);
-  //dont forget to pass room id to follower modal later
+
   return (
     <div className="messageMainDiv flex">
       <div className="messagesProfileSection">
@@ -57,6 +65,7 @@ const Messages = () => {
             setAccountClicked={setAccountClicked}
             room_id={userObj.room_id}
             setRoomId={setRoomId}
+            message={lastMessages[userObj.room_id]}
           />
         ))}
       </div>

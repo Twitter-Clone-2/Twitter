@@ -1,119 +1,129 @@
-.conversationBody{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-stretch: condensed;
-    padding-left: 10px;
-    width : 40vw;
+.conversationBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding-left: 10px;
+  width: 40vw;
 }
-.convoHeader{
-    display: flex;
-    padding-top: 10px;
-    align-items: center;
+.convoHeader {
+  display: flex;
+  padding-top: 10px;
+  align-items: center;
+  background-color: rgb(255, 255, 255, 0.95);
+  position: absolute;
+  width: 38.7%;
 }
-.convoHeaderNames{
-    display: flex;
-    flex-direction: column;
+.convoHeaderNames {
+  display: flex;
+  flex-direction: column;
 }
-#convoHeaderRealNames{
-    font-weight: 700;
-    font-size: 24px;
+#convoHeaderRealNames {
+  font-weight: 700;
+  font-size: 24px;
 }
-#convoHeaderUsernames{
-    font-size: 20px;
+#convoHeaderUsernames {
+  font-size: 20px;
 }
-.convoBody{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    height: 100%;
-    width: 100%;
+.convoBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: flex-end; */
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-.convoAccountBeingMessagedDetails{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 45px 0px;
+.convoAccountBeingMessagedDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 45px 0px;
 }
-.convoAccountBeingMessagedDetails:hover{
-    cursor: pointer;
-    background-color: rgb(239,243,244) !important;
+.convoAccountBeingMessagedDetails:hover {
+  cursor: pointer;
+  background-color: rgb(239, 243, 244) !important;
 }
-.conversationAccountJoinedDate{
-    display: flex;
-    align-items: center;
-    color: rgb(83,99,113);
-    font-size: 18px;
-    gap: 5px
+.conversationAccountJoinedDate {
+  display: flex;
+  align-items: center;
+  color: rgb(83, 99, 113);
+  font-size: 18px;
+  gap: 5px;
 }
-.convoBodyAccountName{
-    font-size: 19px;
-    font-weight: 700;
-    margin-right: 5px;
+.convoBodyAccountName {
+  font-size: 19px;
+  font-weight: 700;
+  margin-right: 5px;
 }
-.convoBodyAccountName:hover{
-    text-decoration: underline;
+.convoBodyAccountName:hover {
+  text-decoration: underline;
 }
-.convoBodyAccountUsername{
-    color: rgb(83,99,113);
-    font-size: 18px;
+.convoBodyAccountUsername {
+  color: rgb(83, 99, 113);
+  font-size: 18px;
 }
-.conversationAccountBio{
-    font-size: 18px;
+.conversationAccountBio {
+  font-size: 18px;
 }
-.convoFooter{
-    display: flex;
-    border-top: 1px solid rgb(239,243,244);
-    align-items: center;
-    padding: 15px 10px;
-    width: 90%;
-    justify-content: space-between;
+.convoFooter {
+  display: flex;
+  border-top: 1px solid rgb(239, 243, 244);
+  align-items: center;
+  padding: 15px 10px;
+  width: 90%;
+  justify-content: space-between;
 }
-#convoFooterInput{
-    border : 2px solid rgb(239,243,244);
-    border-radius: 25px;
-    font-size: 16px;
-    width: 60%;
-    padding: 10px 20px;
+#convoFooterInput {
+  border: 2px solid rgb(239, 243, 244);
+  border-radius: 25px;
+  font-size: 16px;
+  width: 60%;
+  padding: 10px 20px;
 }
-#convoFooterInput:focus{
-    border : 2px solid rgb(70,168,242);
+#convoFooterInput:focus {
+  border: 2px solid rgb(70, 168, 242);
 }
-.conversationIcon{
-    padding: 10px;
-    margin-left: 10px;
+.conversationIcon {
+  padding: 10px;
+  margin-left: 10px;
 }
-.conversationIcon:hover{
-    
-    background-color: rgb(214, 237, 255) ;
-    border-radius: 25px;
+.conversationIcon:hover {
+  background-color: rgb(214, 237, 255);
+  border-radius: 25px;
 }
-.convoSentMessage{
-    background-color: rgb(29,155,240) ;
-    color: white;
-    border-radius: 25px;
-    padding: 7px 10px;
-    
+.convoSentMessage {
+  background-color: rgb(29, 155, 240);
+  color: white;
+  border-radius: 25px;
+  padding: 7px 10px;
 }
-.convoSentDiv{
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: 0px 40px 20px 0px;
+.convoSentDiv {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0px 40px 20px 0px;
 }
 
-.convoReceivedDiv{
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
-    padding: 0px 0px 20px 20px;
+.convoReceivedDiv {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0px 0px 20px 50px;
 }
 
-.convoReceivedMessage{
-    background-color: rgb(239,243,244);
-    color: black;
-    border-radius: 25px;
-    padding: 7px 10px;
+.convoReceivedMessage {
+  background-color: rgb(239, 243, 244);
+  color: black;
+  border-radius: 25px;
+  padding: 7px 10px;
+}
+
+.convoProfilePicture {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  margin-right: 20px;
 }

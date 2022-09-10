@@ -16,7 +16,6 @@ const FollowersAndFollowingModal = ({
   setAccountClicked,
   setAccountBeingMessaged,
   user_id,
-  conversations = [],
   setRoomId = null,
 }) => {
   const [open, setOpen] = useState(false);
@@ -24,7 +23,6 @@ const FollowersAndFollowingModal = ({
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
   const [searchArr, setSearchArr] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     setSearchArr([...relationship]);
@@ -88,6 +86,12 @@ const FollowersAndFollowingModal = ({
                           .toUpperCase() == e.target.value.toUpperCase() ||
                         person.username
                           .slice(0, e.target.value.length)
+                          .toUpperCase() == e.target.value.toUpperCase() ||
+                        person.last_name
+                          .slice(0, e.target.value.length)
+                          .toUpperCase() == e.target.value.toUpperCase() ||
+                        `${person.first_name} ${person.last_name}`
+                          .slice(0, e.target.value.length)
                           .toUpperCase() == e.target.value.toUpperCase()
                       );
                     })
@@ -110,7 +114,14 @@ const FollowersAndFollowingModal = ({
               >
                 <div className="account">
                   <div>
-                    <PersonIcon sx={{ fontSize: 70 }} />
+                    {item.profile_picture ? (
+                      <img
+                        src={item.profile_picture}
+                        className="followerModalProfilePicture"
+                      />
+                    ) : (
+                      <PersonIcon sx={{ fontSize: 70 }} />
+                    )}
                   </div>
                   <div className="names">
                     <div className="followerModalAccountName followerModalFont">

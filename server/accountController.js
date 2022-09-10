@@ -18,7 +18,7 @@ async function getAllUsers(req, res) {
 
 async function getOneUser(req, res) {
   const db = await startPool();
-  let { id } = req.body;
+  let { id } = req.params;
   const query = `SELECT * FROM accounts WHERE id = ${id}`;
   try {
     const results = await db.query(query);
@@ -33,9 +33,9 @@ async function getOneUser(req, res) {
 
 async function getOneUserByEmail(req, res) {
   const db = await startPool();
-  let { email } = req.body;
+  let { email } = req.params;
   const query = `SELECT * FROM accounts WHERE email = '${email}'`;
-
+  console.log(query);
   try {
     const results = await db.query(query);
     res.send(results.rows);
@@ -140,8 +140,9 @@ async function updateAccountInformation(req, res) {
     bio,
     location,
     profile_picture,
+    background_picture,
   } = req.body;
-  const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}', profile_picture = '${profile_picture}' WHERE id = ${id} `;
+  const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}', profile_picture = '${profile_picture}', background_picture = '${background_picture}' WHERE id = ${id} `;
 
   console.log(query);
   try {

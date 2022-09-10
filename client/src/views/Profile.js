@@ -8,6 +8,7 @@ import route from "../utils/server_router";
 import { format } from "date-fns";
 import { useParams, useNavigate } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Profile = () => {
   let { id } = useParams();
@@ -32,9 +33,7 @@ const Profile = () => {
 
   const grabRelationshipsAndTweets = function (curr_id) {
     axios
-      .post(route + "/api/selectAllFollowersAndTheirAccounts", {
-        following: curr_id,
-      })
+      .get(route + "/api/selectAllFollowersAndTheirAccounts/" + curr_id)
       .then((res) => {
         setFollowersInfo(res.data.rows);
         setFollowingStatus(
@@ -47,9 +46,7 @@ const Profile = () => {
       });
 
     axios
-      .post(route + "/api/selectAllFollowingAndTheirAccounts", {
-        follower: curr_id,
-      })
+      .get(route + "/api/selectAllFollowingAndTheirAccounts/" + curr_id)
       .then((res) => {
         setFollowingInfo(res.data.rows);
         setNumOfFollowing(res.data.rows.length);
@@ -59,7 +56,7 @@ const Profile = () => {
       });
 
     axios
-      .post(route + "/api/currUser/tweets", { id: curr_id })
+      .get(route + "/api/currUser/tweets/" + curr_id)
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at);
         data.tweets.reverse();
@@ -73,9 +70,7 @@ const Profile = () => {
 
   const grabUserDetails = function (id) {
     axios
-      .post(route + "/api/user", {
-        id,
-      })
+      .get(route + "/api/user/details/" + id)
       .then(({ data }) => {
         setCurrentUser(data[0]);
       })
@@ -95,6 +90,7 @@ const Profile = () => {
     } else {
       grabRelationshipsAndTweets(user.id);
       setUserProfileCheck(true);
+      setCurrentUser(user);
     }
   }, [id]);
 
@@ -134,6 +130,13 @@ const Profile = () => {
       <div id="profilePageUser">
         <div id="profilePageHeader">
           <div>
+            <KeyboardBackspaceIcon
+              className="backButton  cursorPointer"
+              sx={{ fontSize: 40 }}
+              onClick={() => navigate(-1)}
+            />
+          </div>
+          <div className="profilePageHeaderNameAndTweets">
             <h3>
               {currentUser.first_name} {currentUser.last_name}
             </h3>
@@ -141,10 +144,14 @@ const Profile = () => {
           </div>
         </div>
         <div>
-          {/* BIG IMAGE HERE */}
-          {/* DELETE THIS DIV WHEN IMAGE IS READY */}
-          <div id="tempImage"></div>
-          {/* SMALL IMAGE HERE */}
+          {user.background_picture ? (
+            <img
+              src={user.background_picture}
+              id="profilePageRealBackgroundImage"
+            />
+          ) : (
+            <div id="tempImage"></div>
+          )}
           <div id="bottomOfPicture">
             {currentUser.profile_picture ? (
               <img src={currentUser.profile_picture} className="userPic" />

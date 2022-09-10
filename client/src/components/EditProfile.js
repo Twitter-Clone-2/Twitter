@@ -28,17 +28,25 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
   const [username, setUsername] = useState(user.username);
   const [bio, setBio] = useState(user.bio);
   const [location, setLocation] = useState(user.location);
+
   const [profilePicture, setProfilePicture] = useState(user.profile_picture);
-  const [profilePictureFileName, setProfilePictureFileName] = useState("");
+  const [profilePictureSubmitted, setProfilePictureSubmitted] = useState(false);
+  const [backgroundPictureSubmitted, setBackgroundPictureSubmitted] =
+    useState(false);
+  const [backgroundPicture, setBackgroundPicture] = useState(
+    user.background_picture
+  );
+
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  function updateProfilePicture() {
+  function updateProfilePicture(file) {
     const myBucket = new AWS.S3({
       params: { Bucket: process.env.REACT_APP_S3_BUCKET },
       region: process.env.REACT_APP_REGION,
@@ -47,11 +55,11 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
 
-    let fileName = `${user.id}_${timestamp}_${profilePicture.name}`;
+    let fileName = `${user.id}_${timestamp}_${file.name}`;
     console.log(fileName);
     const params = {
       ACL: "public-read",
-      Body: profilePicture,
+      Body: file,
       Bucket: process.env.REACT_APP_S3_BUCKET,
       Key: fileName,
     };
@@ -80,7 +88,15 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
         .get(route + "/api/user/" + username)
         .then((res) => {
           if (res.data.rows.length === 0 || res.data.rows[0].id == user.id) {
-            let fileName = updateProfilePicture();
+            let fileName;
+            let backgroundFileName;
+            if (profilePictureSubmitted) {
+              fileName = updateProfilePicture(profilePicture);
+            }
+            if (backgroundPictureSubmitted) {
+              console.log("this line hit");
+              backgroundFileName = updateProfilePicture(backgroundPicture);
+            }
 
             axios
               .put(route + "/api/update/account", {
@@ -90,9 +106,12 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                 username,
                 bio,
                 location,
-                profile_picture: profilePicture
+                profile_picture: profilePictureSubmitted
                   ? `${process.env.REACT_APP_BUCKET_LINK}${fileName}`
-                  : null,
+                  : user.profile_picture,
+                background_picture: backgroundPicture
+                  ? `${process.env.REACT_APP_BUCKET_LINK}${backgroundFileName}`
+                  : user.background_picture,
               })
               .then((res) => {
                 localStorage.setItem(
@@ -158,20 +177,29 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
               <div id="editProfileGreyBackground">
                 <ImageUploadButton
                   id={"editProfileCameraIconBackgroundPic"}
-                  setProfilePicture={setProfilePicture}
+                  setPicture={setBackgroundPicture}
                   user={user}
+                  pictureSubmitCheck={setBackgroundPictureSubmitted}
                 />
               </div>
 
               <div className="editProfileRemoveMargin">
-                <PersonIcon
-                  sx={{ fontSize: 150 }}
-                  className="editProfileProfilePicture"
-                />
+                {user.profile_picture ? (
+                  <img
+                    src={user.profile_picture}
+                    className="editProfileRealProfilePicture editProfileProfilePicture"
+                  />
+                ) : (
+                  <PersonIcon
+                    sx={{ fontSize: 150 }}
+                    className="editProfileProfilePicture"
+                  />
+                )}
                 <ImageUploadButton
                   id={"editProfileCameraIconProfilePic"}
-                  setProfilePicture={setProfilePicture}
+                  setPicture={setProfilePicture}
                   user={user}
+                  pictureSubmitCheck={setProfilePictureSubmitted}
                 />
               </div>
 

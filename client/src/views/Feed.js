@@ -21,7 +21,6 @@ const Feed = () => {
       .then(({ data }) => {
         data.tweets.sort((x, y) => x.created_at - y.created_at);
         setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
-        console.log(data.tweets);
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
       })

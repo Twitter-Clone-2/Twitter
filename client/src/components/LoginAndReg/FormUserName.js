@@ -1,5 +1,5 @@
 import React from "react";
-import "../CSS/Register.css";
+import "../../CSS/Register.css";
 import TextField from "@mui/material/TextField";
 
 const FormUserName = ({
