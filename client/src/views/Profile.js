@@ -144,9 +144,9 @@ const Profile = () => {
           </div>
         </div>
         <div>
-          {user.background_picture ? (
+          {currentUser.background_picture ? (
             <img
-              src={user.background_picture}
+              src={currentUser.background_picture}
               id="profilePageRealBackgroundImage"
             />
           ) : (

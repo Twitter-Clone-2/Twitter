@@ -51,7 +51,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       params: { Bucket: process.env.REACT_APP_S3_BUCKET },
       region: process.env.REACT_APP_REGION,
     });
-
+    console.log(process.env.REACT_APP_accessKeyId);
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
 
