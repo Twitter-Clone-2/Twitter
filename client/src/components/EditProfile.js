@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,7 +24,13 @@ const style = {
   overflow: "hidden",
 };
 
-export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
+export default function EditProfile({
+  user,
+  setCurrentUser,
+  feed,
+  setFeed,
+  setProgress,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,12 +57,10 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       params: { Bucket: process.env.REACT_APP_S3_BUCKET },
       region: process.env.REACT_APP_REGION,
     });
-    console.log(process.env.REACT_APP_accessKeyId);
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
 
     let fileName = `${user.id}_${timestamp}_${file.name}`;
-    console.log(fileName);
     const params = {
       ACL: "public-read",
       Body: file,
@@ -64,10 +68,14 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       Key: fileName,
     };
     try {
-      const res = await myBucket.putObject(params).send((err) => {
-        if (err) console.log(err);
-      });
-      console.log(res);
+      myBucket
+        .putObject(params)
+        .on("httpUploadProgress", (evt) => {
+          setProgress(Math.round((evt.loaded / evt.total) * 100));
+        })
+        .send((err) => {
+          if (err) console.log(err);
+        });
     } catch (e) {
       console.error(e);
     }
@@ -131,7 +139,6 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
 
             setCurrentUser(responseForEditProfile.data.rows[0]);
             setError(false);
-            console.log(feed);
             setFeed(
               feed.map((tweet) => ({
                 accounts_id: tweet.accounts_id,
@@ -155,7 +162,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
           setErrorMessage("Username has already been taken");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
   }

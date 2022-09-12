@@ -31,7 +31,6 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
     axios
       .get(route + "/api/find/messages/" + roomId)
       .then((res) => {
-        console.log(res.data);
         let oldMessages = res.data.map((message) => {
           if (message.user_sent_message == user.id) {
             return { sent: message.message };

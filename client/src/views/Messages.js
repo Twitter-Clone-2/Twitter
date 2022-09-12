@@ -29,7 +29,6 @@ const Messages = () => {
     axios
       .get(route + "/api/findConversations/" + user.id)
       .then((res) => {
-        console.log(res.data);
         setConversations(res.data);
         room_numbers = res.data.map((room) => room.room_id);
         axios
