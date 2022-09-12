@@ -11,7 +11,7 @@ import EditProfile from "../components/EditProfile";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Profile = () => {
-  let { id } = useParams() || 1;
+  let { id } = useParams();
   console.log(useParams());
   const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true);
   const [followingStatus, setFollowingStatus] = useState(false);
@@ -208,16 +208,17 @@ const Profile = () => {
 
           <h1>Tweets</h1>
           <hr />
-          {feed.map((tweet, i) => (
-            <Tweet
-              tweet={tweet}
-              likes={likes}
-              replies={replies}
-              key={i}
-              id={currentUser.id}
-              picture={tweet.profile_picture}
-            />
-          ))}
+          {currentUser &&
+            feed.map((tweet, i) => (
+              <Tweet
+                tweet={tweet}
+                likes={likes}
+                replies={replies}
+                key={i}
+                id={currentUser.id}
+                picture={tweet.profile_picture}
+              />
+            ))}
         </div>
       </div>
     </div>
