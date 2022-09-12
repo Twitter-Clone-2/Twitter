@@ -58,13 +58,16 @@
   position: relative;
   left: 275px;
   top: 100px;
-  margin: auto auto;
+}
+#editProfileCameraIconWithRealBackgroundPic {
+  position: relative;
+  left: 275px;
+  top: -230px;
 }
 #editProfileCameraIconProfilePic {
   position: relative;
   right: 103px;
   bottom: 200px;
-  margin: auto auto;
 }
 
 .editProfileInputs {
@@ -99,4 +102,9 @@
   border-radius: 50%;
   height: 155px;
   width: 155px;
+}
+.editProfileRealBackgroundPicture {
+  height: 250px;
+  width: 100%;
+  z-index: 0;
 }

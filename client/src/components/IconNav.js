@@ -9,6 +9,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Logout from "./LoginAndReg/Logout";
 import "../CSS/IconNav.css";
+import TweetModal from "./Tweets/TweetModal";
 
 const IconNav = () => {
   const navigate = useNavigate();
@@ -53,9 +54,7 @@ const IconNav = () => {
               <SettingsSuggestIcon className="icon" />
               <div className="buttonLabel">Settings</div>
             </Button>
-            <Button id="tweetButton" variant="contained">
-              Tweet
-            </Button>
+            <TweetModal />
           </div>
 
           <Logout />
