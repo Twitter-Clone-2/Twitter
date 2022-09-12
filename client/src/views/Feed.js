@@ -24,7 +24,7 @@ const Feed = () => {
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
   };
   useEffect(() => {
     fetchAllTweetsForFeed();
@@ -45,7 +45,7 @@ const Feed = () => {
         setTweet("");
         fetchAllTweetsForFeed();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   };
   return (
     <div id="feed">

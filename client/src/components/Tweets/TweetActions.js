@@ -33,7 +33,6 @@ export default function TweetActions({
     if (displayIconCount) {
       setCount(likes.length);
       setReplyCount(replies.length);
-      console.log(replies.length);
     }
   }, [id, feed, tweet]);
 
@@ -49,7 +48,7 @@ export default function TweetActions({
           setCount((prev) => prev + 1);
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
     }
 
@@ -64,7 +63,7 @@ export default function TweetActions({
           setCount((prev) => prev - 1);
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
     }
   };
@@ -129,7 +128,6 @@ export default function TweetActions({
           <CachedIcon
             onClick={(event) => {
               event.stopPropagation();
-              console.log("retweet was clicked");
             }}
           />
           <p className="retweetCount">

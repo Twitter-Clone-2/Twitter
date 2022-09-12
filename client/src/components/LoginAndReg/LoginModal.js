@@ -44,7 +44,7 @@ export default function BasicModal() {
           setError(true);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   };
 
   return (

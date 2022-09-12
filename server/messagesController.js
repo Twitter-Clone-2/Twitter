@@ -97,7 +97,6 @@ async function findMessagesForTheRoom(req, res) {
 async function findLastMessage(req, res) {
   const db = await startPool();
   const { room_numbers } = req.params;
-  //console.log(room_numbers);
   const array = JSON.parse("[" + room_numbers + "]");
   const query = `SELECT * FROM messages where room_number = ANY(ARRAY[${array}]) ORDER BY created_at DESC;`;
 
@@ -106,11 +105,9 @@ async function findLastMessage(req, res) {
     let counter = 0;
     let index = 0;
     let holderObj = {};
-    console.log("hi");
+
     while (counter < array.length && index < results.rows.length) {
-      console.log(results.rows[index]);
       if (!holderObj.hasOwnProperty(results.rows[index].room_number)) {
-        console.log();
         holderObj[results.rows[index].room_number] = results.rows[index];
         counter++;
       }

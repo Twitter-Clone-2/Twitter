@@ -35,7 +35,6 @@ async function getOneUserByEmail(req, res) {
   const db = await startPool();
   let { email } = req.params;
   const query = `SELECT * FROM accounts WHERE email = '${email}'`;
-  console.log(query);
   try {
     const results = await db.query(query);
     res.send(results.rows);
@@ -78,7 +77,7 @@ async function register(req, res) {
         endPool(db);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         endPool(db);
         return res.status(400);
       });
@@ -99,7 +98,6 @@ async function login(req, res) {
     }
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) {
-      console.log("passwords dont match");
       endPool(db);
       return res.send(false);
     }
@@ -144,7 +142,6 @@ async function updateAccountInformation(req, res) {
   } = req.body;
   const query = `UPDATE accounts SET first_name = '${first_name}', last_name = '${last_name}' , username = '${username}' , bio = '${bio}', location = '${location}', profile_picture = '${profile_picture}', background_picture = '${background_picture}' WHERE id = ${id} `;
 
-  console.log(query);
   try {
     await db.query(query);
     try {

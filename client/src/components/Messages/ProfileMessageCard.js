@@ -17,7 +17,6 @@ const ProfileMessageCard = ({
         setAccountBeingMessaged(userObj);
         setAccountClicked(true);
         setRoomId(room_id);
-        console.log(userObj);
       }}
     >
       {userObj.profile_picture ? (

@@ -51,12 +51,10 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       params: { Bucket: process.env.REACT_APP_S3_BUCKET },
       region: process.env.REACT_APP_REGION,
     });
-    console.log(process.env.REACT_APP_accessKeyId);
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
 
     let fileName = `${user.id}_${timestamp}_${file.name}`;
-    console.log(fileName);
     const params = {
       ACL: "public-read",
       Body: file,
@@ -65,9 +63,8 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
     };
     try {
       const res = await myBucket.putObject(params).send((err) => {
-        if (err) console.log(err);
+        if (err) console.error(err);
       });
-      console.log(res);
     } catch (e) {
       console.error(e);
     }
@@ -131,7 +128,6 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
 
             setCurrentUser(responseForEditProfile.data.rows[0]);
             setError(false);
-            console.log(feed);
             setFeed(
               feed.map((tweet) => ({
                 accounts_id: tweet.accounts_id,
@@ -155,7 +151,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
           setErrorMessage("Username has already been taken");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
   }

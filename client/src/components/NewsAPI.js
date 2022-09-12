@@ -24,7 +24,7 @@ const NewsAPI = () => {
       .then(({ data }) => {
         setNews(data.results.filter((article) => article.media.length));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   };
 
   useEffect(() => {

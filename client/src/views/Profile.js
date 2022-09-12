@@ -12,7 +12,6 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Profile = () => {
   let { id } = useParams();
-  console.log(useParams());
   const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true);
   const [followingStatus, setFollowingStatus] = useState(false);
   let user = JSON.parse(localStorage.getItem("currUser"));
@@ -58,7 +57,7 @@ const Profile = () => {
         setNumOfFollowers(res.data.rows.length);
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
 
     axios
@@ -68,7 +67,7 @@ const Profile = () => {
         setNumOfFollowing(res.data.rows.length);
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
 
     axios
@@ -81,7 +80,7 @@ const Profile = () => {
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
   };
 
   const grabUserDetails = function (id) {

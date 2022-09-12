@@ -106,12 +106,7 @@ export default function ReplyModal({
             {/* MID */}
             <div className="replyModalFont replyModalMiddle">
               Replying to{" "}
-              <span
-                onClick={() => console.log("take to their profile")}
-                className="replyModalAccountLink"
-              >
-                @{username}
-              </span>
+              <span className="replyModalAccountLink">@{username}</span>
             </div>
 
             {/* BOT */}
