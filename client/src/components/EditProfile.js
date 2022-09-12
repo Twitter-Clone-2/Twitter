@@ -63,10 +63,14 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       Bucket: process.env.REACT_APP_S3_BUCKET,
       Key: fileName,
     };
-
-    await myBucket.putObject(params).send((err) => {
-      if (err) console.log(err);
-    });
+    try {
+      const res = await myBucket.putObject(params).send((err) => {
+        if (err) console.log(err);
+      });
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
     return fileName;
   }
 
