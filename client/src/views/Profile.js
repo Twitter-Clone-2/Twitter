@@ -145,6 +145,7 @@ const Profile = () => {
           </div>
           <div className="profilePageHeaderNameAndTweets">
             <h3>
+              {progress}
               {currentUser && currentUser.first_name}{" "}
               {currentUser && currentUser.last_name}
             </h3>
