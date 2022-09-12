@@ -46,12 +46,12 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  function updateProfilePicture(file) {
+  async function updateProfilePicture(file) {
     const myBucket = new AWS.S3({
       params: { Bucket: process.env.REACT_APP_S3_BUCKET },
       region: process.env.REACT_APP_REGION,
     });
-
+    console.log(process.env.REACT_APP_accessKeyId);
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
 
@@ -64,13 +64,13 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       Key: fileName,
     };
 
-    myBucket.putObject(params).send((err) => {
+    await myBucket.putObject(params).send((err) => {
       if (err) console.log(err);
     });
     return fileName;
   }
 
-  function updateAccount() {
+  async function updateAccount() {
     if (
       firstName.length == 0 ||
       lastName.length == 0 ||
@@ -84,22 +84,27 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       setError(true);
       setErrorMessage("Please enter fields correctly");
     } else {
-      axios
-        .get(route + "/api/user/" + username)
-        .then((res) => {
-          if (res.data.rows.length === 0 || res.data.rows[0].id == user.id) {
-            let fileName;
-            let backgroundFileName;
-            if (profilePictureSubmitted) {
-              fileName = updateProfilePicture(profilePicture);
-            }
-            if (backgroundPictureSubmitted) {
-              console.log("this line hit");
-              backgroundFileName = updateProfilePicture(backgroundPicture);
-            }
+      try {
+        const responseForUser = await axios.get(
+          route + "/api/user/" + username
+        );
 
-            axios
-              .put(route + "/api/update/account", {
+        if (
+          responseForUser.data.rows.length === 0 ||
+          responseForUser.data.rows[0].id == user.id
+        ) {
+          let fileName;
+          let backgroundFileName;
+          if (profilePictureSubmitted) {
+            fileName = await updateProfilePicture(profilePicture);
+          }
+          if (backgroundPictureSubmitted) {
+            backgroundFileName = await updateProfilePicture(backgroundPicture);
+          }
+          try {
+            const responseForEditProfile = await axios.put(
+              route + "/api/update/account",
+              {
                 id: user.id,
                 first_name: firstName,
                 last_name: lastName,
@@ -109,43 +114,45 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                 profile_picture: profilePictureSubmitted
                   ? `${process.env.REACT_APP_BUCKET_LINK}${fileName}`
                   : user.profile_picture,
-                background_picture: backgroundPicture
+                background_picture: backgroundPictureSubmitted
                   ? `${process.env.REACT_APP_BUCKET_LINK}${backgroundFileName}`
                   : user.background_picture,
-              })
-              .then((res) => {
-                localStorage.setItem(
-                  "currUser",
-                  JSON.stringify(res.data.rows[0])
-                );
+              }
+            );
 
-                setCurrentUser(res.data.rows[0]);
-                setError(false);
-                console.log(feed);
-                setFeed(
-                  feed.map((tweet) => ({
-                    accounts_id: tweet.accounts_id,
-                    content: tweet.content,
-                    created_at: tweet.created_at,
-                    first_name: res.data.rows[0].first_name,
-                    id: tweet.id,
-                    last_name: res.data.rows[0].last_name,
-                    reply_id: tweet.reply_id,
-                    username: res.data.rows[0].username,
-                    profile_picture: res.data.rows[0].profile_picture,
-                  }))
-                );
-                handleClose();
-              })
-              .catch((e) => console.error(e));
-          } else {
-            setError(true);
-            setErrorMessage("Username has already been taken");
+            localStorage.setItem(
+              "currUser",
+              JSON.stringify(responseForEditProfile.data.rows[0])
+            );
+
+            setCurrentUser(responseForEditProfile.data.rows[0]);
+            setError(false);
+            console.log(feed);
+            setFeed(
+              feed.map((tweet) => ({
+                accounts_id: tweet.accounts_id,
+                content: tweet.content,
+                created_at: tweet.created_at,
+                first_name: responseForEditProfile.data.rows[0].first_name,
+                id: tweet.id,
+                last_name: responseForEditProfile.data.rows[0].last_name,
+                reply_id: tweet.reply_id,
+                username: responseForEditProfile.data.rows[0].username,
+                profile_picture:
+                  responseForEditProfile.data.rows[0].profile_picture,
+              }))
+            );
+            handleClose();
+          } catch (e) {
+            console.error(e);
           }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+        } else {
+          setError(true);
+          setErrorMessage("Username has already been taken");
+        }
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -174,14 +181,30 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                 </button>
               </div>
 
-              <div id="editProfileGreyBackground">
-                <ImageUploadButton
-                  id={"editProfileCameraIconBackgroundPic"}
-                  setPicture={setBackgroundPicture}
-                  user={user}
-                  pictureSubmitCheck={setBackgroundPictureSubmitted}
-                />
-              </div>
+              {user.background_picture ? (
+                <div>
+                  <img
+                    src={user.background_picture}
+                    className="editProfileRealBackgroundPicture"
+                    id="editProfileGreyBackground"
+                  />
+                  <ImageUploadButton
+                    id={"editProfileCameraIconWithRealBackgroundPic"}
+                    setPicture={setBackgroundPicture}
+                    user={user}
+                    pictureSubmitCheck={setBackgroundPictureSubmitted}
+                  />
+                </div>
+              ) : (
+                <div id="editProfileGreyBackground">
+                  <ImageUploadButton
+                    id={"editProfileCameraIconBackgroundPic"}
+                    setPicture={setBackgroundPicture}
+                    user={user}
+                    pictureSubmitCheck={setBackgroundPictureSubmitted}
+                  />
+                </div>
+              )}
 
               <div className="editProfileRemoveMargin">
                 {user.profile_picture ? (

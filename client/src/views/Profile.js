@@ -16,7 +16,7 @@ const Profile = () => {
   const [followingStatus, setFollowingStatus] = useState(false);
   let user = JSON.parse(localStorage.getItem("currUser"));
 
-  const [currentUser, setCurrentUser] = useState(user);
+  const [currentUser, setCurrentUser] = useState();
 
   const [editProfile, setEditProfile] = useState(false);
   const [numOfFollowers, setNumOfFollowers] = useState(0);
@@ -30,6 +30,21 @@ const Profile = () => {
   const [replies, setReplies] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      if (user.id == id) {
+        navigate("/profile/page");
+      }
+      grabRelationshipsAndTweets(id);
+      grabUserDetails(id);
+      setUserProfileCheck(false);
+    } else {
+      grabRelationshipsAndTweets(user.id);
+      setUserProfileCheck(true);
+      setCurrentUser(user);
+    }
+  }, [id]);
 
   const grabRelationshipsAndTweets = function (curr_id) {
     axios
@@ -79,21 +94,6 @@ const Profile = () => {
       });
   };
 
-  useEffect(() => {
-    if (id) {
-      if (user.id == id) {
-        navigate("/profile/page");
-      }
-      grabRelationshipsAndTweets(id);
-      grabUserDetails(id);
-      setUserProfileCheck(false);
-    } else {
-      grabRelationshipsAndTweets(user.id);
-      setUserProfileCheck(true);
-      setCurrentUser(user);
-    }
-  }, [id]);
-
   const followButton = () => {
     //unfollow
     if (followingStatus) {
@@ -138,22 +138,23 @@ const Profile = () => {
           </div>
           <div className="profilePageHeaderNameAndTweets">
             <h3>
-              {currentUser.first_name} {currentUser.last_name}
+              {currentUser && currentUser.first_name}{" "}
+              {currentUser && currentUser.last_name}
             </h3>
             <p>{allTweets} tweets</p>
           </div>
         </div>
         <div>
-          {user.background_picture ? (
+          {currentUser && currentUser.background_picture ? (
             <img
-              src={user.background_picture}
+              src={currentUser.background_picture}
               id="profilePageRealBackgroundImage"
             />
           ) : (
             <div id="tempImage"></div>
           )}
           <div id="bottomOfPicture">
-            {currentUser.profile_picture ? (
+            {currentUser && currentUser.profile_picture ? (
               <img src={currentUser.profile_picture} className="userPic" />
             ) : (
               <PersonIcon sx={{ fontSize: 100 }} className="userPic" />
@@ -180,11 +181,15 @@ const Profile = () => {
             )}
           </div>
           <h2>
-            {currentUser.first_name} {currentUser.last_name}
+            {currentUser && currentUser.first_name}{" "}
+            {currentUser && currentUser.last_name}
           </h2>
-          <p>{currentUser.bio}</p>
-          <p>@{currentUser.username}</p>
-          <p>Joined , {format(new Date(currentUser.created_at), "PPpp")}</p>
+          <p>{currentUser && currentUser.bio}</p>
+          <p>@{currentUser && currentUser.username}</p>
+          <p>
+            Joined ,{" "}
+            {currentUser && format(new Date(currentUser.created_at), "PPpp")}
+          </p>
           <div className="flex" id="follows">
             <div>
               <FollowersAndFollowingModal

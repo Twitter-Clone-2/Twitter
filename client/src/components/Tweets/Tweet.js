@@ -52,13 +52,19 @@ export default function Tweet({
               <div
                 className="tweetNames"
                 id="tweetRealNames"
-                onClick={() => takeToProfile(tweet.accounts_id)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  takeToProfile(tweet.accounts_id);
+                }}
               >
                 {tweet.first_name} {tweet.last_name}
               </div>
               <p
                 className="tweetNames"
-                onClick={() => takeToProfile(tweet.accounts_id)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  takeToProfile(tweet.accounts_id);
+                }}
               >
                 @{tweet.username}
               </p>
