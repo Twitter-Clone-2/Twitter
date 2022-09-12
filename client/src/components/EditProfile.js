@@ -132,28 +132,30 @@ export default function EditProfile({
               }
             );
 
-            localStorage.setItem(
-              "currUser",
-              JSON.stringify(responseForEditProfile.data.rows[0])
-            );
+            setTimeout(() => {
+              localStorage.setItem(
+                "currUser",
+                JSON.stringify(responseForEditProfile.data.rows[0])
+              );
 
-            setCurrentUser(responseForEditProfile.data.rows[0]);
-            setError(false);
-            setFeed(
-              feed.map((tweet) => ({
-                accounts_id: tweet.accounts_id,
-                content: tweet.content,
-                created_at: tweet.created_at,
-                first_name: responseForEditProfile.data.rows[0].first_name,
-                id: tweet.id,
-                last_name: responseForEditProfile.data.rows[0].last_name,
-                reply_id: tweet.reply_id,
-                username: responseForEditProfile.data.rows[0].username,
-                profile_picture:
-                  responseForEditProfile.data.rows[0].profile_picture,
-              }))
-            );
-            handleClose();
+              setCurrentUser(responseForEditProfile.data.rows[0]);
+              setError(false);
+              setFeed(
+                feed.map((tweet) => ({
+                  accounts_id: tweet.accounts_id,
+                  content: tweet.content,
+                  created_at: tweet.created_at,
+                  first_name: responseForEditProfile.data.rows[0].first_name,
+                  id: tweet.id,
+                  last_name: responseForEditProfile.data.rows[0].last_name,
+                  reply_id: tweet.reply_id,
+                  username: responseForEditProfile.data.rows[0].username,
+                  profile_picture:
+                    responseForEditProfile.data.rows[0].profile_picture,
+                }))
+              );
+              handleClose();
+            }, 500);
           } catch (e) {
             console.error(e);
           }
