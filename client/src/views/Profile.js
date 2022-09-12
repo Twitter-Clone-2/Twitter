@@ -11,7 +11,8 @@ import EditProfile from "../components/EditProfile";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Profile = () => {
-  let { id } = useParams();
+  let { id } = useParams() || 1;
+  console.log(useParams());
   const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true);
   const [followingStatus, setFollowingStatus] = useState(false);
   let user = JSON.parse(localStorage.getItem("currUser"));
