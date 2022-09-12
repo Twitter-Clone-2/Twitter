@@ -29,6 +29,8 @@ const Profile = () => {
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
 
+  const [progress, setProgress] = useState(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,6 +47,11 @@ const Profile = () => {
       setCurrentUser(user);
     }
   }, [id]);
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("currUser"));
+    setCurrentUser(user);
+  }, [progress]);
 
   const grabRelationshipsAndTweets = function (curr_id) {
     axios
@@ -167,6 +174,7 @@ const Profile = () => {
                   setCurrentUser={setCurrentUser}
                   feed={feed}
                   setFeed={setFeed}
+                  setProgress={setProgress}
                 />
               </div>
             ) : (

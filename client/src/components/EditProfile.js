@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,7 +24,13 @@ const style = {
   overflow: "hidden",
 };
 
-export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
+export default function EditProfile({
+  user,
+  setCurrentUser,
+  feed,
+  setFeed,
+  setProgress,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -62,9 +68,14 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       Key: fileName,
     };
     try {
-      const res = await myBucket.putObject(params).send((err) => {
-        if (err) console.error(err);
-      });
+      myBucket
+        .putObject(params)
+        .on("httpUploadProgress", (evt) => {
+          setProgress(Math.round((evt.loaded / evt.total) * 100));
+        })
+        .send((err) => {
+          if (err) console.log(err);
+        });
     } catch (e) {
       console.error(e);
     }
