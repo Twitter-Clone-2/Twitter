@@ -54,7 +54,7 @@ export default function TweetModal({
   };
 
   return (
-    <div>
+    <>
       <Button id="tweetButton" variant="contained">
         Tweet
       </Button>
@@ -82,6 +82,6 @@ export default function TweetModal({
           </div>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }

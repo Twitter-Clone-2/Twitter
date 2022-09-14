@@ -76,3 +76,15 @@
   width: 25vw;
   margin-bottom: 20px;
 }
+
+.profileMessageCardProfilePicture {
+  border-radius: 50%;
+  height: 45px;
+  margin: 5px 10px 5px 5px;
+}
+.profileMessageCardNames {
+  font-weight: 700;
+}
+.profileMessageCardUsername {
+  color: rgb(128, 128, 128);
+}
