@@ -12,22 +12,29 @@ export default function TweetActions({
   displayIconCount = false,
   replies,
   feed,
+  currentUserId,
+  retweets,
 }) {
-  const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
-  const tweetIsLiked = likes.some(
-    (like) =>
-      (like.tweets_id == tweet.id && like.accounts_id === currentUserId) ||
-      like.id === currentUserId
-  );
+  function determineTrueOrFalse(likesOrRetweets) {
+    return likesOrRetweets.some(
+      (likeOrRetweet) =>
+        (likeOrRetweet.tweets_id == tweet.id &&
+          likeOrRetweet.accounts_id === currentUserId) ||
+        likeOrRetweet.id === currentUserId
+    );
+  }
+
   const [count, setCount] = useState(likes.length);
-  const [liked, setLiked] = useState(tweetIsLiked);
-  const [retweetCount, setRetweetCount] = useState(0);
+  const [liked, setLiked] = useState(determineTrueOrFalse(likes));
+  const [retweeted, setRetweeted] = useState(false);
+  const [retweetCount, setRetweetCount] = useState(retweets.length);
   const [replyCount, setReplyCount] = useState(replies.length || 0);
   const { id } = useParams();
 
   useEffect(() => {
     setCount(likes.length);
-    setLiked(tweetIsLiked);
+    setLiked(determineTrueOrFalse(likes));
+    setRetweeted(determineTrueOrFalse(retweets));
     setReplyCount(replies.length || 0);
 
     if (displayIconCount) {
@@ -36,6 +43,18 @@ export default function TweetActions({
     }
   }, [id, feed, tweet]);
 
+  async function RetweetOnClick() {
+    try {
+      await axios.post(route + "/api/retweet", {
+        id: currentUserId,
+        tweet_id: tweet.id,
+      });
+
+      console.log("retweet is good");
+    } catch (e) {
+      console.error(e);
+    }
+  }
   const likeFunction = (accounts_id, tweets_id) => {
     if (liked === false) {
       axios
@@ -128,7 +147,9 @@ export default function TweetActions({
           <CachedIcon
             onClick={(event) => {
               event.stopPropagation();
+              RetweetOnClick();
             }}
+            className={`${retweeted ? "retweeted" : ""}`}
           />
           <p className="retweetCount">
             {" "}

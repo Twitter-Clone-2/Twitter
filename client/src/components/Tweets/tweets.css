@@ -69,6 +69,9 @@
 .retweetCol {
   align-items: center;
 }
+.retweeted {
+  color: rgb(29, 155, 239);
+}
 .retweetCol:hover {
   color: rgb(29, 155, 239);
 }

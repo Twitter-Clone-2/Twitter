@@ -216,6 +216,7 @@ const Profile = () => {
                 key={i}
                 id={currentUser.id}
                 picture={tweet.profile_picture}
+                currentUserId={user.id}
               />
             ))}
         </div>

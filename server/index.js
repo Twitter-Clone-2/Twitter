@@ -27,6 +27,7 @@ const {
   getOneTweetAndAllData,
   findCurrUserAndTweets,
   findAllTweetsFromFollowing,
+  retweet,
 } = require("./tweetController");
 
 const {
@@ -72,6 +73,7 @@ app.delete(
 app.post("/api/likeTweet", cors(), likeATweet);
 app.post("/api/removeLike", cors(), removeLike);
 app.post("/api/reply", cors(), createAComment);
+app.post("/api/retweet", cors(), retweet);
 
 //                      RELATIONSHIP ROUTES
 app.post("/api/follow", cors(), followAnotherUser);

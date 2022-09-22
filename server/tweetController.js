@@ -54,11 +54,15 @@ async function findAllTweetsFromFollowing(req, res) {
     const tweetIDArr = resultsOfTweets.rows.map((tweetOBJ) => tweetOBJ.id);
 
     const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    const queryForRetweets = `SELECT * FROM retweets WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+
     const resultsOfLikes = await db.query(queryForLikes);
+    const resultOfRetweets = await db.query(queryForRetweets);
 
     const finalResult = {
       tweets: resultsOfTweets.rows,
       likes: resultsOfLikes.rows,
+      retweets: resultOfRetweets.rows,
     };
 
     res.status(200).send(finalResult);
@@ -104,20 +108,32 @@ async function getOneTweetAndAllData(req, res) {
 
   const queryForLikes = `SELECT accounts.first_name, accounts.last_name, accounts.username , accounts.id FROM likes LEFT JOIN accounts on accounts.id = likes.accounts_id WHERE likes.tweets_id = ${id};`;
 
+  const queryForRetweets = `SELECT accounts.first_name, accounts.last_name, accounts.username , accounts.id FROM retweets
+  LEFT JOIN tweets ON tweets.id = retweets.tweets_id 
+  LEFT JOIN accounts ON accounts.id = retweets.accounts_id 
+  WHERE retweets.tweets_id = ${id};`;
+
   try {
     const resultForTweet = await db.query(queryForTweet);
     const resultForLikes = await db.query(queryForLikes);
     const resultForReplies = await db.query(queryForReplies);
+    const resultForRetweets = await db.query(queryForRetweets);
 
     const replyIDArr = resultForReplies.rows.map((replyOBJ) => replyOBJ.id);
     const queryForRepliesLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${replyIDArr}]); `;
     const queryForRepliesReplies = `SELECT * FROM tweets WHERE reply_id = ANY(ARRAY[${replyIDArr}]); `;
+    const queryForRepliesRetweets = `SELECT * FROM retweets WHERE tweets_id = ANY(ARRAY[${replyIDArr}]); `;
 
     let holderForLikes = [];
     let holderForReplies = [];
+    let holderForRetweets = [];
+
     if (replyIDArr.length > 0) {
       const resultForRepliesLikes = await db.query(queryForRepliesLikes);
       holderForLikes = resultForRepliesLikes.rows;
+
+      const resultForRepliesRetweets = await db.query(queryForRepliesRetweets);
+      holderForRetweets = resultForRepliesRetweets.rows;
 
       const resultForRepliesReplies = await db.query(queryForRepliesReplies);
       holderForReplies = resultForRepliesReplies.rows;
@@ -126,8 +142,10 @@ async function getOneTweetAndAllData(req, res) {
       tweet: resultForTweet.rows,
       replies: resultForReplies.rows,
       likes: resultForLikes.rows,
+      retweets: resultForRetweets.rows,
       replyLikes: holderForLikes,
       replyReplies: holderForReplies,
+      replyRetweets: holderForRetweets,
     };
     res.status(200).send(results);
     endPool(db);
@@ -185,6 +203,22 @@ async function createAComment(req, res) {
     endPool(db);
   }
 }
+
+async function retweet(req, res) {
+  const db = await startPool();
+  const { id, tweet_id } = req.body;
+  const query = `INSERT INTO retweets (accounts_id , tweets_id) VALUES (${id} , ${tweet_id});`;
+
+  try {
+    await db.query(query);
+    res.status(200);
+    endPool(db);
+  } catch (e) {
+    console.error(e.stack);
+    res.status(400);
+    endPool(db);
+  }
+}
 module.exports = {
   deleteTweetAndEverythingRelated,
   createTweet,
@@ -194,4 +228,5 @@ module.exports = {
   getOneTweetAndAllData,
   findCurrUserAndTweets,
   findAllTweetsFromFollowing,
+  retweet,
 };
