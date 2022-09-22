@@ -22,12 +22,11 @@ const {
   deleteTweetAndEverythingRelated,
   createTweet,
   createAComment,
-  removeLike,
-  likeATweet,
+  removeLikeOrRetweet,
+  likeOrRetweet,
   getOneTweetAndAllData,
   findCurrUserAndTweets,
   findAllTweetsFromFollowing,
-  retweet,
 } = require("./tweetController");
 
 const {
@@ -70,10 +69,9 @@ app.delete(
   cors(),
   deleteTweetAndEverythingRelated
 );
-app.post("/api/likeTweet", cors(), likeATweet);
-app.post("/api/removeLike", cors(), removeLike);
+app.post("/api/likeOrRetweet", cors(), likeOrRetweet);
+app.post("/api/removeLikeOrRetweet", cors(), removeLikeOrRetweet);
 app.post("/api/reply", cors(), createAComment);
-app.post("/api/retweet", cors(), retweet);
 
 //                      RELATIONSHIP ROUTES
 app.post("/api/follow", cors(), followAnotherUser);

@@ -43,43 +43,51 @@ export default function TweetActions({
     }
   }, [id, feed, tweet]);
 
-  async function RetweetOnClick() {
-    try {
-      await axios.post(route + "/api/retweet", {
-        id: currentUserId,
-        tweet_id: tweet.id,
-      });
-
-      console.log("retweet is good");
-    } catch (e) {
-      console.error(e);
+  const likeOrRetweetFunction = (accounts_id, tweets_id, functionality) => {
+    let status;
+    if (functionality == "likes") {
+      status = liked;
+    } else {
+      status = retweeted;
     }
-  }
-  const likeFunction = (accounts_id, tweets_id) => {
-    if (liked === false) {
+    if (status === false) {
       axios
-        .post(route + "/api/likeTweet", {
+        .post(route + "/api/likeOrRetweet", {
           accounts_id,
           tweets_id,
+          functionality,
         })
         .then(() => {
-          setLiked(true);
-          setCount((prev) => prev + 1);
+          if (functionality == "likes") {
+            console.log("likes has been hit");
+            setLiked(true);
+            setCount((prev) => prev + 1);
+          } else {
+            setRetweeted(true);
+            setRetweetCount((prev) => prev + 1);
+          }
         })
         .catch((e) => {
           console.error(e);
         });
     }
 
-    if (liked) {
+    if (status) {
       axios
-        .post(route + "/api/removeLike", {
+        .post(route + "/api/removeLikeOrRetweet", {
           accounts_id,
           tweets_id,
+          functionality,
         })
         .then(() => {
-          setLiked(false);
-          setCount((prev) => prev - 1);
+          if (functionality == "likes") {
+            console.log("likes has been hit");
+            setLiked(false);
+            setCount((prev) => prev - 1);
+          } else {
+            setRetweeted(false);
+            setRetweetCount((prev) => prev - 1);
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -118,7 +126,7 @@ export default function TweetActions({
           <FavoriteBorderIcon
             onClick={(event) => {
               event.stopPropagation();
-              likeFunction(currentUserId, tweet.id);
+              likeOrRetweetFunction(currentUserId, tweet.id, "likes");
             }}
             className={`${liked ? "liked" : ""}`}
           />
@@ -147,7 +155,7 @@ export default function TweetActions({
           <CachedIcon
             onClick={(event) => {
               event.stopPropagation();
-              RetweetOnClick();
+              likeOrRetweetFunction(currentUserId, tweet.id, "retweets");
             }}
             className={`${retweeted ? "retweeted" : ""}`}
           />

@@ -156,11 +156,12 @@ async function getOneTweetAndAllData(req, res) {
   }
 }
 
-async function likeATweet(req, res) {
+async function likeOrRetweet(req, res) {
   const db = await startPool();
-  const { accounts_id, tweets_id } = req.body;
-  const query = `INSERT INTO likes (accounts_id, tweets_id) VALUES(${accounts_id}, ${tweets_id});`;
+  const { accounts_id, tweets_id, functionality } = req.body;
+  const query = `INSERT INTO ${functionality} (accounts_id, tweets_id) VALUES(${accounts_id}, ${tweets_id});`;
 
+  console.log(query);
   try {
     result = await db.query(query);
     res.status(200).send(true);
@@ -172,10 +173,10 @@ async function likeATweet(req, res) {
   }
 }
 
-async function removeLike(req, res) {
+async function removeLikeOrRetweet(req, res) {
   const db = await startPool();
-  const { accounts_id, tweets_id } = req.body;
-  const query = `DELETE FROM likes WHERE accounts_id = ${accounts_id} AND tweets_id = ${tweets_id};`;
+  const { accounts_id, tweets_id, functionality } = req.body;
+  const query = `DELETE FROM ${functionality} WHERE accounts_id = ${accounts_id} AND tweets_id = ${tweets_id};`;
 
   try {
     await db.query(query);
@@ -204,29 +205,13 @@ async function createAComment(req, res) {
   }
 }
 
-async function retweet(req, res) {
-  const db = await startPool();
-  const { id, tweet_id } = req.body;
-  const query = `INSERT INTO retweets (accounts_id , tweets_id) VALUES (${id} , ${tweet_id});`;
-
-  try {
-    await db.query(query);
-    res.status(200);
-    endPool(db);
-  } catch (e) {
-    console.error(e.stack);
-    res.status(400);
-    endPool(db);
-  }
-}
 module.exports = {
   deleteTweetAndEverythingRelated,
   createTweet,
   createAComment,
-  removeLike,
-  likeATweet,
+  removeLikeOrRetweet,
+  likeOrRetweet,
   getOneTweetAndAllData,
   findCurrUserAndTweets,
   findAllTweetsFromFollowing,
-  retweet,
 };
