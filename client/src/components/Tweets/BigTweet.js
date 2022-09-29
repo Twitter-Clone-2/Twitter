@@ -8,9 +8,18 @@ import TweetActions from "./TweetActions";
 import ReplyBox from "./ReplyBox";
 import Tweet from "./Tweet";
 
-const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
+const BigTweet = ({
+  tweet,
+  likes,
+  replies,
+  retweets,
+  replyRetweets,
+  replyLikes,
+  replyReplies,
+  currentUserId,
+}) => {
   const navigate = useNavigate();
-  console.log(replies);
+  console.log(retweets);
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
@@ -31,10 +40,18 @@ const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
 
       <div className="bigTweetPicAndNames paddingLeft">
         <div className="leftTweet cursorPointer">
-          <PersonIcon
-            sx={{ fontSize: 60 }}
-            onClick={() => takeToProfile(tweet.accounts_id)}
-          />
+          {tweet.profile_picture ? (
+            <img
+              src={tweet.profile_picture}
+              className="bigTweetProfilePicture"
+              onClick={() => takeToProfile(tweet.accounts_id)}
+            />
+          ) : (
+            <PersonIcon
+              sx={{ fontSize: 60 }}
+              onClick={() => takeToProfile(tweet.accounts_id)}
+            />
+          )}
         </div>
 
         <div>
@@ -64,6 +81,8 @@ const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
         likes={likes}
         displayIconCount={true}
         replies={replies}
+        retweets={retweets}
+        currentUserId={currentUserId}
       />
 
       <ReplyBox tweet={tweet} />
@@ -73,10 +92,12 @@ const BigTweet = ({ tweet, likes, replies, replyLikes, replyReplies }) => {
           key={i}
           tweet={reply}
           likes={replyLikes}
+          retweets={replyRetweets}
           replyingTo={true}
           replies={replyReplies}
           id={reply.accounts_id}
           picture={reply.profile_picture}
+          currentUserId={currentUserId}
         />
       ))}
     </div>

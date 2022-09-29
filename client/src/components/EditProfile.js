@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,41 +28,50 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
   const [username, setUsername] = useState(user.username);
   const [bio, setBio] = useState(user.bio);
   const [location, setLocation] = useState(user.location);
+
   const [profilePicture, setProfilePicture] = useState(user.profile_picture);
-  const [profilePictureFileName, setProfilePictureFileName] = useState("");
+  const [profilePictureSubmitted, setProfilePictureSubmitted] = useState(false);
+  const [backgroundPictureSubmitted, setBackgroundPictureSubmitted] =
+    useState(false);
+  const [backgroundPicture, setBackgroundPicture] = useState(
+    user.background_picture
+  );
+
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  function updateProfilePicture() {
+  async function updateProfilePicture(file) {
     const myBucket = new AWS.S3({
       params: { Bucket: process.env.REACT_APP_S3_BUCKET },
       region: process.env.REACT_APP_REGION,
     });
-
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
 
-    let fileName = `${user.id}_${timestamp}_${profilePicture.name}`;
-    console.log(fileName);
+    let fileName = `${user.id}_${timestamp}_${file.name}`;
     const params = {
       ACL: "public-read",
-      Body: profilePicture,
+      Body: file,
       Bucket: process.env.REACT_APP_S3_BUCKET,
       Key: fileName,
     };
-
-    myBucket.putObject(params).send((err) => {
-      if (err) console.log(err);
-    });
+    try {
+      myBucket.putObject(params).send((err) => {
+        if (err) console.log(err);
+      });
+    } catch (e) {
+      console.error(e);
+    }
     return fileName;
   }
 
-  function updateAccount() {
+  async function updateAccount() {
     if (
       firstName.length == 0 ||
       lastName.length == 0 ||
@@ -76,57 +85,76 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
       setError(true);
       setErrorMessage("Please enter fields correctly");
     } else {
-      axios
-        .get(route + "/api/user/" + username)
-        .then((res) => {
-          if (res.data.rows.length === 0 || res.data.rows[0].id == user.id) {
-            let fileName = updateProfilePicture();
+      try {
+        const responseForUser = await axios.get(
+          route + "/api/user/" + username
+        );
 
-            axios
-              .put(route + "/api/update/account", {
+        if (
+          responseForUser.data.rows.length === 0 ||
+          responseForUser.data.rows[0].id == user.id
+        ) {
+          let fileName;
+          let backgroundFileName;
+          if (profilePictureSubmitted) {
+            fileName = await updateProfilePicture(profilePicture);
+          }
+          if (backgroundPictureSubmitted) {
+            backgroundFileName = await updateProfilePicture(backgroundPicture);
+          }
+          try {
+            const responseForEditProfile = await axios.put(
+              route + "/api/update/account",
+              {
                 id: user.id,
                 first_name: firstName,
                 last_name: lastName,
                 username,
                 bio,
                 location,
-                profile_picture: profilePicture
+                profile_picture: profilePictureSubmitted
                   ? `${process.env.REACT_APP_BUCKET_LINK}${fileName}`
-                  : null,
-              })
-              .then((res) => {
-                localStorage.setItem(
-                  "currUser",
-                  JSON.stringify(res.data.rows[0])
-                );
+                  : user.profile_picture,
+                background_picture: backgroundPictureSubmitted
+                  ? `${process.env.REACT_APP_BUCKET_LINK}${backgroundFileName}`
+                  : user.background_picture,
+              }
+            );
 
-                setCurrentUser(res.data.rows[0]);
-                setError(false);
-                console.log(feed);
-                setFeed(
-                  feed.map((tweet) => ({
-                    accounts_id: tweet.accounts_id,
-                    content: tweet.content,
-                    created_at: tweet.created_at,
-                    first_name: res.data.rows[0].first_name,
-                    id: tweet.id,
-                    last_name: res.data.rows[0].last_name,
-                    reply_id: tweet.reply_id,
-                    username: res.data.rows[0].username,
-                    profile_picture: res.data.rows[0].profile_picture,
-                  }))
-                );
-                handleClose();
-              })
-              .catch((e) => console.error(e));
-          } else {
-            setError(true);
-            setErrorMessage("Username has already been taken");
+            setTimeout(() => {
+              localStorage.setItem(
+                "currUser",
+                JSON.stringify(responseForEditProfile.data.rows[0])
+              );
+
+              setCurrentUser(responseForEditProfile.data.rows[0]);
+              setError(false);
+              setFeed(
+                feed.map((tweet) => ({
+                  accounts_id: tweet.accounts_id,
+                  content: tweet.content,
+                  created_at: tweet.created_at,
+                  first_name: responseForEditProfile.data.rows[0].first_name,
+                  id: tweet.id,
+                  last_name: responseForEditProfile.data.rows[0].last_name,
+                  reply_id: tweet.reply_id,
+                  username: responseForEditProfile.data.rows[0].username,
+                  profile_picture:
+                    responseForEditProfile.data.rows[0].profile_picture,
+                }))
+              );
+              handleClose();
+            }, 500);
+          } catch (e) {
+            console.error(e);
           }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+        } else {
+          setError(true);
+          setErrorMessage("Username has already been taken");
+        }
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -155,23 +183,48 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                 </button>
               </div>
 
-              <div id="editProfileGreyBackground">
-                <ImageUploadButton
-                  id={"editProfileCameraIconBackgroundPic"}
-                  setProfilePicture={setProfilePicture}
-                  user={user}
-                />
-              </div>
+              {user.background_picture ? (
+                <div>
+                  <img
+                    src={user.background_picture}
+                    className="editProfileRealBackgroundPicture"
+                    id="editProfileGreyBackground"
+                  />
+                  <ImageUploadButton
+                    id={"editProfileCameraIconWithRealBackgroundPic"}
+                    setPicture={setBackgroundPicture}
+                    user={user}
+                    pictureSubmitCheck={setBackgroundPictureSubmitted}
+                  />
+                </div>
+              ) : (
+                <div id="editProfileGreyBackground">
+                  <ImageUploadButton
+                    id={"editProfileCameraIconBackgroundPic"}
+                    setPicture={setBackgroundPicture}
+                    user={user}
+                    pictureSubmitCheck={setBackgroundPictureSubmitted}
+                  />
+                </div>
+              )}
 
               <div className="editProfileRemoveMargin">
-                <PersonIcon
-                  sx={{ fontSize: 150 }}
-                  className="editProfileProfilePicture"
-                />
+                {user.profile_picture ? (
+                  <img
+                    src={user.profile_picture}
+                    className="editProfileRealProfilePicture editProfileProfilePicture"
+                  />
+                ) : (
+                  <PersonIcon
+                    sx={{ fontSize: 150 }}
+                    className="editProfileProfilePicture"
+                  />
+                )}
                 <ImageUploadButton
                   id={"editProfileCameraIconProfilePic"}
-                  setProfilePicture={setProfilePicture}
+                  setPicture={setProfilePicture}
                   user={user}
+                  pictureSubmitCheck={setProfilePictureSubmitted}
                 />
               </div>
 

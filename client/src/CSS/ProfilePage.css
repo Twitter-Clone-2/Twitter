@@ -8,10 +8,17 @@
 #profilePageHeader {
   display: flex;
 }
+.profilePageHeaderNameAndTweets {
+  margin-left: 20px;
+}
 #tempImage {
   height: 250px;
   background-color: #7bc2f8;
   border: 4px solid grey;
+}
+#profilePageRealBackgroundImage {
+  height: 250px;
+  width: 100%;
 }
 .userPic {
   position: absolute;

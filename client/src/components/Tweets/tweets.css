@@ -69,6 +69,9 @@
 .retweetCol {
   align-items: center;
 }
+.retweeted {
+  color: rgb(29, 155, 239);
+}
 .retweetCol:hover {
   color: rgb(29, 155, 239);
 }
@@ -261,4 +264,9 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+}
+.bigTweetProfilePicture {
+  border-radius: 50%;
+  height: 65px;
+  margin-right: 15px;
 }

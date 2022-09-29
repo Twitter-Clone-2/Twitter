@@ -12,59 +12,85 @@ export default function TweetActions({
   displayIconCount = false,
   replies,
   feed,
+  currentUserId,
+  retweets,
 }) {
-  const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
-  const tweetIsLiked = likes.some(
-    (like) => like.tweets_id == tweet.id && like.accounts_id === currentUserId || like.id === currentUserId
-  );
+  function determineTrueOrFalse(likesOrRetweets) {
+    return likesOrRetweets.some(
+      (likeOrRetweet) =>
+        (likeOrRetweet.tweets_id == tweet.id &&
+          likeOrRetweet.accounts_id === currentUserId) ||
+        likeOrRetweet.id === currentUserId
+    );
+  }
+
   const [count, setCount] = useState(likes.length);
-  const [liked, setLiked] = useState(tweetIsLiked);
-  const [retweetCount, setRetweetCount] = useState(0);
+  const [liked, setLiked] = useState(determineTrueOrFalse(likes));
+  const [retweeted, setRetweeted] = useState(false);
+  const [retweetCount, setRetweetCount] = useState(retweets.length);
   const [replyCount, setReplyCount] = useState(replies.length || 0);
-  const {id} = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-      setCount(likes.length)
-      setLiked(tweetIsLiked)
-      setReplyCount(replies.length || 0)
+    setCount(likes.length);
+    setLiked(determineTrueOrFalse(likes));
+    setRetweeted(determineTrueOrFalse(retweets));
+    setReplyCount(replies.length || 0);
 
-      if(displayIconCount){  
-        setCount(likes.length);
-        setReplyCount(replies.length);
-        console.log("hi")
-      }
-  }, [id, feed])
+    if (displayIconCount) {
+      setCount(likes.length);
+      setReplyCount(replies.length);
+    }
+  }, [id, feed, tweet]);
 
-  
-
-  const likeFunction = (accounts_id, tweets_id) => {
-    if (liked === false) {
+  const likeOrRetweetFunction = (accounts_id, tweets_id, functionality) => {
+    let status;
+    if (functionality == "likes") {
+      status = liked;
+    } else {
+      status = retweeted;
+    }
+    if (status === false) {
       axios
-        .post(route + "/api/likeTweet", {
+        .post(route + "/api/likeOrRetweet", {
           accounts_id,
           tweets_id,
+          functionality,
         })
         .then(() => {
-          setLiked(true);
-          setCount((prev) => prev + 1);
+          if (functionality == "likes") {
+            console.log("likes has been hit");
+            setLiked(true);
+            setCount((prev) => prev + 1);
+          } else {
+            setRetweeted(true);
+            setRetweetCount((prev) => prev + 1);
+          }
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
     }
 
-    if (liked) {
+    if (status) {
       axios
-        .post(route + "/api/removeLike", {
+        .post(route + "/api/removeLikeOrRetweet", {
           accounts_id,
           tweets_id,
+          functionality,
         })
         .then(() => {
-          setLiked(false);
-          setCount((prev) => prev - 1);
+          if (functionality == "likes") {
+            console.log("likes has been hit");
+            setLiked(false);
+            setCount((prev) => prev - 1);
+          } else {
+            setRetweeted(false);
+            setRetweetCount((prev) => prev - 1);
+          }
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
     }
   };
@@ -76,21 +102,21 @@ export default function TweetActions({
           {count > 0 && (
             <div className="underline">
               <span className="bold">{count}</span>
-              <span>Likes</span>
+              <span> Likes</span>
             </div>
           )}
 
           {replyCount > 0 && (
             <div className="underline">
               <span className="bold">{replyCount}</span>
-              <span>Replies</span>
+              <span> Replies</span>
             </div>
           )}
 
           {retweetCount > 0 && (
             <div className="underline">
               <span className="bold">{retweetCount}</span>
-              <span>Retweets</span>
+              <span> Retweets</span>
             </div>
           )}
         </div>
@@ -100,7 +126,7 @@ export default function TweetActions({
           <FavoriteBorderIcon
             onClick={(event) => {
               event.stopPropagation();
-              likeFunction(currentUserId, tweet.id);
+              likeOrRetweetFunction(currentUserId, tweet.id, "likes");
             }}
             className={`${liked ? "liked" : ""}`}
           />
@@ -110,25 +136,28 @@ export default function TweetActions({
         </div>
 
         <div className="flex replyCol">
-          <ReplyModal 
-          tweet_id={tweet.id}
-          first_name={tweet.first_name}
-          last_name={tweet.last_name}
-          username={tweet.username}
-          created_at={tweet.created_at}
-          content={tweet.content}
+          <ReplyModal
+            tweet_id={tweet.id}
+            first_name={tweet.first_name}
+            last_name={tweet.last_name}
+            username={tweet.username}
+            created_at={tweet.created_at}
+            content={tweet.content}
           />
-          {!displayIconCount && Boolean(replyCount) && <div className="replyCount">
-            {replyCount === 0 ? "" : replyCount}
-          </div>}
+          {!displayIconCount && Boolean(replyCount) && (
+            <div className="replyCount">
+              {replyCount === 0 ? "" : replyCount}
+            </div>
+          )}
         </div>
 
         <div className="flex retweetCol">
           <CachedIcon
             onClick={(event) => {
               event.stopPropagation();
-              console.log("retweet was clicked");
+              likeOrRetweetFunction(currentUserId, tweet.id, "retweets");
             }}
+            className={`${retweeted ? "retweeted" : ""}`}
           />
           <p className="retweetCount">
             {" "}

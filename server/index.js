@@ -19,100 +19,86 @@ const {
 } = require("./accountController");
 
 const {
+  deleteTweetAndEverythingRelated,
   createTweet,
-  findAllTweetsFromOneUser,
+  createAComment,
+  removeLikeOrRetweet,
+  likeOrRetweet,
+  getOneTweetAndAllData,
+  findCurrUserAndTweets,
+  findAllTweetsFromFollowing,
+} = require("./tweetController");
+
+const {
   unFollowAnotherUser,
   followAnotherUser,
-  findFollowers,
-  findFollowing,
-  checkFollowStatus,
-  findAllRelationshipStatus,
   selectAllFollowersAndTheirAccounts,
   selectAllFollowingAndTheirAccounts,
-  findAllTweetsFromFollowing,
-  likeATweet,
-  removeLike,
-  findCurrUserAndTweets,
-  createAComment,
-  getOneTweetAndAllData,
-  deleteTweetAndEverythingRelated,
-} = require("./controllers");
+} = require("./relationshipsController");
 
 const {
   findConversations,
   createRoom,
   createMessage,
   findMessagesForTheRoom,
+  findLastMessage,
 } = require("./messagesController");
 
 app.options("*", cors());
-
-//get all users
+//                        ACCOUNT ROUTES
 app.get("/api/users", cors(), getAllUsers);
-// get one user
-//id
-app.post("/api/user", cors(), getOneUser);
-//email
-app.post("/api/user/email", cors(), getOneUserByEmail);
-//username
+app.get("/api/user/details/:id", cors(), getOneUser);
+app.get("/api/user/email/:email", cors(), getOneUserByEmail);
 app.get("/api/user/:username", cors(), getOneUserByUsername);
 app.put("/api/update/account", cors(), updateAccountInformation);
-//login
 app.post("/api/login", cors(), login);
-//register
 app.post("/api/register", cors(), register);
-//tweet
+app.delete("/api/delete/account", cors(), deleteUser);
+
+//                      TWEET ROUTES
 app.post("/api/create/tweet", cors(), createTweet);
-app.post("/api/findAllTweetsFromOneUser", cors(), findAllTweetsFromOneUser);
 app.get(
   "/api/findAllTweetsFromFollowing/:id",
   cors(),
   findAllTweetsFromFollowing
 );
-app.post("/api/currUser/tweets", cors(), findCurrUserAndTweets);
-app.post("/api/view/tweet", cors(), getOneTweetAndAllData);
+app.get("/api/currUser/tweets/:id", cors(), findCurrUserAndTweets);
+app.get("/api/view/tweet/:id", cors(), getOneTweetAndAllData);
 app.delete(
   "/api/delete/tweet/:tweet_id",
   cors(),
   deleteTweetAndEverythingRelated
 );
-//likes
-app.post("/api/likeTweet", cors(), likeATweet);
-app.post("/api/removeLike", cors(), removeLike);
-//retweets
-
-//reply
+app.post("/api/likeOrRetweet", cors(), likeOrRetweet);
+app.post("/api/removeLikeOrRetweet", cors(), removeLikeOrRetweet);
 app.post("/api/reply", cors(), createAComment);
-//follow status
-app.post("/api/findFollowers", cors(), findFollowers);
-app.post("/api/findFollowing", cors(), findFollowing);
-app.post("/api/findAllRelationships", cors(), findAllRelationshipStatus);
+
+//                      RELATIONSHIP ROUTES
 app.post("/api/follow", cors(), followAnotherUser);
 app.post("/api/unfollow", cors(), unFollowAnotherUser);
-app.post("/api/checkFollowStatus", cors(), checkFollowStatus);
-app.post(
-  "/api/selectAllFollowersAndTheirAccounts",
+app.get(
+  "/api/selectAllFollowersAndTheirAccounts/:following",
   cors(),
   selectAllFollowersAndTheirAccounts
 );
-app.post(
-  "/api/selectAllFollowingAndTheirAccounts",
+app.get(
+  "/api/selectAllFollowingAndTheirAccounts/:follower",
   cors(),
   selectAllFollowingAndTheirAccounts
 );
 
-//messages
+//                      MESSAGES ROUTES
 app.get("/api/findConversations/:id", cors(), findConversations);
 app.post("/api/create/room", cors(), createRoom);
 app.post("/api/create/message", cors(), createMessage);
 app.get("/api/find/messages/:room_number", cors(), findMessagesForTheRoom);
-//delete an account
-app.delete("/api/delete/account", cors(), deleteUser);
+app.get("/api/last/message/:room_numbers", cors(), findLastMessage);
 
 const server = app.listen(process.env.PORT || 8080, () => {
   console.log(`Example app listening on port ${process.env.PORT || 8080}`);
 });
 
+//                      SOCKET.IO
 const io = require("socket.io")(server, { cors: true });
 
 io.on("connection", (socket) => {

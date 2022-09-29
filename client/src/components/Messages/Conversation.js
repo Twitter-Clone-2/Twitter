@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import "../CSS/Conversation.css";
+import "../../CSS/Conversation.css";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { format, set } from "date-fns";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import GifBoxIcon from "@mui/icons-material/GifBox";
 import SendIcon from "@mui/icons-material/Send";
 import { io } from "socket.io-client";
-import route from "../utils/server_router";
+import route from "../../utils/server_router";
 import axios from "axios";
 
 const socket = io(route);
@@ -31,7 +31,6 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
     axios
       .get(route + "/api/find/messages/" + roomId)
       .then((res) => {
-        console.log(res.data);
         let oldMessages = res.data.map((message) => {
           if (message.user_sent_message == user.id) {
             return { sent: message.message };
@@ -62,10 +61,18 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
         setMessage("");
       });
   };
+
   return (
     <div className="conversationBody">
       <div className="convoHeader">
-        {<PersonIcon sx={{ fontSize: 45 }} />}
+        {accountBeingMessaged.profile_picture ? (
+          <img
+            src={accountBeingMessaged.profile_picture}
+            className="convoProfilePicture"
+          />
+        ) : (
+          <PersonIcon sx={{ fontSize: 45 }} />
+        )}
         <div className="convoHeaderNames">
           <span id="convoHeaderRealNames">
             {accountBeingMessaged.first_name} {accountBeingMessaged.last_name}
@@ -75,7 +82,7 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
           </span>
         </div>
       </div>
-      <div className="convoBody">
+      <div className="convoBody" id="messageBody">
         <div className="convoAccountBeingMessagedDetails">
           <div>
             <span className="convoBodyAccountName">
@@ -96,6 +103,7 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
         {allMessages.map((currMessage, i) => (
           <div
             className={currMessage.sent ? "convoSentDiv" : "convoReceivedDiv"}
+            key={i}
           >
             {currMessage.sent && (
               <div className="convoSentMessage" key={i}>

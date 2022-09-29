@@ -8,6 +8,7 @@ import route from "../utils/server_router";
 import { format } from "date-fns";
 import { useParams, useNavigate } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Profile = () => {
   let { id } = useParams();
@@ -15,7 +16,7 @@ const Profile = () => {
   const [followingStatus, setFollowingStatus] = useState(false);
   let user = JSON.parse(localStorage.getItem("currUser"));
 
-  const [currentUser, setCurrentUser] = useState(user);
+  const [currentUser, setCurrentUser] = useState();
 
   const [editProfile, setEditProfile] = useState(false);
   const [numOfFollowers, setNumOfFollowers] = useState(0);
@@ -30,60 +31,6 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
-  const grabRelationshipsAndTweets = function (curr_id) {
-    axios
-      .post(route + "/api/selectAllFollowersAndTheirAccounts", {
-        following: curr_id,
-      })
-      .then((res) => {
-        setFollowersInfo(res.data.rows);
-        setFollowingStatus(
-          res.data.rows.filter((account) => account.id == user.id).length
-        );
-        setNumOfFollowers(res.data.rows.length);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
-    axios
-      .post(route + "/api/selectAllFollowingAndTheirAccounts", {
-        follower: curr_id,
-      })
-      .then((res) => {
-        setFollowingInfo(res.data.rows);
-        setNumOfFollowing(res.data.rows.length);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
-    axios
-      .post(route + "/api/currUser/tweets", { id: curr_id })
-      .then(({ data }) => {
-        data.tweets.sort((x, y) => x.created_at - y.created_at);
-        data.tweets.reverse();
-        setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
-        setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length);
-        setLikes(data.likes);
-        setReplies(data.tweets.filter((tweet) => tweet.reply_id));
-      })
-      .catch((e) => console.log(e));
-  };
-
-  const grabUserDetails = function (id) {
-    axios
-      .post(route + "/api/user", {
-        id,
-      })
-      .then(({ data }) => {
-        setCurrentUser(data[0]);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
-
   useEffect(() => {
     if (id) {
       if (user.id == id) {
@@ -95,8 +42,57 @@ const Profile = () => {
     } else {
       grabRelationshipsAndTweets(user.id);
       setUserProfileCheck(true);
+      setCurrentUser(user);
     }
   }, [id]);
+
+  const grabRelationshipsAndTweets = function (curr_id) {
+    axios
+      .get(route + "/api/selectAllFollowersAndTheirAccounts/" + curr_id)
+      .then((res) => {
+        setFollowersInfo(res.data.rows);
+        setFollowingStatus(
+          res.data.rows.filter((account) => account.id == user.id).length
+        );
+        setNumOfFollowers(res.data.rows.length);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    axios
+      .get(route + "/api/selectAllFollowingAndTheirAccounts/" + curr_id)
+      .then((res) => {
+        setFollowingInfo(res.data.rows);
+        setNumOfFollowing(res.data.rows.length);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    axios
+      .get(route + "/api/currUser/tweets/" + curr_id)
+      .then(({ data }) => {
+        data.tweets.sort((x, y) => x.created_at - y.created_at);
+        data.tweets.reverse();
+        setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
+        setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length);
+        setLikes(data.likes);
+        setReplies(data.tweets.filter((tweet) => tweet.reply_id));
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const grabUserDetails = function (id) {
+    axios
+      .get(route + "/api/user/details/" + id)
+      .then(({ data }) => {
+        setCurrentUser(data[0]);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
 
   const followButton = () => {
     //unfollow
@@ -134,19 +130,31 @@ const Profile = () => {
       <div id="profilePageUser">
         <div id="profilePageHeader">
           <div>
+            <KeyboardBackspaceIcon
+              className="backButton  cursorPointer"
+              sx={{ fontSize: 40 }}
+              onClick={() => navigate(-1)}
+            />
+          </div>
+          <div className="profilePageHeaderNameAndTweets">
             <h3>
-              {currentUser.first_name} {currentUser.last_name}
+              {currentUser && currentUser.first_name}{" "}
+              {currentUser && currentUser.last_name}
             </h3>
             <p>{allTweets} tweets</p>
           </div>
         </div>
         <div>
-          {/* BIG IMAGE HERE */}
-          {/* DELETE THIS DIV WHEN IMAGE IS READY */}
-          <div id="tempImage"></div>
-          {/* SMALL IMAGE HERE */}
+          {currentUser && currentUser.background_picture ? (
+            <img
+              src={currentUser.background_picture}
+              id="profilePageRealBackgroundImage"
+            />
+          ) : (
+            <div id="tempImage"></div>
+          )}
           <div id="bottomOfPicture">
-            {currentUser.profile_picture ? (
+            {currentUser && currentUser.profile_picture ? (
               <img src={currentUser.profile_picture} className="userPic" />
             ) : (
               <PersonIcon sx={{ fontSize: 100 }} className="userPic" />
@@ -173,11 +181,15 @@ const Profile = () => {
             )}
           </div>
           <h2>
-            {currentUser.first_name} {currentUser.last_name}
+            {currentUser && currentUser.first_name}{" "}
+            {currentUser && currentUser.last_name}
           </h2>
-          <p>{currentUser.bio}</p>
-          <p>@{currentUser.username}</p>
-          <p>Joined , {format(new Date(currentUser.created_at), "PPpp")}</p>
+          <p>{currentUser && currentUser.bio}</p>
+          <p>@{currentUser && currentUser.username}</p>
+          <p>
+            Joined ,{" "}
+            {currentUser && format(new Date(currentUser.created_at), "PPpp")}
+          </p>
           <div className="flex" id="follows">
             <div>
               <FollowersAndFollowingModal
@@ -195,16 +207,18 @@ const Profile = () => {
 
           <h1>Tweets</h1>
           <hr />
-          {feed.map((tweet, i) => (
-            <Tweet
-              tweet={tweet}
-              likes={likes}
-              replies={replies}
-              key={i}
-              id={currentUser.id}
-              picture={tweet.profile_picture}
-            />
-          ))}
+          {currentUser &&
+            feed.map((tweet, i) => (
+              <Tweet
+                tweet={tweet}
+                likes={likes}
+                replies={replies}
+                key={i}
+                id={currentUser.id}
+                picture={tweet.profile_picture}
+                currentUserId={user.id}
+              />
+            ))}
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import "../CSS/EditProfile.css";
 import AWS from "aws-sdk";
 
-const ImageUploadButton = ({ id, setProfilePicture, user }) => {
+const ImageUploadButton = ({ id, setPicture, user, pictureSubmitCheck }) => {
   useEffect(() => {
     AWS.config.update({
       accessKeyId: process.env.REACT_APP_accessKeyId,
@@ -18,8 +18,8 @@ const ImageUploadButton = ({ id, setProfilePicture, user }) => {
   };
 
   function handleChange(e) {
-    setProfilePicture(e.target.files[0]);
-    console.log("set State");
+    setPicture(e.target.files[0]);
+    pictureSubmitCheck(true);
   }
 
   return (
