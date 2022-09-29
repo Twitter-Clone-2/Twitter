@@ -58,7 +58,22 @@ const selectAllTweets = `SELECT * FROM tweets;`;
 
 const addingFKToTweetsForComments = `ALTER TABLE tweets ADD reply_id integer;`;
 
+const addingFKToTweetsForRetweets = `ALTER TABLE tweets ADD FOREIGN KEY (retweet_id) REFERENCES tweets(id);`;
+const addingFKToTweetsForRetweets2 = `ALTER TABLE tweets ADD FOREIGN KEY (retweet_user_id) REFERENCES accounts(id);`;
+
 const alterFKReplyID = `ALTER TABLE IF EXISTS tweets
+ADD CONSTRAINT fk_tweets FOREIGN KEY (reply_id)
+REFERENCES public.tweets (id) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION;`;
+
+const alterFKRetweetID = `ALTER TABLE IF EXISTS tweets
+ADD CONSTRAINT fk_tweets FOREIGN KEY (retweet_id)
+REFERENCES public.tweets (id) MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE NO ACTION;`;
+
+const alterFKRetweetUserID = `ALTER TABLE IF EXISTS tweets
 ADD CONSTRAINT fk_tweets FOREIGN KEY (reply_id)
 REFERENCES public.tweets (id) MATCH SIMPLE
 ON UPDATE NO ACTION
@@ -70,7 +85,7 @@ REFERENCES accounts (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
 
-const createReply = `INSERT INTO tweets (content, accounts_id, reply_id) VALUES ('You're Great', 1 , 24);`;
+const deleteTweetCol = `ALTER TABLE tweets DROP retweet_id; `;
 //                  Likes Queries
 const createLikesTable = `CREATE TABLE IF NOT EXISTS likes
 (
@@ -113,6 +128,8 @@ ADD CONSTRAINT fk_tweets FOREIGN KEY (tweets_id)
 REFERENCES tweets (id) MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE NO ACTION;`;
+
+const addCreatedAtToRetweets = `ALTER TABLE retweets ADD created_at timestamp without time zone DEFAULT now()`;
 //                  Relationship queries (follower, following)
 
 const createRelationshipTable = `CREATE TABLE IF NOT EXISTS relationship
@@ -194,4 +211,4 @@ const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id,
 
 const delete1 = "DELETE FROM accounts WHERE id = 3";
 
-//runQuery(addBackgroundPicColumn);
+//runQuery(deleteTweetCol);

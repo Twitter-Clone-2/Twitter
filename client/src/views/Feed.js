@@ -14,20 +14,44 @@ const Feed = () => {
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
+  const [retweets, setRetweets] = useState([]);
 
   const fetchAllTweetsForFeed = () => {
     axios
       .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
       .then(({ data }) => {
-        data.tweets.sort((x, y) => x.created_at - y.created_at);
-        setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
+        let tempFeed = [
+          ...data.tweets.filter((tweet) => !tweet.reply_id),
+          ...data.retweets,
+        ];
+        setFeed(tempFeed);
+        console.log(tempFeed);
+
+        tempFeed
+          .sort((x, y) => {
+            if (x.retweet_created_at && y.retweet_created_at) {
+              return (
+                new Date(x.retweet_created_at) - new Date(y.retweet_created_at)
+              );
+            } else if (x.retweet_created_at) {
+              return new Date(x.retweet_created_at) - new Date(y.created_at);
+            } else if (y.retweet_created_at) {
+              return new Date(x.created_at) - new Date(y.retweet_created_at);
+            } else {
+              return new Date(x.created_at) - new Date(y.created_at);
+            }
+          })
+          .reverse();
+        console.log(tempFeed);
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
+        setRetweets(data.retweets);
       })
       .catch((e) => console.error(e));
   };
   useEffect(() => {
     fetchAllTweetsForFeed();
+    console.log(retweets);
   }, []);
 
   const takeToProfile = () => {
@@ -83,12 +107,16 @@ const Feed = () => {
               className="tweet"
               tweet={tweet}
               likes={likes.filter((like) => like.tweets_id === tweet.id)}
+              retweets={retweets.filter(
+                (retweet) => retweet.tweets_id === tweet.id
+              )}
               key={i}
               fetchAllTweetsForFeed={fetchAllTweetsForFeed}
               replies={replies}
               feed={feed}
               id={tweet.accounts_id}
               picture={tweet.profile_picture}
+              currentUserId={user.id}
             />
           ))}
         </div>

@@ -15,6 +15,8 @@ export default function Tweet({
   feed,
   id,
   picture,
+  currentUserId,
+  retweets,
 }) {
   const navigate = useNavigate();
   const loadTweet = (tweet_id) => {
@@ -92,6 +94,8 @@ export default function Tweet({
         likes={filteredLikes}
         replies={filteredReplies}
         feed={feed}
+        currentUserId={currentUserId}
+        retweets={retweets}
       />
     </div>
   );

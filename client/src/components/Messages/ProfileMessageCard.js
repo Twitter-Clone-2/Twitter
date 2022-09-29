@@ -1,6 +1,6 @@
 import React from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import { io } from "socket.io-client";
+import "../../CSS/Messages.css";
 
 const ProfileMessageCard = ({
   userObj,
@@ -20,14 +20,23 @@ const ProfileMessageCard = ({
       }}
     >
       {userObj.profile_picture ? (
-        <img src={userObj.profile_picture} />
+        <img
+          src={userObj.profile_picture}
+          className="profileMessageCardProfilePicture"
+        />
       ) : (
         <PersonIcon sx={{ fontSize: 70 }} />
       )}
 
       <div>
         <div>
-          {userObj.first_name} {userObj.last_name} @{userObj.username}
+          <span className="profileMessageCardNames">
+            {userObj.first_name} {userObj.last_name}
+          </span>
+          <span className="profileMessageCardUsername">
+            {" "}
+            @{userObj.username}
+          </span>
         </div>
         <div>{message && message.message}</div>
       </div>
