@@ -28,6 +28,7 @@ const Profile = () => {
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
+  const [retweets, setRetweets] = useState([]);
 
   const navigate = useNavigate();
 
@@ -217,6 +218,9 @@ const Profile = () => {
                 id={currentUser.id}
                 picture={tweet.profile_picture}
                 currentUserId={user.id}
+                retweets={retweets.filter(
+                  (retweet) => retweet.tweets_id === tweet.id
+                )}
               />
             ))}
         </div>

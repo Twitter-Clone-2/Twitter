@@ -91,9 +91,16 @@ async function findCurrUserAndTweets(req, res) {
     const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
     const resultsOfLikes = await db.query(queryForLikes);
 
+    const queryForRetweets = `SELECT retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
+    JOIN tweets on tweets.id = retweets.tweets_id
+    JOIN accounts on accounts.id = retweets.accounts_id 
+    WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    const resultsOfRetweets = await db.query(queryForRetweets);
+
     const results = {
       tweets: resultsOfTweets.rows,
       likes: resultsOfLikes.rows,
+      retweets: resultsOfRetweets,
     };
     res.status(200).send(results);
     endPool(db);
