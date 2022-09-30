@@ -51,7 +51,6 @@ const Feed = () => {
   };
   useEffect(() => {
     fetchAllTweetsForFeed();
-    console.log(retweets);
   }, []);
 
   const takeToProfile = () => {
@@ -106,7 +105,11 @@ const Feed = () => {
             <Tweet
               className="tweet"
               tweet={tweet}
-              likes={likes.filter((like) => like.tweets_id === tweet.id)}
+              likes={likes.filter(
+                (like) =>
+                  like.tweets_id === tweet.id ||
+                  like.tweets_id === tweet.tweets_id
+              )}
               retweets={retweets.filter(
                 (retweet) => retweet.tweets_id === tweet.id
               )}
