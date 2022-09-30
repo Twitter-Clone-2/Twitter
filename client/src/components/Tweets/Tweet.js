@@ -26,7 +26,9 @@ export default function Tweet({
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
-  const filteredLikes = likes.filter((like) => like.tweets_id == tweet.id);
+  const filteredLikes = likes.filter(
+    (like) => like.tweets_id == tweet.id || like.tweets_id == tweet.tweets_id
+  );
   const filteredReplies = replies.filter((reply) => reply.reply_id == tweet.id);
 
   return (

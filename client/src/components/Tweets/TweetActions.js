@@ -27,7 +27,7 @@ export default function TweetActions({
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(determineTrueOrFalse(likes));
   const [retweeted, setRetweeted] = useState(false);
-  const [retweetCount, setRetweetCount] = useState(retweets.length);
+  const [retweetCount, setRetweetCount] = useState(retweets.length || 0);
   const [replyCount, setReplyCount] = useState(replies.length || 0);
   const { id } = useParams();
 
