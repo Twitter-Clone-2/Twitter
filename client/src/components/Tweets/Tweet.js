@@ -26,16 +26,19 @@ export default function Tweet({
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
+
   const filteredLikes = likes.filter(
     (like) => like.tweets_id == tweet.id || like.tweets_id == tweet.tweets_id
   );
-  const filteredReplies = replies.filter((reply) => reply.reply_id == tweet.id);
+  const filteredReplies = replies.filter(
+    (reply) => reply.reply_id == tweet.id || reply.reply_id == tweet.tweets_id
+  );
 
   return (
     <div
       className="tweet"
       onClick={() => {
-        loadTweet(tweet.id);
+        loadTweet(tweet.id || tweet.tweets_id);
       }}
     >
       <div className="tweetTopHalf">
@@ -85,7 +88,7 @@ export default function Tweet({
         </div>
         {tweet.accounts_id === id && (
           <DeleteTweet
-            tweet_id={tweet.id}
+            tweet_id={tweet.id || tweet.tweets_id}
             fetchAllTweetsForFeed={fetchAllTweetsForFeed}
             onClick={(event) => event.stopPropagation()}
           />

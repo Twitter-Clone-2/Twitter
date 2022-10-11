@@ -19,7 +19,6 @@ const BigTweet = ({
   currentUserId,
 }) => {
   const navigate = useNavigate();
-  console.log(retweets);
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };

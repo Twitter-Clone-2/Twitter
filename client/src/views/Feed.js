@@ -25,7 +25,6 @@ const Feed = () => {
           ...data.retweets,
         ];
         setFeed(tempFeed);
-        console.log(tempFeed);
 
         tempFeed
           .sort((x, y) => {
@@ -42,7 +41,6 @@ const Feed = () => {
             }
           })
           .reverse();
-        console.log(tempFeed);
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
         setRetweets(data.retweets);
@@ -111,7 +109,9 @@ const Feed = () => {
                   like.tweets_id === tweet.tweets_id
               )}
               retweets={retweets.filter(
-                (retweet) => retweet.tweets_id === tweet.id
+                (retweet) =>
+                  retweet.tweets_id === tweet.id ||
+                  retweet.tweets_id == tweet.tweets_id
               )}
               key={i}
               fetchAllTweetsForFeed={fetchAllTweetsForFeed}

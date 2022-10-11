@@ -62,8 +62,6 @@ async function findAllTweetsFromFollowing(req, res) {
     const resultsOfLikes = await db.query(queryForLikes);
     const resultOfRetweets = await db.query(queryForRetweets);
 
-    console.log(resultOfRetweets.rows);
-
     const finalResult = {
       tweets: resultsOfTweets.rows,
       likes: resultsOfLikes.rows,
@@ -173,7 +171,6 @@ async function likeOrRetweet(req, res) {
   const { accounts_id, tweets_id, functionality } = req.body;
   const query = `INSERT INTO ${functionality} (accounts_id, tweets_id) VALUES(${accounts_id}, ${tweets_id});`;
 
-  console.log(query);
   try {
     result = await db.query(query);
     res.status(200).send(true);

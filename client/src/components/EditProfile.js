@@ -63,7 +63,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
     };
     try {
       myBucket.putObject(params).send((err) => {
-        if (err) console.log(err);
+        if (err) console.error(err);
       });
     } catch (e) {
       console.error(e);
