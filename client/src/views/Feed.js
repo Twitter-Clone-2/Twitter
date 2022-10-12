@@ -74,7 +74,7 @@ const Feed = () => {
         <div id="feedContainer">
           <h2>Home</h2>
           <div id="feedCreateTweet">
-            <PersonIcon onClick={takeToProfile} sx={{ fontSize: 100 }} />
+            {<PersonIcon onClick={takeToProfile} sx={{ fontSize: 100 }} />}
 
             <InputBase
               placeholder="What's happening?"

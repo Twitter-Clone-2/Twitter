@@ -14,6 +14,7 @@ export default function TweetActions({
   feed,
   currentUserId,
   retweets,
+  fetchAllTweetsForFeed,
 }) {
   function determineTrueOrFalse(likesOrRetweets) {
     return likesOrRetweets.some(
@@ -35,6 +36,7 @@ export default function TweetActions({
     setCount(likes.length);
     setLiked(determineTrueOrFalse(likes));
     setRetweeted(determineTrueOrFalse(retweets));
+    setRetweetCount(retweets.length || 0);
     setReplyCount(replies.length || 0);
 
     if (displayIconCount) {
@@ -91,6 +93,7 @@ export default function TweetActions({
           console.error(e);
         });
     }
+    fetchAllTweetsForFeed();
   };
 
   return (
