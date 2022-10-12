@@ -74,12 +74,30 @@ const Profile = () => {
     axios
       .get(route + "/api/currUser/tweets/" + curr_id)
       .then(({ data }) => {
-        data.tweets.sort((x, y) => x.created_at - y.created_at);
-        data.tweets.reverse();
-        setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
-        setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length);
+        let tempFeed = [
+          ...data.tweets.filter((tweet) => !tweet.reply_id),
+          ...data.retweets,
+        ];
+        setFeed(tempFeed);
+
+        tempFeed
+          .sort((x, y) => {
+            if (x.retweet_created_at && y.retweet_created_at) {
+              return (
+                new Date(x.retweet_created_at) - new Date(y.retweet_created_at)
+              );
+            } else if (x.retweet_created_at) {
+              return new Date(x.retweet_created_at) - new Date(y.created_at);
+            } else if (y.retweet_created_at) {
+              return new Date(x.created_at) - new Date(y.retweet_created_at);
+            } else {
+              return new Date(x.created_at) - new Date(y.created_at);
+            }
+          })
+          .reverse();
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
+        setRetweets(data.retweets);
       })
       .catch((e) => console.error(e));
   };
