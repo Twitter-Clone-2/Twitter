@@ -7,11 +7,14 @@ async function deleteTweetAndEverythingRelated(req, res) {
 
   const deleteAllLikesQuery = `DELETE FROM likes WHERE tweets_id = ${tweet_id};`;
   const deleteAllRepliesQuery = `DELETE FROM tweets WHERE reply_id = ${tweet_id};`;
+
+  const deleteRetweets = `DELETE FROM retweets WHERE tweets_id = ${tweet_id};`;
   const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
 
   try {
     await db.query(deleteAllLikesQuery);
     await db.query(deleteAllRepliesQuery);
+    await db.query(deleteRetweets);
     await db.query(deleteTweetQuery);
     res.status(200).send(true);
     endPool(db);
@@ -54,9 +57,10 @@ async function findAllTweetsFromFollowing(req, res) {
     const tweetIDArr = resultsOfTweets.rows.map((tweetOBJ) => tweetOBJ.id);
 
     const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
-    const queryForRetweets = `SELECT retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
+    const queryForRetweets = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
     JOIN tweets on tweets.id = retweets.tweets_id
-    JOIN accounts on accounts.id = retweets.accounts_id 
+    JOIN accounts a on a.id = retweets.accounts_id 
+    JOIN accounts on accounts.id = tweets.accounts_id
     WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
 
     const resultsOfLikes = await db.query(queryForLikes);
