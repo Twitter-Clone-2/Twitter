@@ -34,9 +34,7 @@ export default function Tweet({
   const filteredReplies = replies.filter(
     (reply) => reply.reply_id == tweet.id || reply.reply_id == tweet.tweets_id
   );
-  if (tweet.id == 101 || tweet.tweets_id == 101) {
-    console.log(tweet);
-  }
+
   return (
     <div
       className="tweet"
@@ -59,10 +57,24 @@ export default function Tweet({
               <PersonIcon
                 sx={{ fontSize: 60 }}
                 className="tweetUserPic"
-                onClick={() => takeToProfile(tweet.accounts_id)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  takeToProfile(
+                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                  );
+                }}
               />
             ) : (
-              <img src={picture} className="tweetUserPic" />
+              <img
+                src={picture}
+                className="tweetUserPic"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  takeToProfile(
+                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                  );
+                }}
+              />
             )}
           </div>
           <div className="rightTweet">
@@ -72,7 +84,10 @@ export default function Tweet({
                 id="tweetRealNames"
                 onClick={(event) => {
                   event.stopPropagation();
-                  takeToProfile(tweet.accounts_id);
+                  console.log(tweet);
+                  takeToProfile(
+                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                  );
                 }}
               >
                 {tweet.first_name} {tweet.last_name}
@@ -81,7 +96,9 @@ export default function Tweet({
                 className="tweetNames"
                 onClick={(event) => {
                   event.stopPropagation();
-                  takeToProfile(tweet.accounts_id);
+                  takeToProfile(
+                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                  );
                 }}
               >
                 @{tweet.username}
