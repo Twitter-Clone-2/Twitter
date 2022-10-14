@@ -77,7 +77,7 @@ const Profile = () => {
             }
           })
           .reverse();
-
+        setAllTweets(tempFeed.length);
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
         setRetweets(data.retweets);
