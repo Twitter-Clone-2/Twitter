@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "../CSS/Main.css";
 import LoginModal from "../components/LoginAndReg/LoginModal";
+import RegisterModal from "../components/LoginAndReg/RegisterModal";
 import { useNavigate } from "react-router-dom";
 
 const Main = () => {
   const navigate = useNavigate();
-
+  const [openRegister, setOpenRegister] = useState(false);
   return (
     <div id="leftColMainPage">
       <img
@@ -23,13 +24,11 @@ const Main = () => {
         <div id="mainPageSubHeader" className="mainPageHeaderFont">
           Join "Twitter" today.
         </div>
-        <button
-          id="signUpButton"
-          className="mainPageFont mainPageButtonShape"
-          onClick={() => navigate("/register")}
-        >
-          Sign up with an email
-        </button>
+        <RegisterModal
+          openRegister={openRegister}
+          setOpenRegister={setOpenRegister}
+        />
+
         <div id="agreement">
           By signing up, you agree to the Terms of Service and Privacy Policy,
           including Cookie Use.
@@ -38,7 +37,7 @@ const Main = () => {
         <div className="mainPageFont" id="mainPageQuestion">
           Already have an account?
         </div>
-        <LoginModal />
+        <LoginModal setOpenRegister={setOpenRegister} />
       </div>
     </div>
   );

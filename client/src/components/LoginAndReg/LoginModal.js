@@ -20,7 +20,7 @@ const style = {
   p: 2,
 };
 
-export default function BasicModal() {
+export default function BasicModal({ setOpenRegister }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -120,9 +120,9 @@ export default function BasicModal() {
 
           <div className="middle loginFont" id="loginQuestion">
             Don't have an account?{" "}
-            <Link id="registerLink" to="/register">
+            <span id="registerLink" onClick={() => setOpenRegister(true)}>
               Sign up
-            </Link>
+            </span>
           </div>
         </Box>
       </Modal>

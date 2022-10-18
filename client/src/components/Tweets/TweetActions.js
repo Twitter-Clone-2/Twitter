@@ -14,27 +14,28 @@ export default function TweetActions({
   feed,
   currentUserId,
   retweets,
+  fetchAllTweetsForFeed,
 }) {
   function determineTrueOrFalse(likesOrRetweets) {
     return likesOrRetweets.some(
       (likeOrRetweet) =>
-        (likeOrRetweet.tweets_id == tweet.id &&
-          likeOrRetweet.accounts_id === currentUserId) ||
-        likeOrRetweet.id === currentUserId
+        (likeOrRetweet.tweets_id == tweet.id ||
+          likeOrRetweet.tweets_id == tweet.tweets_id) &&
+        likeOrRetweet.accounts_id === currentUserId
     );
   }
 
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(determineTrueOrFalse(likes));
-  const [retweeted, setRetweeted] = useState(false);
+  const [retweeted, setRetweeted] = useState(determineTrueOrFalse(retweets));
   const [retweetCount, setRetweetCount] = useState(retweets.length || 0);
   const [replyCount, setReplyCount] = useState(replies.length || 0);
   const { id } = useParams();
-
   useEffect(() => {
     setCount(likes.length);
     setLiked(determineTrueOrFalse(likes));
     setRetweeted(determineTrueOrFalse(retweets));
+    setRetweetCount(retweets.length || 0);
     setReplyCount(replies.length || 0);
 
     if (displayIconCount) {
@@ -59,7 +60,6 @@ export default function TweetActions({
         })
         .then(() => {
           if (functionality == "likes") {
-            console.log("likes has been hit");
             setLiked(true);
             setCount((prev) => prev + 1);
           } else {
@@ -81,7 +81,6 @@ export default function TweetActions({
         })
         .then(() => {
           if (functionality == "likes") {
-            console.log("likes has been hit");
             setLiked(false);
             setCount((prev) => prev - 1);
           } else {
@@ -93,6 +92,7 @@ export default function TweetActions({
           console.error(e);
         });
     }
+    fetchAllTweetsForFeed();
   };
 
   return (
@@ -126,7 +126,11 @@ export default function TweetActions({
           <FavoriteBorderIcon
             onClick={(event) => {
               event.stopPropagation();
-              likeOrRetweetFunction(currentUserId, tweet.id, "likes");
+              likeOrRetweetFunction(
+                currentUserId,
+                tweet.id || tweet.tweets_id,
+                "likes"
+              );
             }}
             className={`${liked ? "liked" : ""}`}
           />
@@ -137,7 +141,7 @@ export default function TweetActions({
 
         <div className="flex replyCol">
           <ReplyModal
-            tweet_id={tweet.id}
+            tweet_id={tweet.id || tweet.tweets_id}
             first_name={tweet.first_name}
             last_name={tweet.last_name}
             username={tweet.username}
@@ -155,7 +159,11 @@ export default function TweetActions({
           <CachedIcon
             onClick={(event) => {
               event.stopPropagation();
-              likeOrRetweetFunction(currentUserId, tweet.id, "retweets");
+              likeOrRetweetFunction(
+                currentUserId,
+                tweet.id || tweet.tweets_id,
+                "retweets"
+              );
             }}
             className={`${retweeted ? "retweeted" : ""}`}
           />

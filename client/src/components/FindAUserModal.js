@@ -7,9 +7,8 @@ import "../CSS/followersAndFollowingModal.css";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 
-const FindAUserModal = () => {
+const FindAUserModal = ({ allAccounts, setAllAccounts }) => {
   const [searchArr, setSearchArr] = useState([]);
-  const [allAccounts, setAllAccounts] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -25,12 +24,6 @@ const FindAUserModal = () => {
     borderRadius: "25px",
     boxShadow: 20,
   };
-  useEffect(() => {
-    axios
-      .get(route + "/api/users")
-      .then((res) => setAllAccounts(res.data))
-      .catch((e) => console.error(e));
-  }, []);
 
   return (
     <>
