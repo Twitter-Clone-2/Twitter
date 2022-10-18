@@ -14,6 +14,7 @@ const Messages = () => {
   const [conversations, setConversations] = useState([]);
   const [roomId, setRoomId] = useState(0);
   const [lastMessages, setLastMessages] = useState({});
+  const [searchArr, setSearchArr] = useState([]);
 
   const grabAllInfoForMessages = function () {
     let room_numbers;
@@ -30,6 +31,7 @@ const Messages = () => {
       .get(route + "/api/findConversations/" + user.id)
       .then((res) => {
         setConversations(res.data);
+        setSearchArr(res.data);
         room_numbers = res.data.map((room) => room.room_id);
         axios
           .get(route + "/api/last/message/" + room_numbers)
@@ -42,9 +44,32 @@ const Messages = () => {
         console.error(e);
       });
   };
+
   useEffect(() => {
     grabAllInfoForMessages();
   }, []);
+
+  function changeConvoArray(name) {
+    if (name.length > 0) {
+      setSearchArr(
+        conversations.filter((person) => {
+          return (
+            person.first_name.slice(0, name.length).toUpperCase() ==
+              name.toUpperCase() ||
+            person.username.slice(0, name.length).toUpperCase() ==
+              name.toUpperCase() ||
+            person.last_name.slice(0, name.length).toUpperCase() ==
+              name.toUpperCase() ||
+            `${person.first_name} ${person.last_name}`
+              .slice(0, name.length)
+              .toUpperCase() == name.toUpperCase()
+          );
+        })
+      );
+    } else {
+      setSearchArr(conversations);
+    }
+  }
 
   return (
     <div className="messageMainDiv flex">
@@ -54,9 +79,10 @@ const Messages = () => {
           <input
             placeholder="Search Direct Messages"
             className="messagesSearchBar"
+            onChange={(e) => changeConvoArray(e.target.value)}
           />
         </div>
-        {conversations.map((userObj, i) => (
+        {searchArr.map((userObj, i) => (
           <ProfileMessageCard
             key={i}
             userObj={userObj}
