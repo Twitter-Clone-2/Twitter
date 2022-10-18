@@ -270,3 +270,11 @@
   height: 65px;
   margin-right: 15px;
 }
+
+.tweetRetweetHeader {
+  padding-top: 10px;
+  padding-left: 50px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}

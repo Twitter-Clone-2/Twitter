@@ -29,6 +29,9 @@ const Profile = () => {
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
   const [retweets, setRetweets] = useState([]);
+  const [retweetLikes, setRetweetLikes] = useState([]);
+  const [retweetReplies, setRetweetReplies] = useState([]);
+  const [retweetRetweets, setRetweetRetweets] = useState([]);
 
   const navigate = useNavigate();
 
@@ -37,17 +40,55 @@ const Profile = () => {
       if (user.id == id) {
         navigate("/profile/page");
       }
-      grabRelationshipsAndTweets(id);
+      grabRelationships(id);
       grabUserDetails(id);
       setUserProfileCheck(false);
+      grabTweets(id);
     } else {
-      grabRelationshipsAndTweets(user.id);
+      grabRelationships(user.id);
       setUserProfileCheck(true);
       setCurrentUser(user);
+      grabTweets(user.id);
     }
   }, [id]);
 
-  const grabRelationshipsAndTweets = function (curr_id) {
+  const grabTweets = function () {
+    axios
+      .get(route + "/api/currUser/tweets/" + (id || user.id))
+      .then(({ data }) => {
+        let tempFeed = [
+          ...data.tweets.filter((tweet) => !tweet.reply_id),
+          ...data.retweets,
+        ];
+        setFeed(tempFeed);
+
+        tempFeed
+          .sort((x, y) => {
+            if (x.retweet_created_at && y.retweet_created_at) {
+              return (
+                new Date(x.retweet_created_at) - new Date(y.retweet_created_at)
+              );
+            } else if (x.retweet_created_at) {
+              return new Date(x.retweet_created_at) - new Date(y.created_at);
+            } else if (y.retweet_created_at) {
+              return new Date(x.created_at) - new Date(y.retweet_created_at);
+            } else {
+              return new Date(x.created_at) - new Date(y.created_at);
+            }
+          })
+          .reverse();
+        setAllTweets(tempFeed.length);
+        setLikes(data.likes);
+        setReplies(data.tweets.filter((tweet) => tweet.reply_id));
+        setRetweets(data.retweets);
+        setRetweetLikes(data.retweetsData ? data.retweetsData.likes : []);
+        setRetweetReplies(data.retweetsData ? data.retweetsData.replies : []);
+        setRetweetRetweets(data.retweetsData ? data.retweetsData.retweets : []);
+        console.log(data);
+      })
+      .catch((e) => console.error(e));
+  };
+  const grabRelationships = function (curr_id) {
     axios
       .get(route + "/api/selectAllFollowersAndTheirAccounts/" + curr_id)
       .then((res) => {
@@ -70,18 +111,6 @@ const Profile = () => {
       .catch((e) => {
         console.error(e);
       });
-
-    axios
-      .get(route + "/api/currUser/tweets/" + curr_id)
-      .then(({ data }) => {
-        data.tweets.sort((x, y) => x.created_at - y.created_at);
-        data.tweets.reverse();
-        setFeed(data.tweets.filter((tweet) => !tweet.reply_id));
-        setAllTweets(data.tweets.filter((tweet) => !tweet.reply_id).length);
-        setLikes(data.likes);
-        setReplies(data.tweets.filter((tweet) => tweet.reply_id));
-      })
-      .catch((e) => console.error(e));
   };
 
   const grabUserDetails = function (id) {
@@ -208,19 +237,27 @@ const Profile = () => {
 
           <h1>Tweets</h1>
           <hr />
+          {console.log("hello")}
           {currentUser &&
             feed.map((tweet, i) => (
               <Tweet
                 tweet={tweet}
-                likes={likes}
-                replies={replies}
+                likes={tweet.retweet ? retweetLikes : likes}
+                replies={tweet.retweet ? retweetReplies : replies}
                 key={i}
                 id={currentUser.id}
                 picture={tweet.profile_picture}
                 currentUserId={user.id}
-                retweets={retweets.filter(
-                  (retweet) => retweet.tweets_id === tweet.id
-                )}
+                fetchAllTweetsForFeed={grabTweets}
+                retweets={
+                  tweet.retweet
+                    ? retweetRetweets.filter(
+                        (retweet) => retweet.tweets_id === tweet.tweets_id
+                      )
+                    : retweets.filter(
+                        (retweet) => retweet.tweets_id === tweet.id
+                      )
+                }
               />
             ))}
         </div>

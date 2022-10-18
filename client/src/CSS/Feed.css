@@ -48,3 +48,9 @@ input {
   /* border: 3px solid red; */
   flex: 6.5;
 }
+
+.feedProfilePicture {
+  border-radius: 50%;
+  height: 80px;
+  margin-right: 20px;
+}

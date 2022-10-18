@@ -5,9 +5,11 @@ import axios from "axios";
 import NewsArticle from "./NewsPost";
 import "../CSS/News.css";
 import FindAUserModal from "./FindAUserModal";
+import route from "../utils/server_router";
 
 const NewsAPI = () => {
   const [news, setNews] = useState([]);
+  const [allAccounts, setAllAccounts] = useState([]);
 
   const { pathname } = useLocation();
   const displayNews =
@@ -31,11 +33,21 @@ const NewsAPI = () => {
     fetchNews();
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(route + "/api/users")
+      .then((res) => setAllAccounts(res.data))
+      .catch((e) => console.error(e));
+  }, []);
+
   return (
     <div id="mainNewsContainer">
       {displayNews && (
         <>
-          <FindAUserModal />
+          <FindAUserModal
+            allAccounts={allAccounts}
+            setAllAccounts={setAllAccounts}
+          />
           <div className="newsComponentTitle">What's happening?</div>
           <div id="newsArticlesContainer">
             {news.length === 0 && (

@@ -15,6 +15,7 @@
 #loginTwitterLogo {
   height: 40px;
   width: 40px;
+  margin-right: 30px;
 }
 
 .loginCloseButton {
@@ -54,6 +55,7 @@
 #registerLink {
   color: rgb(29, 155, 240);
   text-decoration: none;
+  cursor: pointer;
 }
 
 #loginQuestion {

@@ -25,7 +25,6 @@ const Feed = () => {
           ...data.retweets,
         ];
         setFeed(tempFeed);
-        console.log(tempFeed);
 
         tempFeed
           .sort((x, y) => {
@@ -42,7 +41,6 @@ const Feed = () => {
             }
           })
           .reverse();
-        console.log(tempFeed);
         setLikes(data.likes);
         setReplies(data.tweets.filter((tweet) => tweet.reply_id));
         setRetweets(data.retweets);
@@ -76,7 +74,11 @@ const Feed = () => {
         <div id="feedContainer">
           <h2>Home</h2>
           <div id="feedCreateTweet">
-            <PersonIcon onClick={takeToProfile} sx={{ fontSize: 100 }} />
+            {user.profile_picture ? (
+              <img src={user.profile_picture} className="feedProfilePicture" />
+            ) : (
+              <PersonIcon onClick={takeToProfile} sx={{ fontSize: 100 }} />
+            )}
 
             <InputBase
               placeholder="What's happening?"
@@ -111,7 +113,9 @@ const Feed = () => {
                   like.tweets_id === tweet.tweets_id
               )}
               retweets={retweets.filter(
-                (retweet) => retweet.tweets_id === tweet.id
+                (retweet) =>
+                  retweet.tweets_id === tweet.id ||
+                  retweet.tweets_id == tweet.tweets_id
               )}
               key={i}
               fetchAllTweetsForFeed={fetchAllTweetsForFeed}

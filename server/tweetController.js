@@ -7,11 +7,14 @@ async function deleteTweetAndEverythingRelated(req, res) {
 
   const deleteAllLikesQuery = `DELETE FROM likes WHERE tweets_id = ${tweet_id};`;
   const deleteAllRepliesQuery = `DELETE FROM tweets WHERE reply_id = ${tweet_id};`;
+
+  const deleteRetweets = `DELETE FROM retweets WHERE tweets_id = ${tweet_id};`;
   const deleteTweetQuery = `DELETE FROM tweets WHERE id = ${tweet_id};`;
 
   try {
     await db.query(deleteAllLikesQuery);
     await db.query(deleteAllRepliesQuery);
+    await db.query(deleteRetweets);
     await db.query(deleteTweetQuery);
     res.status(200).send(true);
     endPool(db);
@@ -54,15 +57,14 @@ async function findAllTweetsFromFollowing(req, res) {
     const tweetIDArr = resultsOfTweets.rows.map((tweetOBJ) => tweetOBJ.id);
 
     const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
-    const queryForRetweets = `SELECT retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
+    const queryForRetweets = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, accounts.id as "tweeter_id", retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
     JOIN tweets on tweets.id = retweets.tweets_id
-    JOIN accounts on accounts.id = retweets.accounts_id 
+    JOIN accounts a on a.id = retweets.accounts_id 
+    JOIN accounts on accounts.id = tweets.accounts_id
     WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
 
     const resultsOfLikes = await db.query(queryForLikes);
     const resultOfRetweets = await db.query(queryForRetweets);
-
-    console.log(resultOfRetweets.rows);
 
     const finalResult = {
       tweets: resultsOfTweets.rows,
@@ -82,6 +84,7 @@ async function findAllTweetsFromFollowing(req, res) {
 async function findCurrUserAndTweets(req, res) {
   const db = await startPool();
   const { id } = req.params;
+
   const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id,  tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username, accounts.profile_picture FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
 
   try {
@@ -91,17 +94,45 @@ async function findCurrUserAndTweets(req, res) {
     const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
     const resultsOfLikes = await db.query(queryForLikes);
 
-    const queryForRetweets = `SELECT retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
+    const queryForRetweets = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, accounts.id as "tweeter_id", retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
     JOIN tweets on tweets.id = retweets.tweets_id
-    JOIN accounts on accounts.id = retweets.accounts_id 
-    WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    JOIN accounts a on a.id = retweets.accounts_id 
+    JOIN accounts on accounts.id = tweets.accounts_id
+    WHERE retweets.accounts_id = ${id};`;
+
     const resultsOfRetweets = await db.query(queryForRetweets);
+    //console.log(resultsOfRetweets)
+    let retweetsData;
+    if (resultsOfRetweets.rows.length) {
+      const retweetIds = resultsOfRetweets.rows.map(
+        (retweet) => retweet.tweets_id
+      );
+
+      const queryForRetweetsLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${retweetIds}]); `;
+      const resultsForLikes = await db.query(queryForRetweetsLikes);
+
+      const queryForRetweetsReplies = `SELECT * FROM tweets WHERE reply_id = ANY(ARRAY[${retweetIds}]); `;
+      const resultsForReplies = await db.query(queryForRetweetsReplies);
+
+      const queryForRetweetsRetweets = `SELECT * FROM retweets WHERE tweets_id = ANY(ARRAY[${retweetIds}]); `;
+      const resultsForRetweetsRetweets = await db.query(
+        queryForRetweetsRetweets
+      );
+
+      retweetsData = {
+        likes: resultsForLikes.rows,
+        replies: resultsForReplies.rows,
+        retweets: resultsForRetweetsRetweets.rows,
+      };
+    }
 
     const results = {
       tweets: resultsOfTweets.rows,
       likes: resultsOfLikes.rows,
-      retweets: resultsOfRetweets,
+      retweets: resultsOfRetweets.rows,
+      retweetsData,
     };
+
     res.status(200).send(results);
     endPool(db);
   } catch (e) {
@@ -173,7 +204,6 @@ async function likeOrRetweet(req, res) {
   const { accounts_id, tweets_id, functionality } = req.body;
   const query = `INSERT INTO ${functionality} (accounts_id, tweets_id) VALUES(${accounts_id}, ${tweets_id});`;
 
-  console.log(query);
   try {
     result = await db.query(query);
     res.status(200).send(true);

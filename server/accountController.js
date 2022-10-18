@@ -66,22 +66,42 @@ async function register(req, res) {
   const db = await startPool();
   let { first_name, last_name, email, password, username, bio, location } =
     req.body;
+  try {
+    bcrypt.hash(password, 10).then(async (hash) => {
+      password = hash;
+      await db
+        .query(
+          `INSERT INTO accounts (first_name, last_name , email, password, username, bio, location) VALUES ('${first_name}','${last_name}','${email}','${password}','${username}','${bio}','${location}');`
+        )
+        .then(async () => {
+          let newAccountID;
+          const queryTograbIdOfNewAccount = `SELECT id FROM accounts WHERE username = '${username}'`;
 
-  bcrypt.hash(password, 10).then((hash) => {
-    password = hash;
-    db.query(
-      `INSERT INTO accounts (first_name, last_name , email, password, username, bio, location) VALUES ('${first_name}','${last_name}','${email}','${password}','${username}','${bio}','${location}');`
-    )
-      .then(() => {
-        res.status(200).send("Account created");
-        endPool(db);
-      })
-      .catch((err) => {
-        console.error(err);
-        endPool(db);
-        return res.status(400);
-      });
-  });
+          try {
+            newAccountID = await db.query(queryTograbIdOfNewAccount);
+
+            const queryToFollowOfficalAccount = `INSERT INTO relationship (follower, following) VALUES (${newAccountID.rows[0].id}, 12);`;
+
+            await db.query(queryToFollowOfficalAccount);
+            endPool(db);
+          } catch (e) {
+            console.error(e.stack);
+            res.status(400);
+            endPool(db);
+          }
+          res.status(200).send("Account created");
+        })
+        .catch((err) => {
+          console.error(err);
+          endPool(db);
+          return res.status(400);
+        });
+    });
+  } catch (e) {
+    console.error(e);
+    endPool(db);
+    return res.status(400);
+  }
 }
 
 async function login(req, res) {
