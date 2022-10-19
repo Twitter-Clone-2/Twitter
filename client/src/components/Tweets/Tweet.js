@@ -84,7 +84,6 @@ export default function Tweet({
                 id="tweetRealNames"
                 onClick={(event) => {
                   event.stopPropagation();
-                  console.log(tweet);
                   takeToProfile(
                     tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
                   );
