@@ -84,7 +84,6 @@ const Profile = () => {
         setRetweetLikes(data.retweetsData ? data.retweetsData.likes : []);
         setRetweetReplies(data.retweetsData ? data.retweetsData.replies : []);
         setRetweetRetweets(data.retweetsData ? data.retweetsData.retweets : []);
-        console.log(data);
       })
       .catch((e) => console.error(e));
   };
@@ -237,7 +236,6 @@ const Profile = () => {
 
           <h1>Tweets</h1>
           <hr />
-          {console.log("hello")}
           {currentUser &&
             feed.map((tweet, i) => (
               <Tweet

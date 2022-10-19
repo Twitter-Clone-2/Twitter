@@ -101,7 +101,6 @@ async function findCurrUserAndTweets(req, res) {
     WHERE retweets.accounts_id = ${id};`;
 
     const resultsOfRetweets = await db.query(queryForRetweets);
-    //console.log(resultsOfRetweets)
     let retweetsData;
     if (resultsOfRetweets.rows.length) {
       const retweetIds = resultsOfRetweets.rows.map(
