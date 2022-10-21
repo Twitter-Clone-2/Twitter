@@ -47,7 +47,6 @@ const FollowersAndFollowingModal = ({
           other_user_id: item.id,
         })
         .then((res) => {
-          console.log(res.data);
           setAccountClicked(true);
           setAccountBeingMessaged(item);
           setRoomId(res.data.room_id);
