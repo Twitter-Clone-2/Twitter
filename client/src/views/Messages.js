@@ -32,13 +32,15 @@ const Messages = () => {
       .then((res) => {
         setConversations(res.data);
         setSearchArr(res.data);
-        room_numbers = res.data.map((room) => room.room_id);
-        axios
-          .get(route + "/api/last/message/" + room_numbers)
-          .then((res) => {
-            setLastMessages(res.data);
-          })
-          .catch((e) => console.error(e));
+        if (res.data.length) {
+          room_numbers = res.data.map((room) => room.room_id);
+          axios
+            .get(route + "/api/last/message/" + room_numbers)
+            .then((res) => {
+              setLastMessages(res.data);
+            })
+            .catch((e) => console.error(e));
+        }
       })
       .catch((e) => {
         console.error(e);

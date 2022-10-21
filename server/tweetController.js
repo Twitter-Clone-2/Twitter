@@ -89,51 +89,56 @@ async function findCurrUserAndTweets(req, res) {
 
   try {
     const resultsOfTweets = await db.query(queryForTweets);
-    const tweetIDArr = resultsOfTweets.rows.map((tweetOBJ) => tweetOBJ.id);
+    if (resultsOfTweets.rows.length) {
+      const tweetIDArr = resultsOfTweets.rows.map((tweetOBJ) => tweetOBJ.id);
 
-    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
-    const resultsOfLikes = await db.query(queryForLikes);
+      const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+      const resultsOfLikes = await db.query(queryForLikes);
 
-    const queryForRetweets = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, accounts.id as "tweeter_id", retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
+      const queryForRetweets = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, accounts.id as "tweeter_id", retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
     JOIN tweets on tweets.id = retweets.tweets_id
     JOIN accounts a on a.id = retweets.accounts_id 
     JOIN accounts on accounts.id = tweets.accounts_id
     WHERE retweets.accounts_id = ${id};`;
 
-    const resultsOfRetweets = await db.query(queryForRetweets);
-    let retweetsData;
-    if (resultsOfRetweets.rows.length) {
-      const retweetIds = resultsOfRetweets.rows.map(
-        (retweet) => retweet.tweets_id
-      );
+      const resultsOfRetweets = await db.query(queryForRetweets);
+      let retweetsData;
+      if (resultsOfRetweets.rows.length) {
+        const retweetIds = resultsOfRetweets.rows.map(
+          (retweet) => retweet.tweets_id
+        );
 
-      const queryForRetweetsLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${retweetIds}]); `;
-      const resultsForLikes = await db.query(queryForRetweetsLikes);
+        const queryForRetweetsLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${retweetIds}]); `;
+        const resultsForLikes = await db.query(queryForRetweetsLikes);
 
-      const queryForRetweetsReplies = `SELECT * FROM tweets WHERE reply_id = ANY(ARRAY[${retweetIds}]); `;
-      const resultsForReplies = await db.query(queryForRetweetsReplies);
+        const queryForRetweetsReplies = `SELECT * FROM tweets WHERE reply_id = ANY(ARRAY[${retweetIds}]); `;
+        const resultsForReplies = await db.query(queryForRetweetsReplies);
 
-      const queryForRetweetsRetweets = `SELECT * FROM retweets WHERE tweets_id = ANY(ARRAY[${retweetIds}]); `;
-      const resultsForRetweetsRetweets = await db.query(
-        queryForRetweetsRetweets
-      );
+        const queryForRetweetsRetweets = `SELECT * FROM retweets WHERE tweets_id = ANY(ARRAY[${retweetIds}]); `;
+        const resultsForRetweetsRetweets = await db.query(
+          queryForRetweetsRetweets
+        );
 
-      retweetsData = {
-        likes: resultsForLikes.rows,
-        replies: resultsForReplies.rows,
-        retweets: resultsForRetweetsRetweets.rows,
+        retweetsData = {
+          likes: resultsForLikes.rows,
+          replies: resultsForReplies.rows,
+          retweets: resultsForRetweetsRetweets.rows,
+        };
+      }
+
+      const results = {
+        tweets: resultsOfTweets.rows,
+        likes: resultsOfLikes.rows,
+        retweets: resultsOfRetweets.rows,
+        retweetsData,
       };
+
+      res.status(200).send(results);
+      endPool(db);
+    } else {
+      res.status(200).send([]);
+      endPool(db);
     }
-
-    const results = {
-      tweets: resultsOfTweets.rows,
-      likes: resultsOfLikes.rows,
-      retweets: resultsOfRetweets.rows,
-      retweetsData,
-    };
-
-    res.status(200).send(results);
-    endPool(db);
   } catch (e) {
     console.error(e.stack);
     res.status(400).send(false);

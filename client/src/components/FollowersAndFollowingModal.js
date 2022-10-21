@@ -47,11 +47,14 @@ const FollowersAndFollowingModal = ({
           other_user_id: item.id,
         })
         .then((res) => {
+          console.log(res.data);
           setAccountClicked(true);
           setAccountBeingMessaged(item);
-          setRoomId(res.data[0].room_id);
+          setRoomId(res.data.room_id);
         })
-        .catch((e) => console.error(e));
+        .catch((e) => {
+          console.error(e);
+        });
     } else {
       navigate("/profile/page/" + item.id);
     }

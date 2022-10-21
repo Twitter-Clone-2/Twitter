@@ -56,34 +56,39 @@ const Profile = () => {
     axios
       .get(route + "/api/currUser/tweets/" + (id || user.id))
       .then(({ data }) => {
-        let tempFeed = [
-          ...data.tweets.filter((tweet) => !tweet.reply_id),
-          ...data.retweets,
-        ];
-        setFeed(tempFeed);
+        if (Object.keys(data).length) {
+          let tempFeed = [
+            ...data.tweets.filter((tweet) => !tweet.reply_id),
+            ...data.retweets,
+          ];
+          setFeed(tempFeed);
 
-        tempFeed
-          .sort((x, y) => {
-            if (x.retweet_created_at && y.retweet_created_at) {
-              return (
-                new Date(x.retweet_created_at) - new Date(y.retweet_created_at)
-              );
-            } else if (x.retweet_created_at) {
-              return new Date(x.retweet_created_at) - new Date(y.created_at);
-            } else if (y.retweet_created_at) {
-              return new Date(x.created_at) - new Date(y.retweet_created_at);
-            } else {
-              return new Date(x.created_at) - new Date(y.created_at);
-            }
-          })
-          .reverse();
-        setAllTweets(tempFeed.length);
-        setLikes(data.likes);
-        setReplies(data.tweets.filter((tweet) => tweet.reply_id));
-        setRetweets(data.retweets);
-        setRetweetLikes(data.retweetsData ? data.retweetsData.likes : []);
-        setRetweetReplies(data.retweetsData ? data.retweetsData.replies : []);
-        setRetweetRetweets(data.retweetsData ? data.retweetsData.retweets : []);
+          tempFeed
+            .sort((x, y) => {
+              if (x.retweet_created_at && y.retweet_created_at) {
+                return (
+                  new Date(x.retweet_created_at) -
+                  new Date(y.retweet_created_at)
+                );
+              } else if (x.retweet_created_at) {
+                return new Date(x.retweet_created_at) - new Date(y.created_at);
+              } else if (y.retweet_created_at) {
+                return new Date(x.created_at) - new Date(y.retweet_created_at);
+              } else {
+                return new Date(x.created_at) - new Date(y.created_at);
+              }
+            })
+            .reverse();
+          setAllTweets(tempFeed.length);
+          setLikes(data.likes);
+          setReplies(data.tweets.filter((tweet) => tweet.reply_id));
+          setRetweets(data.retweets);
+          setRetweetLikes(data.retweetsData ? data.retweetsData.likes : []);
+          setRetweetReplies(data.retweetsData ? data.retweetsData.replies : []);
+          setRetweetRetweets(
+            data.retweetsData ? data.retweetsData.retweets : []
+          );
+        }
       })
       .catch((e) => console.error(e));
   };
