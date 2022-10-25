@@ -50,26 +50,41 @@ async function findAllTweetsFromFollowing(req, res) {
     const idArr = resultOfIds.rows.map(
       (followingObject) => followingObject.following
     );
+    let follwerArray = idArr;
     idArr.push(id);
-    const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]) ORDER BY created_at DESC;`;
+
+    const queryToGetAllTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, tweets.reply_id FROM tweets LEFT JOIN accounts ON accounts.id = tweets.accounts_id WHERE accounts_id = ANY(ARRAY[${idArr}]) AND tweets.reply_id is NULL ORDER BY created_at DESC;`;
 
     const resultsOfTweets = await db.query(queryToGetAllTweets);
-    const tweetIDArr = resultsOfTweets.rows.map((tweetOBJ) => tweetOBJ.id);
 
-    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
-    const queryForRetweets = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, accounts.id as "tweeter_id", retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
+    const queryForRetweetsOnFeed = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, accounts.id as "tweeter_id", retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
     JOIN tweets on tweets.id = retweets.tweets_id
     JOIN accounts a on a.id = retweets.accounts_id 
     JOIN accounts on accounts.id = tweets.accounts_id
-    WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    WHERE a.id = ANY(ARRAY[${follwerArray}]);`;
+
+    const resultForRetweetsOnTheFeed = await db.query(queryForRetweetsOnFeed);
+    const retweetIDArr = resultForRetweetsOnTheFeed.rows.map(
+      (tweetOBJ) => tweetOBJ.tweets_id
+    );
+    const tweetIDArr = resultsOfTweets.rows.map((tweetOBJ) => tweetOBJ.id);
+
+    tweetIDArr.push(...retweetIDArr);
+
+    const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
+    const queryForReplies = `SELECT * FROM tweets WHERE reply_id = ANY(ARRAY[${tweetIDArr}])`;
+    const queryForRetweets = `SELECT * FROM retweets WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
 
     const resultsOfLikes = await db.query(queryForLikes);
     const resultOfRetweets = await db.query(queryForRetweets);
+    const resultForReplies = await db.query(queryForReplies);
 
     const finalResult = {
       tweets: resultsOfTweets.rows,
       likes: resultsOfLikes.rows,
       retweets: resultOfRetweets.rows,
+      replies: resultForReplies.rows,
+      retweetsOnFeed: resultForRetweetsOnTheFeed.rows,
     };
 
     res.status(200).send(finalResult);
