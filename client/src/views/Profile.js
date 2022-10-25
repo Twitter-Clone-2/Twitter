@@ -88,6 +88,8 @@ const Profile = () => {
           setRetweetRetweets(
             data.retweetsData ? data.retweetsData.retweets : []
           );
+        } else {
+          setFeed([]);
         }
       })
       .catch((e) => console.error(e));
