@@ -49,9 +49,11 @@ const FollowersAndFollowingModal = ({
         .then((res) => {
           setAccountClicked(true);
           setAccountBeingMessaged(item);
-          setRoomId(res.data[0].room_id);
+          setRoomId(res.data.room_id);
         })
-        .catch((e) => console.error(e));
+        .catch((e) => {
+          console.error(e);
+        });
     } else {
       navigate("/profile/page/" + item.id);
     }

@@ -12,7 +12,7 @@ import AWS from "aws-sdk";
 
 const style = {
   position: "absolute",
-  top: "35%",
+  top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 600,
@@ -281,7 +281,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                   multiline
                   fullWidth
                   rows={3}
-                  error={username.length > 150 ? true : false}
+                  error={bio.length > 150 ? true : false}
                 />
                 <TextField
                   id="outlined-textarea"
@@ -291,9 +291,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
                   onChange={(e) => setLocation(e.target.value)}
                   multiline
                   fullWidth
-                  error={
-                    location.length > 50 || location.length == 0 ? true : false
-                  }
+                  error={location.length > 50 ? true : false}
                 />
               </div>
             </div>

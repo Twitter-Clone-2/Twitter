@@ -9,6 +9,7 @@
   overflow: scroll;
   overflow-x: hidden;
   max-width: max-content;
+  min-width: 30vw;
 }
 
 .messagesConvoSection {
@@ -31,7 +32,6 @@
 .messagesSearchBar {
   border-radius: 25px;
   border: 2px solid rgb(133, 135, 136);
-  /* border : 3px solid rgb(0, 0, 0); */
   font-size: 14px;
   margin-top: 20px;
   padding: 10px 20px;
