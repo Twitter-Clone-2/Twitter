@@ -20,9 +20,10 @@ const Feed = () => {
     axios
       .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
       .then(({ data }) => {
+        console.log(data);
         let tempFeed = [
           ...data.tweets.filter((tweet) => !tweet.reply_id),
-          ...data.retweets,
+          ...data.retweetsOnFeed,
         ];
         setFeed(tempFeed);
 
@@ -42,7 +43,7 @@ const Feed = () => {
           })
           .reverse();
         setLikes(data.likes);
-        setReplies(data.tweets.filter((tweet) => tweet.reply_id));
+        setReplies(data.replies);
         setRetweets(data.retweets);
       })
       .catch((e) => console.error(e));
