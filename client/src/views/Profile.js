@@ -28,6 +28,7 @@ const Profile = () => {
   const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
+  const [retweetCount, setRetweetCount] = useState([]);
   const [retweets, setRetweets] = useState([]);
   const [retweetLikes, setRetweetLikes] = useState([]);
   const [retweetReplies, setRetweetReplies] = useState([]);
@@ -61,6 +62,7 @@ const Profile = () => {
             ...data.tweets.filter((tweet) => !tweet.reply_id),
             ...data.retweets,
           ];
+          console.log(data);
           setFeed(tempFeed);
 
           tempFeed
@@ -81,7 +83,8 @@ const Profile = () => {
             .reverse();
           setAllTweets(tempFeed.length);
           setLikes(data.likes);
-          setReplies(data.tweets.filter((tweet) => tweet.reply_id));
+          setReplies(data.replies);
+          setRetweetCount(data.retweetCount);
           setRetweets(data.retweets);
           setRetweetLikes(data.retweetsData ? data.retweetsData.likes : []);
           setRetweetReplies(data.retweetsData ? data.retweetsData.replies : []);
@@ -259,7 +262,7 @@ const Profile = () => {
                     ? retweetRetweets.filter(
                         (retweet) => retweet.tweets_id === tweet.tweets_id
                       )
-                    : retweets.filter(
+                    : retweetCount.filter(
                         (retweet) => retweet.tweets_id === tweet.id
                       )
                 }
