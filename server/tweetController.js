@@ -100,7 +100,7 @@ async function findCurrUserAndTweets(req, res) {
   const db = await startPool();
   const { id } = req.params;
 
-  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id,  tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username, accounts.profile_picture FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id};`;
+  const queryForTweets = `SELECT tweets.id , tweets.content , tweets.created_at, tweets.accounts_id,  tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username, accounts.profile_picture FROM tweets LEFT JOIN accounts on accounts.id = tweets.accounts_id WHERE accounts_id = ${id} AND tweets.reply_id IS NULL;`;
 
   try {
     const resultsOfTweets = await db.query(queryForTweets);
@@ -109,6 +109,12 @@ async function findCurrUserAndTweets(req, res) {
 
       const queryForLikes = `SELECT * FROM likes WHERE tweets_id = ANY(ARRAY[${tweetIDArr}]);`;
       const resultsOfLikes = await db.query(queryForLikes);
+
+      const queryForReplies = `SELECT * FROM tweets WHERE reply_id = ANY(ARRAY[${tweetIDArr}]);`;
+      const resultForReplies = await db.query(queryForReplies);
+
+      const queryForRetweetCount = `SELECT * FROM retweets WHERE tweets_id = ANY(ARRAY[${tweetIDArr}])`;
+      const resultForRetweetCount = await db.query(queryForRetweetCount);
 
       const queryForRetweets = `SELECT a.first_name as "retweeter_first_name", a.last_name as "retweeter_last_name" ,retweets.tweets_id, tweets.content , tweets.created_at, retweets.accounts_id, tweets.reply_id, accounts.first_name, accounts.last_name , accounts.username , accounts.profile_picture, accounts.id as "tweeter_id", retweets.id as "retweet", retweets.created_at as "retweet_created_at" FROM retweets 
     JOIN tweets on tweets.id = retweets.tweets_id
@@ -145,6 +151,8 @@ async function findCurrUserAndTweets(req, res) {
         tweets: resultsOfTweets.rows,
         likes: resultsOfLikes.rows,
         retweets: resultsOfRetweets.rows,
+        replies: resultForReplies.rows,
+        retweetCount: resultForRetweetCount.rows,
         retweetsData,
       };
 
