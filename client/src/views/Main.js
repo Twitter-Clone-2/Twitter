@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 const Main = () => {
   const navigate = useNavigate();
   const [openRegister, setOpenRegister] = useState(false);
+  alert(
+    "All backend is down for now while switching backend from Heroku to AWS Lambda"
+  );
   return (
     <div id="leftColMainPage">
       <img
