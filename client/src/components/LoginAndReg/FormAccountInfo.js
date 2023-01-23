@@ -42,6 +42,7 @@ const FormAccountInfo = ({
       <div>
         <label>Password </label>
         <TextField
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -50,6 +51,7 @@ const FormAccountInfo = ({
       <div>
         <label>Confirm Password </label>
         <TextField
+          type="password"
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
         />

@@ -80,7 +80,7 @@ async function register(req, res) {
           try {
             newAccountID = await db.query(queryTograbIdOfNewAccount);
 
-            const queryToFollowOfficalAccount = `INSERT INTO relationship (follower, following) VALUES (${newAccountID.rows[0].id}, 12);`;
+            const queryToFollowOfficalAccount = `INSERT INTO relationship (follower, following) VALUES (${newAccountID.rows[0].id}, 833704888225202177);`;
 
             await db.query(queryToFollowOfficalAccount);
             endPool(db);
