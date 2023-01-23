@@ -10,57 +10,57 @@ import { io } from "socket.io-client";
 import route from "../../utils/server_router";
 import axios from "axios";
 
-const socket = io(route);
+// const socket = io(route);
 
 const Conversation = ({ accountBeingMessaged, roomId, user }) => {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
 
-  useEffect(() => {
-    socket.on("connect", () => {});
-    socket.on("receive-message", (data) => {
-      let newMessage = { received: data };
-      setAllMessages((prev) => [...prev, newMessage]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on("connect", () => {});
+  //   socket.on("receive-message", (data) => {
+  //     let newMessage = { received: data };
+  //     setAllMessages((prev) => [...prev, newMessage]);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    socket.emit("join_room", roomId);
-    setAllMessages([]);
+  // useEffect(() => {
+  //   socket.emit("join_room", roomId);
+  //   setAllMessages([]);
 
-    axios
-      .get(route + "/api/find/messages/" + roomId)
-      .then((res) => {
-        let oldMessages = res.data.map((message) => {
-          if (message.user_sent_message == user.id) {
-            return { sent: message.message };
-          } else {
-            return { received: message.message };
-          }
-        });
-        setAllMessages(oldMessages);
-      })
-      .catch((e) => console.error(e));
-  }, [roomId]);
+  //   axios
+  //     .get(route + "/api/find/messages/" + roomId)
+  //     .then((res) => {
+  //       let oldMessages = res.data.map((message) => {
+  //         if (message.user_sent_message == user.id) {
+  //           return { sent: message.message };
+  //         } else {
+  //           return { received: message.message };
+  //         }
+  //       });
+  //       setAllMessages(oldMessages);
+  //     })
+  //     .catch((e) => console.error(e));
+  // }, [roomId]);
 
-  const sendMesssage = () => {
-    socket.emit("send_message", {
-      message,
-      roomId,
-    });
+  // const sendMesssage = () => {
+  //   socket.emit("send_message", {
+  //     message,
+  //     roomId,
+  //   });
 
-    axios
-      .post(route + "/api/create/message", {
-        user_id: user.id,
-        message,
-        room_number: roomId,
-      })
-      .then(() => {
-        let newMessage = { sent: message };
-        setAllMessages((prev) => [...prev, newMessage]);
-        setMessage("");
-      });
-  };
+  //   axios
+  //     .post(route + "/api/create/message", {
+  //       user_id: user.id,
+  //       message,
+  //       room_number: roomId,
+  //     })
+  //     .then(() => {
+  //       let newMessage = { sent: message };
+  //       setAllMessages((prev) => [...prev, newMessage]);
+  //       setMessage("");
+  //     });
+  // };
 
   return (
     <div className="conversationBody">
@@ -135,7 +135,7 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
         />
         <SendIcon
           sx={{ color: "rgb(70,168,242)" }}
-          onClick={sendMesssage}
+          // onClick={sendMesssage}
           className="conversationIcon"
         />
       </div>

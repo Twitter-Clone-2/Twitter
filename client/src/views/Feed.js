@@ -86,8 +86,9 @@ const Feed = () => {
               onChange={(e) => setTweet(e.target.value)}
               value={tweet}
               multiline={true}
+              helperText={`5/$100`}
               sx={{
-                fontSize: "33px",
+                fontSize: "24px",
                 fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
                 width: "100%",
                 flexGrow: "1",

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const serverless = require("serverless-http");
 
 const app = express();
 
@@ -94,23 +95,30 @@ app.post("/api/create/message", cors(), createMessage);
 app.get("/api/find/messages/:room_number", cors(), findMessagesForTheRoom);
 app.get("/api/last/message/:room_numbers", cors(), findLastMessage);
 
-const server = app.listen(process.env.PORT || 8080, () => {
-  console.log(`Example app listening on port ${process.env.PORT || 8080}`);
+app.get("/test", (req, res) => {
+  res.send("Hello World");
 });
 
-//                      SOCKET.IO
-const io = require("socket.io")(server, { cors: true });
-
-io.on("connection", (socket) => {
-  console.log("server side connection");
-
-  socket.on("join_room", (room) => {
-    socket.join(room);
-    console.log("joined room " + room);
+if (process.env.DEVELOPMENT) {
+  app.listen(process.env.PORT || 8080, () => {
+    console.log(`Example app listening on port ${process.env.PORT || 8080}`);
   });
+}
+// SOCKET.IO;
+// const io = require("socket.io")(server, { cors: true });
 
-  socket.on("send_message", ({ roomId, message }) => {
-    console.log("Sending message : " + message + " in room " + roomId);
-    socket.to(roomId).emit("receive-message", message);
-  });
-});
+// io.on("connection", (socket) => {
+//   console.log("server side connection");
+
+//   socket.on("join_room", (room) => {
+//     socket.join(room);
+//     console.log("joined room " + room);
+//   });
+
+//   socket.on("send_message", ({ roomId, message }) => {
+//     console.log("Sending message : " + message + " in room " + roomId);
+//     socket.to(roomId).emit("receive-message", message);
+//   });
+// });
+
+module.exports.handler = serverless(app);
