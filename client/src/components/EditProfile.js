@@ -103,6 +103,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
             backgroundFileName = await updateProfilePicture(backgroundPicture);
           }
           try {
+            console.log(process.env.REACT_APP_BUCKET_LINK);
             const responseForEditProfile = await axios.put(
               route + "/api/update/account",
               {

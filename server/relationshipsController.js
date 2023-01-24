@@ -1,5 +1,3 @@
-const bcrypt = require("bcrypt");
-const pool = require("./dataBase/index");
 const { endPool, startPool } = require("./dataBase/index");
 
 async function followAnotherUser(req, res) {

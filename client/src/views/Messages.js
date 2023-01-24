@@ -16,6 +16,11 @@ const Messages = () => {
   const [lastMessages, setLastMessages] = useState({});
   const [searchArr, setSearchArr] = useState([]);
 
+  useEffect(() => {
+    alert(
+      "For now all messages are taken down as the switch from Heroku to AWS Lambda is causing problems with the sockets"
+    );
+  }, []);
   const grabAllInfoForMessages = function () {
     let room_numbers;
     axios
@@ -24,7 +29,7 @@ const Messages = () => {
         setFollowingInfo(res.data.rows);
       })
       .catch((e) => {
-        console.error(e);
+        console.error("This is thew console log", e);
       });
 
     axios
