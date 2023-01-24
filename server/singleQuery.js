@@ -149,7 +149,7 @@ const selectRelationships = `SELECT * FROM relationship;`;
 
 const followAnotherUser = `INSERT INTO relationship (follower, following) VALUES (1,2);`;
 
-const deleteRelationship = `DELETE FROM relationship WHERE id = 23`;
+const deleteRelationship = `DELETE FROM relationship WHERE id = 832635645542367233`;
 
 //                  Messages
 
@@ -209,6 +209,24 @@ ON DELETE NO ACTION;`;
 
 const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`;
 
-const delete1 = "DELETE FROM accounts WHERE id = 3";
+const delete1 = "DELETE FROM accounts WHERE id = 25";
+const deleteRelationship1 = `DELETE FROM relationship WHERE id = 833704888813879297`;
 
-//runQuery(deleteTweetCol);
+// runQuery(deleteRelationship1);
+
+// const addingFKToTweetsForComments = `ALTER TABLE tweets ADD reply_id integer;`;
+
+// const addingFKToTweetsForRetweets = `ALTER TABLE tweets ADD FOREIGN KEY (retweet_id) REFERENCES tweets(id);`;
+// const addingFKToTweetsForRetweets2 = `ALTER TABLE tweets ADD FOREIGN KEY (retweet_user_id) REFERENCES accounts(id);`;
+
+// const alterFKRetweetID = `ALTER TABLE IF EXISTS tweets
+// ADD CONSTRAINT fk_tweets FOREIGN KEY (retweet_id)
+// REFERENCES public.tweets (id) MATCH SIMPLE
+// ON UPDATE NO ACTION
+// ON DELETE NO ACTION;`;
+
+// const alterFKRetweetUserID = `ALTER TABLE IF EXISTS tweets
+// ADD CONSTRAINT fk_tweets FOREIGN KEY (reply_id)
+// REFERENCES public.tweets (id) MATCH SIMPLE
+// ON UPDATE NO ACTION
+// ON DELETE NO ACTION;`;

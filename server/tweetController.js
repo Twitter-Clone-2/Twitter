@@ -1,4 +1,3 @@
-const pool = require("./dataBase/index");
 const { endPool, startPool } = require("./dataBase/index");
 
 async function deleteTweetAndEverythingRelated(req, res) {
