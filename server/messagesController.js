@@ -1,5 +1,3 @@
-const { ConsoleLogger } = require("@aws-amplify/core");
-const pool = require("./dataBase/index");
 const { endPool, startPool } = require("./dataBase/index");
 
 async function findConversations(req, res) {

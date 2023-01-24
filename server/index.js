@@ -98,6 +98,9 @@ app.get("/api/last/message/:room_numbers", cors(), findLastMessage);
 app.get("/test", (req, res) => {
   res.send("Hello World");
 });
+app.get("/var", (req, res) => {
+  res.send(process.env.DATABASE_URL);
+});
 
 if (process.env.DEVELOPMENT) {
   app.listen(process.env.PORT || 8080, () => {

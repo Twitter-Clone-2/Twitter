@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const pool = require("./dataBase/index");
+const bcrypt = require("bcryptjs");
+
 const { endPool, startPool } = require("./dataBase/index");
 
 async function getAllUsers(req, res) {

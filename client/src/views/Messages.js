@@ -29,7 +29,7 @@ const Messages = () => {
         setFollowingInfo(res.data.rows);
       })
       .catch((e) => {
-        console.error(e);
+        console.error("This is thew console log", e);
       });
 
     axios
