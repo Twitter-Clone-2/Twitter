@@ -35,14 +35,14 @@ export default function ReplyModal({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [reply, setReply] = useState("");
-  const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
+  const currentUser = JSON.parse(localStorage.getItem("currUser"));
   const navigate = useNavigate();
 
   const createReply = () => {
     axios
       .post(route + "/api/reply", {
         content: reply,
-        id: currentUserId,
+        id: currentUser.id,
         fk: tweet_id,
       })
       .then(() => {
@@ -86,6 +86,7 @@ export default function ReplyModal({
             {/* TOP */}
             <div className="replyModalUserAndTweet">
               <PersonIcon sx={{ fontSize: "80px" }} />
+
               <div>
                 <div>
                   <span className="replyModalFont" id="replyModalAccountName">
@@ -112,7 +113,14 @@ export default function ReplyModal({
             {/* BOT */}
             <div className="replyModalReplyBot">
               <div>
-                <PersonIcon sx={{ fontSize: "80px" }} />
+                {currentUser.profile_picture ? (
+                  <img
+                    src={currentUser.profile_picture}
+                    className="tweetUserPic"
+                  />
+                ) : (
+                  <PersonIcon sx={{ fontSize: "80px" }} />
+                )}
               </div>
 
               <div>
