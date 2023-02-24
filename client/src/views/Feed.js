@@ -20,7 +20,6 @@ const Feed = () => {
     axios
       .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
       .then(({ data }) => {
-        console.log(data);
         let tempFeed = [
           ...data.tweets.filter((tweet) => !tweet.reply_id),
           ...data.retweetsOnFeed,
@@ -58,6 +57,7 @@ const Feed = () => {
 
   const createTweet = () => {
     if (tweet.length == 0) return;
+    if (tweet.length > 240) return;
     axios
       .post(route + "/api/create/tweet", {
         tweet,

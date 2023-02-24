@@ -11,11 +11,8 @@ const credentials = {
 async function startPool() {
   try {
     const pool = new Pool(credentials);
-    console.log("console.log that is a success");
     return await pool.connect();
-  } catch (e) {
-    console.error("Console log that hiot an error", e);
-  }
+  } catch (e) {}
 }
 
 function endPool(db) {

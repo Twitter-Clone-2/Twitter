@@ -48,7 +48,6 @@ async function createRoom(req, res) {
 
     if (resultForAllOtherUsers.rows.length === 0) {
       const id = await db.query(queryToMakeANewRoom);
-      console.log(id);
       const queryToAddUsersToNewRoom = `INSERT INTO room_and_messages (room_id , user_id) 
             VALUES 
             (${id.rows[0].id}, ${curr_user_id}),
@@ -58,7 +57,6 @@ async function createRoom(req, res) {
       res.status(200).send({ room_id: id.rows[0].id });
       endPool(db);
     } else {
-      console.log(resultForAllOtherUsers);
       res.status(200).send(resultForAllOtherUsers.rows[0]);
       endPool(db);
     }

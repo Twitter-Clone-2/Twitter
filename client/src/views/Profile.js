@@ -62,7 +62,6 @@ const Profile = () => {
             ...data.tweets.filter((tweet) => !tweet.reply_id),
             ...data.retweets,
           ];
-          console.log(data);
           setFeed(tempFeed);
 
           tempFeed
