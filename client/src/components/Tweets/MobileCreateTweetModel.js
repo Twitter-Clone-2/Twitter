@@ -50,7 +50,7 @@ const MobileCreateTweetModel = () => {
             </div>
 
             <div className="mobileTweetInputDiv">
-              <textarea className="mobileTweetInput font" />
+              <textarea className="mobileTweetInput font" autoFocus />
             </div>
           </div>
         </Box>
