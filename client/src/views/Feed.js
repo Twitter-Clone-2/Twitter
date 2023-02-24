@@ -7,11 +7,10 @@ import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
 import InputBase from "@mui/material/InputBase";
 
-const Feed = () => {
+const Feed = ({ feed, setFeed }) => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("currUser"));
   const [tweet, setTweet] = useState("");
-  const [feed, setFeed] = useState([]);
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
   const [retweets, setRetweets] = useState([]);
@@ -49,7 +48,7 @@ const Feed = () => {
   };
   useEffect(() => {
     fetchAllTweetsForFeed();
-  }, []);
+  }, [feed]);
 
   const takeToProfile = () => {
     navigate("/profile/page");
@@ -105,29 +104,30 @@ const Feed = () => {
         </div>
 
         <div id="content">
-          {feed.map((tweet, i) => (
-            <Tweet
-              className="tweet"
-              tweet={tweet}
-              likes={likes.filter(
-                (like) =>
-                  like.tweets_id === tweet.id ||
-                  like.tweets_id === tweet.tweets_id
-              )}
-              retweets={retweets.filter(
-                (retweet) =>
-                  retweet.tweets_id === tweet.id ||
-                  retweet.tweets_id == tweet.tweets_id
-              )}
-              key={i}
-              fetchAllTweetsForFeed={fetchAllTweetsForFeed}
-              replies={replies}
-              feed={feed}
-              id={tweet.accounts_id}
-              picture={tweet.profile_picture}
-              currentUserId={user.id}
-            />
-          ))}
+          {feed &&
+            feed.map((tweet, i) => (
+              <Tweet
+                className="tweet"
+                tweet={tweet}
+                likes={likes.filter(
+                  (like) =>
+                    like.tweets_id === tweet.id ||
+                    like.tweets_id === tweet.tweets_id
+                )}
+                retweets={retweets.filter(
+                  (retweet) =>
+                    retweet.tweets_id === tweet.id ||
+                    retweet.tweets_id == tweet.tweets_id
+                )}
+                key={i}
+                fetchAllTweetsForFeed={fetchAllTweetsForFeed}
+                replies={replies}
+                feed={feed}
+                id={tweet.accounts_id}
+                picture={tweet.profile_picture}
+                currentUserId={user.id}
+              />
+            ))}
         </div>
       </div>
     </div>

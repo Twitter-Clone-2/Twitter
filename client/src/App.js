@@ -8,8 +8,10 @@ import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
 import Messages from "./views/Messages";
 import MobileNavbar from "./components/MobileNavbar";
+import React, { useState } from "react";
 
 function App() {
+  const [feed, setFeed] = useState([]);
   return (
     <div className={"mainContainer"}>
       <BrowserRouter>
@@ -18,12 +20,16 @@ function App() {
           <Route exact path="/" element={<Main />} />
           <Route exact path="/profile/page" element={<Profile />} />
           <Route exact path="/profile/page/:id" element={<Profile />} />
-          <Route exact path="/main/feed" element={<Feed />} />
+          <Route
+            exact
+            path="/main/feed"
+            element={<Feed feed={feed} setFeed={setFeed} />}
+          />
           <Route exact path="/tweet/:id" element={<ViewTweet />} />
           <Route exact path="/messages" element={<Messages />} />
         </Routes>
         <NewsAPI />
-        <MobileNavbar />
+        <MobileNavbar setFeed={setFeed} />
       </BrowserRouter>
     </div>
   );
