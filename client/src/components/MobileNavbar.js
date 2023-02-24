@@ -1,13 +1,12 @@
 import React from "react";
 import HomeIcon from "@mui/icons-material/Home";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Logout from "./LoginAndReg/Logout";
 import "../CSS/MobileNavbar.css";
-import TweetModal from "./Tweets/TweetModal";
+import EditIcon from "@mui/icons-material/Edit";
+import MobileCreateTweetModel from "./Tweets/MobileCreateTweetModel";
 
 const MobileNavbar = () => {
   const navigate = useNavigate();
@@ -38,6 +37,10 @@ const MobileNavbar = () => {
             onClick={() => navigate("/profile/page")}
           >
             <PersonIcon className="icon" sx={{ fontSize: "35px" }} />
+          </Button>
+
+          <Button>
+            <MobileCreateTweetModel />
           </Button>
         </>
       )}
