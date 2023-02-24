@@ -73,8 +73,8 @@ const Feed = () => {
     <div id="feed">
       <div id="allContent">
         <div id="feedContainer">
-          <h2>Home</h2>
-          <div id="feedCreateTweet">
+          <h2 className="mobileRemove">Home</h2>
+          <div id="feedCreateTweet" className="mobileRemove">
             {user.profile_picture ? (
               <img src={user.profile_picture} className="feedProfilePicture" />
             ) : (

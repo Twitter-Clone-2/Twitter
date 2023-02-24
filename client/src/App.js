@@ -7,6 +7,7 @@ import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
 import Messages from "./views/Messages";
+import MobileNavbar from "./components/MobileNavbar";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route exact path="/messages" element={<Messages />} />
         </Routes>
         <NewsAPI />
+        <MobileNavbar />
       </BrowserRouter>
     </div>
   );
