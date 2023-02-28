@@ -108,3 +108,19 @@
   width: 100%;
   z-index: 0;
 }
+
+@media (min-width: 0px) and (max-width: 750px) {
+  #editProfileMobile {
+    width: 330px;
+    height: 530px;
+    overflow-y: visible;
+  }
+  .editProfileScrollBar {
+    height: 800px;
+    overflow-y: scroll;
+  }
+  #editProfileCameraIconWithRealBackgroundPic {
+    position: relative;
+    left: 43%;
+  }
+}

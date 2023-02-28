@@ -62,7 +62,6 @@ const Profile = () => {
             ...data.tweets.filter((tweet) => !tweet.reply_id),
             ...data.retweets,
           ];
-          console.log(data);
           setFeed(tempFeed);
 
           tempFeed
@@ -219,16 +218,18 @@ const Profile = () => {
               </button>
             )}
           </div>
-          <h2>
-            {currentUser && currentUser.first_name}{" "}
-            {currentUser && currentUser.last_name}
-          </h2>
-          <p>{currentUser && currentUser.bio}</p>
-          <p>@{currentUser && currentUser.username}</p>
-          <p>
-            Joined ,{" "}
-            {currentUser && format(new Date(currentUser.created_at), "PPpp")}
-          </p>
+          <div className="profilePageUserDetails">
+            <h2>
+              {currentUser && currentUser.first_name}{" "}
+              {currentUser && currentUser.last_name}
+            </h2>
+            <p>{currentUser && currentUser.bio}</p>
+            <p>@{currentUser && currentUser.username}</p>
+            <p>
+              Joined ,{" "}
+              {currentUser && format(new Date(currentUser.created_at), "PPpp")}
+            </p>
+          </div>
           <div className="flex" id="follows">
             <div>
               <FollowersAndFollowingModal

@@ -5,19 +5,18 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import "../CSS/MobileNavbar.css";
-import EditIcon from "@mui/icons-material/Edit";
 import MobileCreateTweetModel from "./Tweets/MobileCreateTweetModel";
 
-const MobileNavbar = () => {
+const MobileNavbar = ({ setFeed }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const displayNav =
     pathname !== "/" && pathname !== "/login" && pathname !== "/register";
 
   return (
-    <div className="mobileNavbar">
+    <>
       {displayNav && (
-        <>
+        <div className="mobileNavbar">
           <Button
             className={"iconButton"}
             onClick={() => navigate("/main/feed")}
@@ -40,11 +39,11 @@ const MobileNavbar = () => {
           </Button>
 
           <Button>
-            <MobileCreateTweetModel />
+            <MobileCreateTweetModel setFeed={setFeed} />
           </Button>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

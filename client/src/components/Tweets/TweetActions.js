@@ -134,7 +134,7 @@ export default function TweetActions({
             }}
             className={`${liked ? "liked" : ""}`}
           />
-          {!displayIconCount && Boolean(count) && (
+          {!displayIconCount && count > 0 && (
             <div className="likeCount"> {count}</div>
           )}
         </div>

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import "./mobileTweetModal.css";
 import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
+import route from "../../utils/server_router";
+import "./mobileTweetModal.css";
+import { useDispatch } from "react-redux";
+import { updateFeed } from "../../redux/mainSlice";
 
 const style = {
   position: "absolute",
@@ -18,9 +22,28 @@ const style = {
 };
 
 const MobileCreateTweetModel = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const user = JSON.parse(localStorage.getItem("currUser"));
+  const [tweet, setTweet] = useState("");
+
+  const createTweet = () => {
+    if (tweet.length == 0) return;
+    if (tweet.length > 240) return;
+    axios
+      .post(route + "/api/create/tweet", {
+        tweet,
+        id: user.id,
+      })
+      .then(() => {
+        setTweet("");
+        dispatch(updateFeed());
+        handleClose();
+      })
+      .catch((err) => console.error(err));
+  };
   return (
     <>
       <EditIcon
@@ -46,11 +69,25 @@ const MobileCreateTweetModel = () => {
               <span className="font bold cancelSpan" onClick={handleClose}>
                 Cancel
               </span>
-              <button className="font mobileTweetButton bold">Tweet</button>
+              <button
+                className="font mobileTweetButton bold"
+                id={0 < tweet.length && tweet.length < 240 ? "" : "dim"}
+                onClick={createTweet}
+              >
+                Tweet
+              </button>
             </div>
 
             <div className="mobileTweetInputDiv">
-              <textarea className="mobileTweetInput font" autoFocus />
+              <textarea
+                value={tweet}
+                onChange={(e) => {
+                  setTweet(e.target.value);
+                }}
+                className="mobileTweetInput font"
+                placeholder="What's Happening?"
+                autoFocus
+              />
             </div>
           </div>
         </Box>

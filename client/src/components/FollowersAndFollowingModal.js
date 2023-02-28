@@ -71,7 +71,7 @@ const FollowersAndFollowingModal = ({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} id="followersMobile">
           {searchArr && (
             <div className="searchTopLayer">
               <SearchIcon sx={{ color: "rgb(29,155,240)" }} />

@@ -31,10 +31,35 @@ export default function Tweet({
   const filteredLikes = likes.filter(
     (like) => like.tweets_id == tweet.id || like.tweets_id == tweet.tweets_id
   );
+
   const filteredReplies = replies.filter(
     (reply) => reply.reply_id == tweet.id || reply.reply_id == tweet.tweets_id
   );
 
+  const displayHowOldTweetIs = () => {
+    //console.log(format(new Date(tweet.created_at), "PPpp"));
+    if (tweet.id === "843702118429032449") {
+      const today = new Date().toISOString();
+      console.log(today);
+      //console.log(format(new Date(tweet.created_at), "PPpp"));
+      //console.log(format(new Date(), "PPpp"));
+      const year = 2;
+      const month = 0;
+      const day = 1;
+      const time = 3;
+
+      const rightNow = new Date().toISOString().split("T");
+
+      const currentTweet = new Date(tweet.created_at).toISOString().split("T");
+      console.log(rightNow);
+      if (rightNow[year] !== currentTweet[year]) {
+        var displayTweetTime =
+          parseFloat(rightNow[year]) - parseInt(currentTweet[year]);
+      } else if (rightNow[month] !== currentTweet[month]) {
+      }
+    }
+  };
+  displayHowOldTweetIs();
   return (
     <div
       className="tweet"
