@@ -28,7 +28,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log(setFeed);
+
   const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
   const [username, setUsername] = useState(user.username);
@@ -169,7 +169,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} id="editProfileMobile">
           <div className="editProfileScrollBar">
             <div>
               <div className="editProfileHeader">

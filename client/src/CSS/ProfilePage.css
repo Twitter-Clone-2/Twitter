@@ -89,3 +89,15 @@
 #follows {
   gap: 20px;
 }
+
+@media (min-width: 0px) and (max-width: 750px) {
+  #profilePage {
+    margin-bottom: 80px;
+  }
+  .profilePageUserDetails {
+    padding-left: 20px;
+  }
+  #follows {
+    padding-left: 11px;
+  }
+}
