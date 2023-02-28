@@ -37,28 +37,53 @@ export default function Tweet({
   );
 
   const displayHowOldTweetIs = () => {
-    //console.log(format(new Date(tweet.created_at), "PPpp"));
-    if (tweet.id === "843702118429032449") {
-      const today = new Date().toISOString();
-      console.log(today);
-      //console.log(format(new Date(tweet.created_at), "PPpp"));
-      //console.log(format(new Date(), "PPpp"));
-      const year = 2;
-      const month = 0;
-      const day = 1;
-      const time = 3;
+    const dayArr = 0;
+    const timeArr = 1;
 
-      const rightNow = new Date().toISOString().split("T");
+    const year = 0;
+    const month = 1;
+    const day = 2;
 
-      const currentTweet = new Date(tweet.created_at).toISOString().split("T");
-      console.log(rightNow);
-      if (rightNow[year] !== currentTweet[year]) {
-        var displayTweetTime =
-          parseFloat(rightNow[year]) - parseInt(currentTweet[year]);
-      } else if (rightNow[month] !== currentTweet[month]) {
-      }
+    const hour = 0;
+    const minute = 1;
+
+    const breakTimeIntoArray = (arr) => {
+      arr[dayArr] = arr[dayArr].split("-");
+      arr[timeArr] = arr[timeArr].split(":");
+      return [...arr];
+    };
+
+    let rightNow = new Date().toISOString().split("T");
+    rightNow = breakTimeIntoArray(rightNow);
+
+    let currentTweet = new Date(tweet.created_at).toISOString().split("T");
+    currentTweet = breakTimeIntoArray(currentTweet);
+
+    const deteremineDistanceInTime = (dayOrTime, dayOrTimeIndex, string) => {
+      const timeDifference =
+        parseFloat(rightNow[dayOrTime][dayOrTimeIndex]) -
+        parseInt(currentTweet[dayOrTime][dayOrTimeIndex]);
+      const differenceOfTimeOver1 = timeDifference > 1;
+      return `${timeDifference} ${string}${
+        differenceOfTimeOver1 ? "s" : ""
+      } ago`;
+    };
+
+    if (rightNow[dayArr][year] !== currentTweet[dayArr][year]) {
+      return deteremineDistanceInTime(dayArr, year, "year");
+    } else if (rightNow[dayArr][month] !== currentTweet[dayArr][month]) {
+      return deteremineDistanceInTime(dayArr, month, "month");
+    } else if (rightNow[dayArr][day] !== currentTweet[dayArr][day]) {
+      return deteremineDistanceInTime(dayArr, day, "day");
+    } else if (rightNow[timeArr][hour] !== currentTweet[timeArr][hour]) {
+      return deteremineDistanceInTime(timeArr, hour, "hour");
+    } else if (rightNow[timeArr][minute] !== currentTweet[timeArr][minute]) {
+      return deteremineDistanceInTime(timeArr, minute, "minute");
+    } else {
+      return "Now";
     }
   };
+
   displayHowOldTweetIs();
   return (
     <div
@@ -76,68 +101,67 @@ export default function Tweet({
         </div>
       )}
       <div className="tweetTopHalf">
-        <div className="flex">
-          <div className="paddingLeft">
-            {!picture ? (
-              <PersonIcon
-                sx={{ fontSize: 60 }}
-                className="tweetUserPic"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  takeToProfile(
-                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
-                  );
-                }}
-              />
-            ) : (
-              <img
-                src={picture}
-                className="tweetUserPic"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  takeToProfile(
-                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
-                  );
-                }}
-              />
-            )}
-          </div>
-          <div className="rightTweet">
-            <div className="rightTweetHeader">
-              <div
-                className="tweetNames"
-                id="tweetRealNames"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  takeToProfile(
-                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
-                  );
-                }}
-              >
-                {tweet.first_name} {tweet.last_name}
-              </div>
-              <p
-                className="tweetNames"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  takeToProfile(
-                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
-                  );
-                }}
-              >
-                @{tweet.username}
-              </p>
-              <p>{format(new Date(tweet.created_at), "PPpp")}</p>
-            </div>
-            {replyingTo && (
-              <p>
-                Replying to{" "}
-                <span className="replyingToUsername">@{tweet.username}</span>
-              </p>
-            )}
-            <div className="tweetContent">{tweet.content}</div>
-          </div>
+        <div className="paddingLeft flex">
+          {!picture ? (
+            <PersonIcon
+              sx={{ fontSize: 60 }}
+              className="tweetUserPic"
+              onClick={(event) => {
+                event.stopPropagation();
+                takeToProfile(
+                  tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                );
+              }}
+            />
+          ) : (
+            <img
+              src={picture}
+              className="tweetUserPic"
+              onClick={(event) => {
+                event.stopPropagation();
+                takeToProfile(
+                  tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                );
+              }}
+            />
+          )}
         </div>
+        <div className="rightTweet">
+          <div className="rightTweetHeader">
+            <div
+              className="tweetNames"
+              id="tweetRealNames"
+              onClick={(event) => {
+                event.stopPropagation();
+                takeToProfile(
+                  tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                );
+              }}
+            >
+              {tweet.first_name} {tweet.last_name}
+            </div>
+            <p
+              className="tweetNames tweetUserName"
+              onClick={(event) => {
+                event.stopPropagation();
+                takeToProfile(
+                  tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                );
+              }}
+            >
+              @{tweet.username}
+            </p>
+            <p>{displayHowOldTweetIs()}</p>
+          </div>
+          {replyingTo && (
+            <p>
+              Replying to{" "}
+              <span className="replyingToUsername">@{tweet.username}</span>
+            </p>
+          )}
+          <div className="tweetContent">{tweet.content}</div>
+        </div>
+
         {tweet.accounts_id === currentUserId && (
           <DeleteTweet
             tweet_id={tweet.id || tweet.tweets_id}

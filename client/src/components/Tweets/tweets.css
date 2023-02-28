@@ -284,33 +284,19 @@
     margin-top: 0px;
     width: 90vw;
   }
-  /*   
-  .bigTweetHeader {
-    display: flex;
-    align-items: center;
+
+  #tweetRealNames {
+    display: none;
   }
-  
-  #thread {
-    font-weight: bold;
-    font-size: 20px;
-    margin-left: 30px;
+  .rightTweetHeader {
+    width: 100%;
+    justify-content: space-evenly;
   }
-  .bigTweetPicAndNames {
-    display: flex;
-    align-items: center;
+  .rightTweet {
+    width: 100%;
   }
-  .bigTweetContent {
-    font-size: 30px;
-    margin: 20px 10px 20px 20px;
+  .tweetUserName {
+    font-size: 16px;
+    font-weight: 600;
   }
-  .bigTweetDate {
-    font-size: 18px;
-  }
-  .underline:hover {
-    text-decoration: underline;
-  }
-  .bigTweetCount {
-    margin-top: 10px;
-    gap: 20px;
-  } */
 }
