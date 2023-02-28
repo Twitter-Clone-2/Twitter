@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import route from "../utils/server_router";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BigTweet from "../components/Tweets/BigTweet";
 
 const ViewTweet = () => {
