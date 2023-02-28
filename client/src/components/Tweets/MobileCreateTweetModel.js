@@ -5,6 +5,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import route from "../../utils/server_router";
 import "./mobileTweetModal.css";
+import { useDispatch } from "react-redux";
+import { updateFeed } from "../../redux/mainSlice";
 
 const style = {
   position: "absolute",
@@ -19,7 +21,8 @@ const style = {
   p: 0,
 };
 
-const MobileCreateTweetModel = ({ setFeed }) => {
+const MobileCreateTweetModel = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -36,10 +39,8 @@ const MobileCreateTweetModel = ({ setFeed }) => {
       })
       .then(() => {
         setTweet("");
-        //window.location.reload(false);
-        setFeed([]);
+        dispatch(updateFeed());
         handleClose();
-        //fetchAllTweetsForFeed();
       })
       .catch((err) => console.error(err));
   };

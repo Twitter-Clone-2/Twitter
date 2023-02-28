@@ -6,15 +6,21 @@ import axios from "axios";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
 import InputBase from "@mui/material/InputBase";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUpdateFeedCounter } from "../redux/selectors";
+import { updateFeed } from "../redux/mainSlice";
 
-const Feed = ({ feed, setFeed }) => {
+const Feed = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("currUser"));
-  const [tweet, setTweet] = useState("");
+  const [newTweet, setNewTweet] = useState("");
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
   const [retweets, setRetweets] = useState([]);
 
+  const [feed, setFeed] = useState([]);
+  const updateFeedCounter = useSelector(selectUpdateFeedCounter);
   const fetchAllTweetsForFeed = () => {
     axios
       .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
@@ -23,7 +29,6 @@ const Feed = ({ feed, setFeed }) => {
           ...data.tweets.filter((tweet) => !tweet.reply_id),
           ...data.retweetsOnFeed,
         ];
-        setFeed(tempFeed);
 
         tempFeed
           .sort((x, y) => {
@@ -40,6 +45,8 @@ const Feed = ({ feed, setFeed }) => {
             }
           })
           .reverse();
+
+        setFeed(tempFeed);
         setLikes(data.likes);
         setReplies(data.replies);
         setRetweets(data.retweets);
@@ -48,22 +55,22 @@ const Feed = ({ feed, setFeed }) => {
   };
   useEffect(() => {
     fetchAllTweetsForFeed();
-  }, [feed]);
+  }, [updateFeedCounter]);
 
   const takeToProfile = () => {
     navigate("/profile/page");
   };
 
   const createTweet = () => {
-    if (tweet.length == 0) return;
-    if (tweet.length > 240) return;
+    if (newTweet.length == 0) return;
+    if (newTweet.length > 240) return;
     axios
       .post(route + "/api/create/tweet", {
-        tweet,
+        newTweet,
         id: user.id,
       })
       .then(() => {
-        setTweet("");
+        setNewTweet("");
         fetchAllTweetsForFeed();
       })
       .catch((err) => console.error(err));
@@ -82,8 +89,8 @@ const Feed = ({ feed, setFeed }) => {
 
             <InputBase
               placeholder="What's happening?"
-              onChange={(e) => setTweet(e.target.value)}
-              value={tweet}
+              onChange={(e) => setNewTweet(e.target.value)}
+              value={newTweet}
               multiline={true}
               helperText={`5/$100`}
               sx={{
@@ -96,7 +103,7 @@ const Feed = ({ feed, setFeed }) => {
             <button
               onClick={createTweet}
               id="feedTweetButton"
-              className={tweet.length == 0 ? "incompleteColor" : ""}
+              className={newTweet.length == 0 ? "incompleteColor" : ""}
             >
               Tweet
             </button>
@@ -104,7 +111,7 @@ const Feed = ({ feed, setFeed }) => {
         </div>
 
         <div id="content">
-          {feed &&
+          {feed.length > 0 &&
             feed.map((tweet, i) => (
               <Tweet
                 className="tweet"

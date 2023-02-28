@@ -54,3 +54,9 @@ input {
   height: 80px;
   margin-right: 20px;
 }
+
+@media (min-width: 0px) and (max-width: 750px) {
+  #feed {
+    margin-bottom: 80px;
+  }
+}

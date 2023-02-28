@@ -7,16 +7,16 @@ import Button from "@mui/material/Button";
 import "../CSS/MobileNavbar.css";
 import MobileCreateTweetModel from "./Tweets/MobileCreateTweetModel";
 
-const MobileNavbar = ({ feed, setFeed }) => {
+const MobileNavbar = ({ setFeed }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const displayNav =
     pathname !== "/" && pathname !== "/login" && pathname !== "/register";
 
   return (
-    <div className="mobileNavbar">
+    <>
       {displayNav && (
-        <>
+        <div className="mobileNavbar">
           <Button
             className={"iconButton"}
             onClick={() => navigate("/main/feed")}
@@ -41,9 +41,9 @@ const MobileNavbar = ({ feed, setFeed }) => {
           <Button>
             <MobileCreateTweetModel setFeed={setFeed} />
           </Button>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
