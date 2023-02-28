@@ -11,25 +11,20 @@ import MobileNavbar from "./components/MobileNavbar";
 import React, { useState } from "react";
 
 function App() {
-  const [feed, setFeed] = useState([]);
   return (
-    <div className={"mainContainer"}>
+    <div className="mainContainer">
       <BrowserRouter>
         <IconNav />
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route exact path="/profile/page" element={<Profile />} />
           <Route exact path="/profile/page/:id" element={<Profile />} />
-          <Route
-            exact
-            path="/main/feed"
-            element={<Feed feed={feed} setFeed={setFeed} />}
-          />
+          <Route exact path="/main/feed" element={<Feed />} />
           <Route exact path="/tweet/:id" element={<ViewTweet />} />
           <Route exact path="/messages" element={<Messages />} />
         </Routes>
         <NewsAPI />
-        <MobileNavbar setFeed={setFeed} />
+        <MobileNavbar />
       </BrowserRouter>
     </div>
   );
