@@ -17,6 +17,7 @@ const BigTweet = ({
   replyLikes,
   replyReplies,
   currentUserId,
+  setReplies,
 }) => {
   const navigate = useNavigate();
   const takeToProfile = (id) => {
@@ -84,7 +85,7 @@ const BigTweet = ({
         currentUserId={currentUserId}
       />
 
-      <ReplyBox tweet={tweet} />
+      <ReplyBox tweet={tweet} setReplies={setReplies} replies={replies} />
 
       {replies.map((reply, i) => (
         <Tweet

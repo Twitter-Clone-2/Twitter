@@ -75,10 +75,18 @@
 .retweetCol:hover {
   color: rgb(29, 155, 239);
 }
+.rightTweet {
+  width: 100%;
+}
 .rightTweetHeader {
   display: flex;
   gap: 5px;
   padding-top: 8px;
+  justify-content: space-between;
+  width: 100%;
+}
+.tweetDisplayBothNames {
+  display: flex;
 }
 
 /* BIG TWEET */
@@ -292,9 +300,7 @@
     width: 100%;
     justify-content: space-evenly;
   }
-  .rightTweet {
-    width: 100%;
-  }
+
   .tweetUserName {
     font-size: 16px;
     font-weight: 600;
