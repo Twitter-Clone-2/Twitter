@@ -71,8 +71,8 @@ export default function ReplyModal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <div>
+        <Box sx={style} id="replyModalMobile">
+          <div id="replyModalCloseIconDesktop">
             <CloseIcon
               className="replyModalCloseIcon"
               onClick={(event) => {
@@ -85,10 +85,20 @@ export default function ReplyModal({
           <div>
             {/* TOP */}
             <div className="replyModalUserAndTweet">
-              <PersonIcon sx={{ fontSize: "80px" }} />
+              <div>
+                <CloseIcon
+                  id="replyModalCloseIconMobile"
+                  className="replyModalCloseIcon"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleClose();
+                  }}
+                />
+                <PersonIcon sx={{ fontSize: "80px" }} />
+              </div>
 
               <div>
-                <div>
+                <div className="replyModalTweetInfoMobile">
                   <span className="replyModalFont" id="replyModalAccountName">
                     {first_name} {last_name}
                   </span>
@@ -100,7 +110,9 @@ export default function ReplyModal({
                     * {format(new Date(created_at), "PPpp")}
                   </span>
                 </div>
-                <div className="replyModalFont">{content}</div>
+                <div className="replyModalFont replyModalRealTweet">
+                  {content}
+                </div>
               </div>
             </div>
 

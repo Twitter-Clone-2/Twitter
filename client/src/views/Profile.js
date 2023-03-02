@@ -9,12 +9,15 @@ import { format } from "date-fns";
 import { useParams, useNavigate } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { selectUpdateFeedCounter } from "../redux/selectors";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   let { id } = useParams();
   const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true);
   const [followingStatus, setFollowingStatus] = useState(false);
   let user = JSON.parse(localStorage.getItem("currUser"));
+  const updateFeedCounter = useSelector(selectUpdateFeedCounter);
 
   const [currentUser, setCurrentUser] = useState();
 
@@ -51,7 +54,7 @@ const Profile = () => {
       setCurrentUser(user);
       grabTweets(user.id);
     }
-  }, [id]);
+  }, [id, updateFeedCounter]);
 
   const grabTweets = function () {
     axios
