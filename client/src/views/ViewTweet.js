@@ -24,7 +24,7 @@ const ViewTweet = () => {
       setReplyReplies(data.replyReplies);
       setReplyRetweets(data.replyRetweets);
     });
-  }, [id]);
+  }, [id, replies]);
 
   const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
   return (
@@ -39,6 +39,7 @@ const ViewTweet = () => {
           replyReplies={replyReplies}
           replyRetweets={replyRetweets}
           currentUserId={currentUserId}
+          setReplies={setReplies}
         />
       )}
     </>
