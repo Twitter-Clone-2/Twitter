@@ -198,9 +198,6 @@
   display: flex;
   justify-content: space-between;
 }
-.tweet3Dots {
-  padding: 8px;
-}
 
 .tweet3Dots:hover {
   color: rgb(29, 155, 239);
@@ -298,11 +295,18 @@
   }
   .rightTweetHeader {
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: space-between;
   }
 
   .tweetUserName {
     font-size: 16px;
     font-weight: 600;
+  }
+  .tweetDate {
+    padding-right: 20px;
+  }
+
+  .tweet3Dots {
+    padding: 8px 8px 8px 0px;
   }
 }
