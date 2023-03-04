@@ -127,3 +127,34 @@
   width: 60px;
   margin-right: 20px;
 }
+
+@media (min-width: 0px) and (max-width: 750px) {
+  .conversationBody {
+    width: 95vw;
+  }
+  .messagesMobileHide {
+    display: none;
+  }
+  .convoHeaderNames {
+    display: flex;
+    flex-direction: row;
+  }
+  .convoHeader {
+    width: 100%;
+  }
+  #convoHeaderRealNames {
+    font-size: 20px;
+  }
+  .convoFooter {
+    margin-bottom: 50px;
+    padding: 10px 0px;
+    width: 100%;
+  }
+  .convoBody {
+    height: 90vh;
+    padding-left: 0px;
+  }
+  .conversationIcon {
+    padding: 10px 10px 10px 0px;
+  }
+}

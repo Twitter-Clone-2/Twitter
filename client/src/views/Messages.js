@@ -6,6 +6,8 @@ import axios from "axios";
 import PlaceHolderMessages from "../components/Messages/PlaceHolderMessages";
 import Conversation from "../components/Messages/Conversation";
 
+import FollowersAndFollowingModal from "../components/FollowersAndFollowingModal";
+
 const Messages = () => {
   const user = JSON.parse(localStorage.getItem("currUser"));
   const [followingInfo, setFollowingInfo] = useState([]);
@@ -80,7 +82,13 @@ const Messages = () => {
 
   return (
     <div className="messageMainDiv flex">
-      <div className="messagesProfileSection">
+      <div
+        className={
+          accountClicked
+            ? "messagesMobileHide messagesProfileSection"
+            : "messagesProfileSection"
+        }
+      >
         <div className="messagesHeader">Messages</div>
         <div className="divForSearchBar">
           <input
@@ -88,6 +96,21 @@ const Messages = () => {
             className="messagesSearchBar"
             onChange={(e) => changeConvoArray(e.target.value)}
           />
+          <div
+            className="messagesDesktopHide"
+            id="messagesMobileCreateConvoIcon"
+          >
+            <FollowersAndFollowingModal
+              num={`MobileMessageIcon`}
+              relationship={followingInfo}
+              handle={true}
+              setAccountClicked={setAccountClicked}
+              setAccountBeingMessaged={setAccountBeingMessaged}
+              user_id={user.id}
+              conversations={conversations}
+              setRoomId={setRoomId}
+            />
+          </div>
         </div>
         {searchArr.map((userObj, i) => (
           <ProfileMessageCard
