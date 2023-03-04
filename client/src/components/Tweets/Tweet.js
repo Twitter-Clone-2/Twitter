@@ -114,7 +114,7 @@ export default function Tweet({
               </p>
             </div>
 
-            <p>{displayHowOldTweetIs()}</p>
+            <p className="tweetDate">{displayHowOldTweetIs()}</p>
           </div>
           {replyingTo && (
             <p>

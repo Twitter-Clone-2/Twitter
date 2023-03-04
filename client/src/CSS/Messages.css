@@ -33,7 +33,6 @@
   border-radius: 25px;
   border: 2px solid rgb(133, 135, 136);
   font-size: 14px;
-  margin-top: 20px;
   padding: 10px 20px;
   width: 100%;
 }
@@ -51,6 +50,7 @@
   align-items: center;
   padding: 0px 20px;
   padding-bottom: 20px;
+  margin-top: 20px;
 }
 
 .messagesProfileCard {
@@ -87,4 +87,28 @@
 }
 .profileMessageCardUsername {
   color: rgb(128, 128, 128);
+}
+.messagesDesktopHide {
+  display: none;
+}
+@media (min-width: 0px) and (max-width: 750px) {
+  .messageMainDiv {
+    width: 100%;
+  }
+
+  .messagesMobileHide {
+    display: none;
+  }
+  .messagesProfileSection {
+    border-right: 1px solid rgb(239, 243, 244);
+    width: 100%;
+  }
+  #messagesMobileCreateConvoIcon {
+    display: block;
+    border-radius: 25px;
+    margin-left: 10px;
+    color: rgb(29, 155, 240);
+    border: 1px solid rgb(29, 155, 240);
+    padding: 5px 5px 1px 5px;
+  }
 }

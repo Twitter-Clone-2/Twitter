@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import route from "../utils/server_router";
+import CreateIcon from "@mui/icons-material/Create";
 
 const FollowersAndFollowingModal = ({
   num,
@@ -61,7 +62,11 @@ const FollowersAndFollowingModal = ({
 
   return (
     <div>
-      <Button onClick={handleOpen}>{num}</Button>
+      {num === "MobileMessageIcon" ? (
+        <CreateIcon />
+      ) : (
+        <Button onClick={handleOpen}>{num}</Button>
+      )}
       <Modal
         open={open}
         onClose={(event) => {

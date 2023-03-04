@@ -82,8 +82,8 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
           </span>
         </div>
       </div>
-      <div className="convoBody" id="messageBody">
-        <div className="convoAccountBeingMessagedDetails">
+      <div className="convoBody " id="messageBody">
+        <div className="convoAccountBeingMessagedDetails messagesMobileHide ">
           <div>
             <span className="convoBodyAccountName">
               {accountBeingMessaged.first_name} {accountBeingMessaged.last_name}
@@ -92,7 +92,7 @@ const Conversation = ({ accountBeingMessaged, roomId, user }) => {
               @{accountBeingMessaged.username}
             </span>
           </div>
-          <div className="conversationAccountBio">
+          <div className="conversationAccountBio messagesMobileHide">
             {accountBeingMessaged.bio}
           </div>
           <div className="conversationAccountJoinedDate">
