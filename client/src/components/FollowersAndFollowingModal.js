@@ -63,7 +63,7 @@ const FollowersAndFollowingModal = ({
   return (
     <div>
       {num === "MobileMessageIcon" ? (
-        <CreateIcon />
+        <CreateIcon onClick={handleOpen} />
       ) : (
         <Button onClick={handleOpen}>{num}</Button>
       )}
