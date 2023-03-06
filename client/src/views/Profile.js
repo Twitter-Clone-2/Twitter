@@ -9,12 +9,15 @@ import { format } from "date-fns";
 import { useParams, useNavigate } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { selectUpdateFeedCounter } from "../redux/selectors";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   let { id } = useParams();
   const [userProfileCheck, setUserProfileCheck] = useState(id ? false : true);
   const [followingStatus, setFollowingStatus] = useState(false);
   let user = JSON.parse(localStorage.getItem("currUser"));
+  const updateFeedCounter = useSelector(selectUpdateFeedCounter);
 
   const [currentUser, setCurrentUser] = useState();
 
@@ -51,7 +54,7 @@ const Profile = () => {
       setCurrentUser(user);
       grabTweets(user.id);
     }
-  }, [id]);
+  }, [id, updateFeedCounter]);
 
   const grabTweets = function () {
     axios
@@ -62,7 +65,6 @@ const Profile = () => {
             ...data.tweets.filter((tweet) => !tweet.reply_id),
             ...data.retweets,
           ];
-          console.log(data);
           setFeed(tempFeed);
 
           tempFeed
@@ -219,16 +221,18 @@ const Profile = () => {
               </button>
             )}
           </div>
-          <h2>
-            {currentUser && currentUser.first_name}{" "}
-            {currentUser && currentUser.last_name}
-          </h2>
-          <p>{currentUser && currentUser.bio}</p>
-          <p>@{currentUser && currentUser.username}</p>
-          <p>
-            Joined ,{" "}
-            {currentUser && format(new Date(currentUser.created_at), "PPpp")}
-          </p>
+          <div className="profilePageUserDetails">
+            <h2>
+              {currentUser && currentUser.first_name}{" "}
+              {currentUser && currentUser.last_name}
+            </h2>
+            <p>{currentUser && currentUser.bio}</p>
+            <p>@{currentUser && currentUser.username}</p>
+            <p>
+              Joined ,{" "}
+              {currentUser && format(new Date(currentUser.created_at), "PPpp")}
+            </p>
+          </div>
           <div className="flex" id="follows">
             <div>
               <FollowersAndFollowingModal

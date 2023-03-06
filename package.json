@@ -23,6 +23,7 @@
   "dependencies": {
     "aws-amplify": "^4.3.33",
     "dotenv": "^16.0.2",
+    "moment": "^2.29.4",
     "prettier": "^2.7.1"
   },
   "devDependencies": {

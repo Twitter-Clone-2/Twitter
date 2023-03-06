@@ -1,11 +1,13 @@
 import React from "react";
-import { format } from "date-fns";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 import "./tweets.css";
 import TweetActions from "./TweetActions";
 import DeleteTweet from "./DeleteTweet";
 import CachedIcon from "@mui/icons-material/Cached";
+import { formatDistance, parseISO } from "date-fns";
+import { format, formatInTimeZone, utcToZonedTime } from "date-fns-tz";
+import moment from "moment";
 
 export default function Tweet({
   tweet,
@@ -31,9 +33,17 @@ export default function Tweet({
   const filteredLikes = likes.filter(
     (like) => like.tweets_id == tweet.id || like.tweets_id == tweet.tweets_id
   );
+
   const filteredReplies = replies.filter(
     (reply) => reply.reply_id == tweet.id || reply.reply_id == tweet.tweets_id
   );
+
+  const displayHowOldTweetIs = () => {
+    let utcTimeStamp = moment.utc();
+    utcTimeStamp = utcTimeStamp.format(); // 2023-03-01T20:56:29Z
+    const now = utcTimeStamp.slice(0, -1); // remove Z from string
+    return formatDistance(new Date(now), new Date(tweet.created_at));
+  };
 
   return (
     <div
@@ -51,34 +61,34 @@ export default function Tweet({
         </div>
       )}
       <div className="tweetTopHalf">
-        <div className="flex">
-          <div className="paddingLeft">
-            {!picture ? (
-              <PersonIcon
-                sx={{ fontSize: 60 }}
-                className="tweetUserPic"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  takeToProfile(
-                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
-                  );
-                }}
-              />
-            ) : (
-              <img
-                src={picture}
-                className="tweetUserPic"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  takeToProfile(
-                    tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
-                  );
-                }}
-              />
-            )}
-          </div>
-          <div className="rightTweet">
-            <div className="rightTweetHeader">
+        <div className="paddingLeft flex">
+          {!picture ? (
+            <PersonIcon
+              sx={{ fontSize: 60 }}
+              className="tweetUserPic"
+              onClick={(event) => {
+                event.stopPropagation();
+                takeToProfile(
+                  tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                );
+              }}
+            />
+          ) : (
+            <img
+              src={picture}
+              className="tweetUserPic"
+              onClick={(event) => {
+                event.stopPropagation();
+                takeToProfile(
+                  tweet.retweet ? tweet.tweeter_id : tweet.accounts_id
+                );
+              }}
+            />
+          )}
+        </div>
+        <div className="rightTweet">
+          <div className="rightTweetHeader">
+            <div className="tweetDisplayBothNames">
               <div
                 className="tweetNames"
                 id="tweetRealNames"
@@ -92,7 +102,7 @@ export default function Tweet({
                 {tweet.first_name} {tweet.last_name}
               </div>
               <p
-                className="tweetNames"
+                className="tweetNames tweetUserName"
                 onClick={(event) => {
                   event.stopPropagation();
                   takeToProfile(
@@ -102,17 +112,19 @@ export default function Tweet({
               >
                 @{tweet.username}
               </p>
-              <p>{format(new Date(tweet.created_at), "PPpp")}</p>
             </div>
-            {replyingTo && (
-              <p>
-                Replying to{" "}
-                <span className="replyingToUsername">@{tweet.username}</span>
-              </p>
-            )}
-            <div className="tweetContent">{tweet.content}</div>
+
+            <p className="tweetDate">{displayHowOldTweetIs()}</p>
           </div>
+          {replyingTo && (
+            <p>
+              Replying to{" "}
+              <span className="replyingToUsername">@{tweet.username}</span>
+            </p>
+          )}
+          <div className="tweetContent">{tweet.content}</div>
         </div>
+
         {tweet.accounts_id === currentUserId && (
           <DeleteTweet
             tweet_id={tweet.id || tweet.tweets_id}

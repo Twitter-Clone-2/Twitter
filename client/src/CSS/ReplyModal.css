@@ -1,43 +1,67 @@
-.replyModalFont{
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 18px;
+.replyModalFont {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 18px;
 }
 
-.replyModalCloseIcon{
-    padding: 10px;
-    border-radius: 25px;
+.replyModalCloseIcon {
+  padding: 10px;
+  border-radius: 25px;
 }
-.replyModalCloseIcon:hover{
-    background-color: rgb(230, 237, 241) !important ;
-    cursor: pointer;
-}
-
-.replyModalUserAndTweet{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+.replyModalCloseIcon:hover {
+  background-color: rgb(230, 237, 241) !important ;
+  cursor: pointer;
 }
 
-.replyModalGray{
-    color: rgb(83,99,113);
+.replyModalUserAndTweet {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-#replyModalAccountName{
-    font-weight: 700;
+.replyModalGray {
+  color: rgb(83, 99, 113);
 }
 
-.replyModalAccountLink{
-    color : rgb(29,155,240)
+#replyModalAccountName {
+  font-weight: 700;
 }
-.replyModalMiddle{
-    padding-left: 10px;
-    margin: 20px 0px;
+
+.replyModalAccountLink {
+  color: rgb(29, 155, 240);
 }
-.replyModalReplyBot{
-    display: flex;
-    align-items: center;
+.replyModalMiddle {
+  padding-left: 10px;
+  margin: 20px 0px;
 }
-.replyModalGetButtonOnRight{
-    display: flex;
-    justify-content: space-between;
+.replyModalReplyBot {
+  display: flex;
+  align-items: center;
+}
+.replyModalGetButtonOnRight {
+  display: flex;
+  justify-content: space-between;
+}
+#replyModalCloseIconMobile {
+  display: none;
+}
+
+@media (min-width: 0px) and (max-width: 750px) {
+  #replyModalMobile {
+    width: 85vw;
+    top: 35%;
+  }
+  .replyModalTweetInfoMobile {
+    border-bottom: 1px solid rgb(239, 243, 244);
+  }
+  .replyModalRealTweet {
+    font-weight: 600;
+    font-size: 20px;
+  }
+  #replyModalCloseIconDesktop {
+    display: none;
+  }
+  #replyModalCloseIconMobile {
+    display: block;
+  }
 }

@@ -15,7 +15,6 @@ const DeleteTweet = ({ tweet_id, fetchAllTweetsForFeed }) => {
     setStage(1);
   };
   const [stage, setStage] = useState(1);
-  const [value, setValue] = useState(0);
 
   const style = {
     position: "absolute",
@@ -27,6 +26,7 @@ const DeleteTweet = ({ tweet_id, fetchAllTweetsForFeed }) => {
     borderRadius: `${stage === 2 ? "25px" : "1px"}`,
     boxShadow: 24,
     p: 0,
+    outline: "none",
   };
 
   const deleteTweet = () => {

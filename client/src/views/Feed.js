@@ -6,26 +6,29 @@ import axios from "axios";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
 import InputBase from "@mui/material/InputBase";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUpdateFeedCounter } from "../redux/selectors";
+import { updateFeed } from "../redux/mainSlice";
 
 const Feed = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("currUser"));
-  const [tweet, setTweet] = useState("");
-  const [feed, setFeed] = useState([]);
+  const [newTweet, setNewTweet] = useState("");
   const [likes, setLikes] = useState([]);
   const [replies, setReplies] = useState([]);
   const [retweets, setRetweets] = useState([]);
 
+  const [feed, setFeed] = useState([]);
+  const updateFeedCounter = useSelector(selectUpdateFeedCounter);
   const fetchAllTweetsForFeed = () => {
     axios
       .get(route + "/api/findAllTweetsFromFollowing/" + user.id)
       .then(({ data }) => {
-        console.log(data);
         let tempFeed = [
           ...data.tweets.filter((tweet) => !tweet.reply_id),
           ...data.retweetsOnFeed,
         ];
-        setFeed(tempFeed);
 
         tempFeed
           .sort((x, y) => {
@@ -42,6 +45,8 @@ const Feed = () => {
             }
           })
           .reverse();
+
+        setFeed(tempFeed);
         setLikes(data.likes);
         setReplies(data.replies);
         setRetweets(data.retweets);
@@ -50,21 +55,22 @@ const Feed = () => {
   };
   useEffect(() => {
     fetchAllTweetsForFeed();
-  }, []);
+  }, [updateFeedCounter]);
 
   const takeToProfile = () => {
     navigate("/profile/page");
   };
 
   const createTweet = () => {
-    if (tweet.length == 0) return;
+    if (newTweet.length == 0) return;
+    if (newTweet.length > 240) return;
     axios
       .post(route + "/api/create/tweet", {
-        tweet,
+        newTweet,
         id: user.id,
       })
       .then(() => {
-        setTweet("");
+        setNewTweet("");
         fetchAllTweetsForFeed();
       })
       .catch((err) => console.error(err));
@@ -73,8 +79,8 @@ const Feed = () => {
     <div id="feed">
       <div id="allContent">
         <div id="feedContainer">
-          <h2>Home</h2>
-          <div id="feedCreateTweet">
+          <h2 className="mobileRemove">Home</h2>
+          <div id="feedCreateTweet" className="mobileRemove">
             {user.profile_picture ? (
               <img src={user.profile_picture} className="feedProfilePicture" />
             ) : (
@@ -83,8 +89,8 @@ const Feed = () => {
 
             <InputBase
               placeholder="What's happening?"
-              onChange={(e) => setTweet(e.target.value)}
-              value={tweet}
+              onChange={(e) => setNewTweet(e.target.value)}
+              value={newTweet}
               multiline={true}
               helperText={`5/$100`}
               sx={{
@@ -97,7 +103,7 @@ const Feed = () => {
             <button
               onClick={createTweet}
               id="feedTweetButton"
-              className={tweet.length == 0 ? "incompleteColor" : ""}
+              className={newTweet.length == 0 ? "incompleteColor" : ""}
             >
               Tweet
             </button>
@@ -105,29 +111,30 @@ const Feed = () => {
         </div>
 
         <div id="content">
-          {feed.map((tweet, i) => (
-            <Tweet
-              className="tweet"
-              tweet={tweet}
-              likes={likes.filter(
-                (like) =>
-                  like.tweets_id === tweet.id ||
-                  like.tweets_id === tweet.tweets_id
-              )}
-              retweets={retweets.filter(
-                (retweet) =>
-                  retweet.tweets_id === tweet.id ||
-                  retweet.tweets_id == tweet.tweets_id
-              )}
-              key={i}
-              fetchAllTweetsForFeed={fetchAllTweetsForFeed}
-              replies={replies}
-              feed={feed}
-              id={tweet.accounts_id}
-              picture={tweet.profile_picture}
-              currentUserId={user.id}
-            />
-          ))}
+          {feed.length > 0 &&
+            feed.map((tweet, i) => (
+              <Tweet
+                className="tweet"
+                tweet={tweet}
+                likes={likes.filter(
+                  (like) =>
+                    like.tweets_id === tweet.id ||
+                    like.tweets_id === tweet.tweets_id
+                )}
+                retweets={retweets.filter(
+                  (retweet) =>
+                    retweet.tweets_id === tweet.id ||
+                    retweet.tweets_id == tweet.tweets_id
+                )}
+                key={i}
+                fetchAllTweetsForFeed={fetchAllTweetsForFeed}
+                replies={replies}
+                feed={feed}
+                id={tweet.accounts_id}
+                picture={tweet.profile_picture}
+                currentUserId={user.id}
+              />
+            ))}
         </div>
       </div>
     </div>

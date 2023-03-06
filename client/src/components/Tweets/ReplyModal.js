@@ -35,14 +35,14 @@ export default function ReplyModal({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [reply, setReply] = useState("");
-  const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
+  const currentUser = JSON.parse(localStorage.getItem("currUser"));
   const navigate = useNavigate();
 
   const createReply = () => {
     axios
       .post(route + "/api/reply", {
         content: reply,
-        id: currentUserId,
+        id: currentUser.id,
         fk: tweet_id,
       })
       .then(() => {
@@ -71,8 +71,8 @@ export default function ReplyModal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <div>
+        <Box sx={style} id="replyModalMobile">
+          <div id="replyModalCloseIconDesktop">
             <CloseIcon
               className="replyModalCloseIcon"
               onClick={(event) => {
@@ -85,9 +85,20 @@ export default function ReplyModal({
           <div>
             {/* TOP */}
             <div className="replyModalUserAndTweet">
-              <PersonIcon sx={{ fontSize: "80px" }} />
               <div>
-                <div>
+                <CloseIcon
+                  id="replyModalCloseIconMobile"
+                  className="replyModalCloseIcon"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleClose();
+                  }}
+                />
+                <PersonIcon sx={{ fontSize: "80px" }} />
+              </div>
+
+              <div>
+                <div className="replyModalTweetInfoMobile">
                   <span className="replyModalFont" id="replyModalAccountName">
                     {first_name} {last_name}
                   </span>
@@ -99,7 +110,9 @@ export default function ReplyModal({
                     * {format(new Date(created_at), "PPpp")}
                   </span>
                 </div>
-                <div className="replyModalFont">{content}</div>
+                <div className="replyModalFont replyModalRealTweet">
+                  {content}
+                </div>
               </div>
             </div>
 
@@ -112,7 +125,14 @@ export default function ReplyModal({
             {/* BOT */}
             <div className="replyModalReplyBot">
               <div>
-                <PersonIcon sx={{ fontSize: "80px" }} />
+                {currentUser.profile_picture ? (
+                  <img
+                    src={currentUser.profile_picture}
+                    className="tweetUserPic"
+                  />
+                ) : (
+                  <PersonIcon sx={{ fontSize: "80px" }} />
+                )}
               </div>
 
               <div>

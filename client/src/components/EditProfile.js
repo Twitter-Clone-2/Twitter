@@ -170,7 +170,7 @@ export default function EditProfile({ user, setCurrentUser, feed, setFeed }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} id="editProfileMobile">
           <div className="editProfileScrollBar">
             <div>
               <div className="editProfileHeader">

@@ -11,7 +11,7 @@ const PlaceHolderMessages = ({
   setRoomId,
 }) => {
   return (
-    <div className="messagesConvoSection">
+    <div className="messagesConvoSection messagesMobileHide">
       <div id="messagesConvoSectionHeader">Select a message</div>
       <div id="messagesConvoSectionSubHeader">
         Choose from your existing conversations, start a new one, or just keep

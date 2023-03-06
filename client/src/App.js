@@ -7,10 +7,12 @@ import IconNav from "./components/IconNav";
 import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
 import Messages from "./views/Messages";
+import MobileNavbar from "./components/MobileNavbar";
+import React, { useState } from "react";
 
 function App() {
   return (
-    <div className={"mainContainer"}>
+    <div className="mainContainer">
       <BrowserRouter>
         <IconNav />
         <Routes>
@@ -22,6 +24,7 @@ function App() {
           <Route exact path="/messages" element={<Messages />} />
         </Routes>
         <NewsAPI />
+        <MobileNavbar />
       </BrowserRouter>
     </div>
   );

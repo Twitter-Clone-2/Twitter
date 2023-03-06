@@ -18,7 +18,7 @@ const FormAccountInfo = ({
 }) => {
   return (
     <div className="accountDetails">
-      <div>
+      <div className="registerInputMobile">
         <label>First Name </label>
         <TextField
           value={firstName}
@@ -26,7 +26,7 @@ const FormAccountInfo = ({
         />
       </div>
 
-      <div>
+      <div className="registerInputMobile">
         <label>Last Name </label>
         <TextField
           value={lastName}
@@ -34,12 +34,12 @@ const FormAccountInfo = ({
         />
       </div>
 
-      <div>
+      <div className="registerInputMobile">
         <label>Email </label>
         <TextField value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
 
-      <div>
+      <div className="registerInputMobile">
         <label>Password </label>
         <TextField
           type="password"
@@ -48,7 +48,7 @@ const FormAccountInfo = ({
         />
       </div>
 
-      <div>
+      <div className="registerInputMobile">
         <label>Confirm Password </label>
         <TextField
           type="password"

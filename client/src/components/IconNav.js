@@ -32,10 +32,10 @@ const IconNav = () => {
               <HomeIcon className="icon" />
               <div className="buttonLabel">Home</div>
             </Button>
-            <Button className={"iconButton"}>
+            {/* <Button className={"iconButton"}>
               <NotificationsIcon className="icon" />
               <div className="buttonLabel">Notifications</div>
-            </Button>
+            </Button> */}
             <Button
               className={"iconButton"}
               onClick={() => navigate("/messages")}
@@ -50,10 +50,10 @@ const IconNav = () => {
               <PersonIcon className="icon" />
               <div className="buttonLabel">Profile</div>
             </Button>
-            <Button className={"iconButton"}>
+            {/* <Button className={"iconButton"}>
               <SettingsSuggestIcon className="icon" />
               <div className="buttonLabel">Settings</div>
-            </Button>
+            </Button> */}
             <TweetModal />
           </div>
 

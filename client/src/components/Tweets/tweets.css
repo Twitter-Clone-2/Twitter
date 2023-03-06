@@ -75,10 +75,18 @@
 .retweetCol:hover {
   color: rgb(29, 155, 239);
 }
+.rightTweet {
+  width: 100%;
+}
 .rightTweetHeader {
   display: flex;
   gap: 5px;
   padding-top: 8px;
+  justify-content: space-between;
+  width: 100%;
+}
+.tweetDisplayBothNames {
+  display: flex;
 }
 
 /* BIG TWEET */
@@ -87,7 +95,7 @@
   border: 1px solid rgb(239, 243, 244);
   flex-grow: 1 !important;
   margin-top: 20px;
-  width: 30vw;
+  width: 45vw;
 }
 
 .bigTweetHeader {
@@ -190,9 +198,6 @@
   display: flex;
   justify-content: space-between;
 }
-.tweet3Dots {
-  padding: 8px;
-}
 
 .tweet3Dots:hover {
   color: rgb(29, 155, 239);
@@ -277,4 +282,31 @@
   display: flex;
   align-items: center;
   gap: 15px;
+}
+@media (min-width: 0px) and (max-width: 750px) {
+  .bigTweet {
+    border: none;
+    margin-top: 0px;
+    width: 90vw;
+  }
+
+  #tweetRealNames {
+    display: none;
+  }
+  .rightTweetHeader {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tweetUserName {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .tweetDate {
+    padding-right: 20px;
+  }
+
+  .tweet3Dots {
+    padding: 8px 8px 8px 0px;
+  }
 }
