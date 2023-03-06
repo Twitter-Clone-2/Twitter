@@ -11,6 +11,7 @@ const Main = () => {
   alert(
     "If you want to view this website without making an account use the guest account, itll already be filled out when logging in!"
   );
+
   return (
     <div id="leftColMainPage">
       <img
