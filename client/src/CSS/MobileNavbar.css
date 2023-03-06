@@ -15,4 +15,14 @@
     justify-content: center;
     gap: 30px;
   }
+  .iconButton {
+    display: flex;
+    gap: 1rem;
+    border-radius: 25px !important;
+    padding: 10px !important;
+  }
+
+  .iconButtonMobile:hover {
+    background-color: lightgray !important;
+  }
 }

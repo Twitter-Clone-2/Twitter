@@ -9,7 +9,7 @@ const Main = () => {
   const [openRegister, setOpenRegister] = useState(false);
 
   alert(
-    "If you want to view this website without making an account use the guest account, itll already be filled out when logging in!"
+    'If you want to see this website without creating an account click on "Sign In" button and a guest account will be ready'
   );
   return (
     <div id="leftColMainPage">
