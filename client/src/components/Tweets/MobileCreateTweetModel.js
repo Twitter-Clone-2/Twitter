@@ -15,7 +15,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "90vw",
   height: "50vh",
-  bgcolor: "black",
+  bgcolor: "white",
   borderRadius: "25px",
   boxShadow: 24,
   p: 0,
@@ -32,6 +32,7 @@ const MobileCreateTweetModel = () => {
   const createTweet = () => {
     if (tweet.length == 0) return;
     if (tweet.length > 240) return;
+
     axios
       .post(route + "/api/create/tweet", {
         tweet,
@@ -44,6 +45,7 @@ const MobileCreateTweetModel = () => {
       })
       .catch((err) => console.error(err));
   };
+
   return (
     <>
       <EditIcon
