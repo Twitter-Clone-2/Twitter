@@ -130,7 +130,7 @@ export default function BasicModal({ openRegister, setOpenRegister }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="box">
+        <Box sx={style} className="box" id="registerModalMobile">
           <div id="loginTopIcons">
             <CloseIcon className="loginCloseButton" onClick={handleClose} />
             <img
@@ -151,7 +151,7 @@ export default function BasicModal({ openRegister, setOpenRegister }) {
               </Stepper>
             </div>
             <div>
-              <ul>
+              <ul className="registerErrorMessages">
                 {errorMessages.map((error, i) => (
                   <li key={i}>{error}</li>
                 ))}

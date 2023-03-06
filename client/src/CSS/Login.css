@@ -69,3 +69,9 @@
   font-size: 20px;
   font-weight: 700;
 }
+
+@media (min-width: 0px) and (max-width: 750px) {
+  #loginModalMobile {
+    width: 80vw;
+  }
+}
