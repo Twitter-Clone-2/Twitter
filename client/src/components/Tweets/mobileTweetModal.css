@@ -10,14 +10,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(15, 15, 15);
+  background-color: rgb(244, 241, 241);
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
   padding: 10px 15px;
 }
 
 .font {
-  color: white;
+  color: black;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
 }
@@ -35,6 +35,7 @@
   border-radius: 25px;
   padding: 5px 10px;
   font-size: 16px;
+  color: white;
 }
 #dim {
   filter: brightness(50%);
@@ -48,7 +49,7 @@
 .mobileTweetInput {
   margin-top: 20px;
   width: 80%;
-  background-color: black;
+  background-color: white;
   font-size: 18px;
   height: 30vh;
   resize: none;
