@@ -25,8 +25,8 @@ export default function BasicModal({ setOpenRegister }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-  const [emailOrUserName, setEmailOrUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailOrUserName, setEmailOrUserName] = useState("guest@gmail.com");
+  const [password, setPassword] = useState("12345678");
   const [error, setError] = useState(false);
 
   const handleLogin = (e) => {
@@ -63,7 +63,7 @@ export default function BasicModal({ setOpenRegister }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="box">
+        <Box sx={style} className="box" id="loginModalMobile">
           <div id="loginTopIcons">
             <CloseIcon className="loginCloseButton" onClick={handleClose} />
             <img
