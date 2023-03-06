@@ -132,6 +132,7 @@
   .conversationBody {
     width: 95vw;
   }
+
   .messagesMobileHide {
     display: none;
   }
@@ -153,8 +154,12 @@
   .convoBody {
     height: 90vh;
     padding-left: 0px;
+    margin-top: 70px;
+  }
+  #convoFooterInput {
+    width: 100%;
   }
   .conversationIcon {
-    padding: 10px 10px 10px 0px;
+    margin-left: 0px;
   }
 }
