@@ -32,6 +32,7 @@ const MobileCreateTweetModel = () => {
   const createTweet = () => {
     if (tweet.length == 0) return;
     if (tweet.length > 240) return;
+
     axios
       .post(route + "/api/create/tweet", {
         tweet,
@@ -44,6 +45,7 @@ const MobileCreateTweetModel = () => {
       })
       .catch((err) => console.error(err));
   };
+
   return (
     <>
       <EditIcon

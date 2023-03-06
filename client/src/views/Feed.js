@@ -6,13 +6,11 @@ import axios from "axios";
 import Tweet from "../components/Tweets/Tweet";
 import route from "../utils/server_router";
 import InputBase from "@mui/material/InputBase";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUpdateFeedCounter } from "../redux/selectors";
-import { updateFeed } from "../redux/mainSlice";
 
 const Feed = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("currUser"));
   const [newTweet, setNewTweet] = useState("");
   const [likes, setLikes] = useState([]);
@@ -29,6 +27,18 @@ const Feed = () => {
           ...data.tweets.filter((tweet) => !tweet.reply_id),
           ...data.retweetsOnFeed,
         ];
+        const guestAccountID = 845413666895134722;
+        if (user.id == guestAccountID) {
+          const twitterAccountID = 833704888225202177;
+          var twitterTweetsToPutOnTop = [];
+          tempFeed = tempFeed.filter((tweet) => {
+            if (tweet.accounts_id != twitterAccountID) {
+              return tweet;
+            } else {
+              twitterTweetsToPutOnTop.push(tweet);
+            }
+          });
+        }
 
         tempFeed
           .sort((x, y) => {
@@ -45,7 +55,9 @@ const Feed = () => {
             }
           })
           .reverse();
-
+        if (user.id == guestAccountID) {
+          tempFeed.unshift(...twitterTweetsToPutOnTop);
+        }
         setFeed(tempFeed);
         setLikes(data.likes);
         setReplies(data.replies);
@@ -66,7 +78,7 @@ const Feed = () => {
     if (newTweet.length > 240) return;
     axios
       .post(route + "/api/create/tweet", {
-        newTweet,
+        tweet: newTweet,
         id: user.id,
       })
       .then(() => {
