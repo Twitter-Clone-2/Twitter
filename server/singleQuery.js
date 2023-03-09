@@ -43,7 +43,7 @@ const selectAllFromAccounts = `SELECT * FROM accounts;`;
 //const addProfilePicColumn = `ALTER TABLE accounts DROP profile_picture`;
 const addProfilePicColumn = `ALTER TABLE accounts ADD profile_picture character varying(3500) `;
 const addBackgroundPicColumn = `ALTER TABLE accounts ADD background_picture character varying(3500) `;
-
+const updateAccountPassword = `UPDATE ACCOUNTS SET PASSWORD = '12345678'`;
 const dropAccounts = `DROP TABLE accounts;`;
 //                  TWEETS queries
 const createTweet = `CREATE TABLE IF NOT EXISTS tweets
@@ -209,10 +209,13 @@ ON DELETE NO ACTION;`;
 
 const insertIntoMessageAndRoomForTest = `INSERT INTO room_and_messages (room_id, user_id) VALUES (2, 2);`;
 
-const delete1 = "DELETE FROM accounts WHERE id = 25";
-const deleteRelationship1 = `DELETE FROM relationship WHERE id = 833704888813879297`;
+const delete1 = "DELETE FROM accounts WHERE username = 'Hello'";
+const delete12 = "DELETE FROM tweets WHERE id = 845370985065873409";
+const deleteRelationship1 = `DELETE FROM relationship WHERE id = 845370573520175105`;
 
-// runQuery(deleteRelationship1);
+const timezone = "SHOW TIME ZONE";
+const setTimezone = "set time zone 'America/New_York'";
+runQuery(selectAllFromAccounts);
 
 // const addingFKToTweetsForComments = `ALTER TABLE tweets ADD reply_id integer;`;
 
