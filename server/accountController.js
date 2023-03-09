@@ -1,5 +1,3 @@
-const bcrypt = require("bcryptjs");
-
 const { endPool, startPool } = require("./dataBase/index");
 
 async function getAllUsers(req, res) {
@@ -67,36 +65,33 @@ async function register(req, res) {
   let { first_name, last_name, email, password, username, bio, location } =
     req.body;
   try {
-    bcrypt.hash(password, 10).then(async (hash) => {
-      password = hash;
-      await db
-        .query(
-          `INSERT INTO accounts (first_name, last_name , email, password, username, bio, location) VALUES ('${first_name}','${last_name}','${email}','${password}','${username}','${bio}','${location}');`
-        )
-        .then(async () => {
-          let newAccountID;
-          const queryTograbIdOfNewAccount = `SELECT id FROM accounts WHERE username = '${username}'`;
+    await db
+      .query(
+        `INSERT INTO accounts (first_name, last_name , email, password, username, bio, location) VALUES ('${first_name}','${last_name}','${email}','${password}','${username}','${bio}','${location}');`
+      )
+      .then(async () => {
+        let newAccountID;
+        const queryTograbIdOfNewAccount = `SELECT id FROM accounts WHERE username = '${username}'`;
 
-          try {
-            newAccountID = await db.query(queryTograbIdOfNewAccount);
+        try {
+          newAccountID = await db.query(queryTograbIdOfNewAccount);
 
-            const queryToFollowOfficalAccount = `INSERT INTO relationship (follower, following) VALUES (${newAccountID.rows[0].id}, 833704888225202177);`;
+          const queryToFollowOfficalAccount = `INSERT INTO relationship (follower, following) VALUES (${newAccountID.rows[0].id}, 833704888225202177);`;
 
-            await db.query(queryToFollowOfficalAccount);
-            endPool(db);
-          } catch (e) {
-            console.error(e.stack);
-            res.status(400);
-            endPool(db);
-          }
-          res.status(200).send("Account created");
-        })
-        .catch((err) => {
-          console.error(err);
+          await db.query(queryToFollowOfficalAccount);
           endPool(db);
-          return res.status(400);
-        });
-    });
+        } catch (e) {
+          console.error(e.stack);
+          res.status(400);
+          endPool(db);
+        }
+        res.status(200).send("Account created");
+      })
+      .catch((err) => {
+        console.error(err);
+        endPool(db);
+        return res.status(400);
+      });
   } catch (e) {
     console.error(e);
     endPool(db);
@@ -105,28 +100,49 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
+  let i = 1;
+  console.log(`This far ${i}`);
+  i++;
   const db = await startPool();
+  console.log(`This far ${i}`);
+  i++;
   let { email, password } = req.body;
+  console.log(`This far ${i}`);
+  i++;
   const queryForUser = `SELECT * FROM accounts WHERE email = '${email}';`;
 
   try {
+    console.log(`This far ${i}`);
+    i++;
     const results = await db.query(queryForUser);
+    console.log(`This far ${i}`);
+    i++;
     let user = results.rows[0];
     if (!user) {
+      console.log(`This far, if check no user`);
+
       endPool(db);
       return res.send(false);
     }
-    const passwordCheck = await bcrypt.compare(password, user.password);
+    console.log(`This far ${i}`);
+    i++;
+    const passwordCheck = password == user.password;
     if (!passwordCheck) {
+      console.log(`This far ${i}, if password is wrong`);
+      i++;
       endPool(db);
       return res.send(false);
     }
+    console.log(`This far ${i}`);
+    i++;
     res.json({
       user: user,
       status: true,
     });
     endPool(db);
   } catch (e) {
+    console.log(`This far ${i}, in the catch`);
+    i++;
     console.error(e.stack);
     res.status(400);
     endPool(db);
