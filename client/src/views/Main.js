@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../CSS/Main.css";
 import LoginModal from "../components/LoginAndReg/LoginModal";
 import RegisterModal from "../components/LoginAndReg/RegisterModal";
@@ -7,10 +7,12 @@ import { useNavigate } from "react-router-dom";
 const Main = () => {
   const navigate = useNavigate();
   const [openRegister, setOpenRegister] = useState(false);
+  useEffect(() => {
+    alert(
+      'If you want to see this website without creating an account click on "Sign In" button and a guest account will be ready'
+    );
+  }, []);
 
-  alert(
-    'If you want to see this website without creating an account click on "Sign In" button and a guest account will be ready'
-  );
   return (
     <div id="leftColMainPage">
       <img
