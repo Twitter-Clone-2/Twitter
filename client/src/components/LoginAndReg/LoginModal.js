@@ -7,6 +7,7 @@ import route from "../../utils/server_router";
 import axios from "axios";
 import "../../CSS/Login.css";
 import CloseIcon from "@mui/icons-material/Close";
+import { Button } from "antd";
 
 const style = {
   position: "absolute",
@@ -28,9 +29,11 @@ export default function BasicModal({ setOpenRegister }) {
   const [emailOrUserName, setEmailOrUserName] = useState("guest@gmail.com");
   const [password, setPassword] = useState("12345678");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setLoading(true);
     axios
       .post(route + "/api/login", {
         email: emailOrUserName,
@@ -38,6 +41,7 @@ export default function BasicModal({ setOpenRegister }) {
       })
       .then((res) => {
         if (res.data) {
+          setLoading(false);
           navigate("/main/feed");
           localStorage.setItem("currUser", JSON.stringify(res.data.user));
         } else {
@@ -109,13 +113,14 @@ export default function BasicModal({ setOpenRegister }) {
             </div>
           </Box>
           <div className="middle">
-            <button
+            <Button
               className="loginButtonShape middle loginFont"
               id="loginButton"
               onClick={handleLogin}
+              loading={loading}
             >
               Sign In
-            </button>
+            </Button>
           </div>
 
           <div className="middle loginFont" id="loginQuestion">

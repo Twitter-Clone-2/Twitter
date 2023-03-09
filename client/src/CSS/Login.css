@@ -40,13 +40,12 @@
 .loginButtonShape {
   border-radius: 25px;
   border: none;
-  padding: 10px 30px;
   font-size: 15px;
   width: 210px;
 }
 #loginButton {
   color: white;
-  background-color: rgb(15, 20, 26);
+  background-color: rgb(29, 155, 240);
   margin-top: 20px;
   font-weight: 700;
   cursor: pointer;
