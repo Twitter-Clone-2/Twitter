@@ -5,7 +5,7 @@ import route from "../../utils/server_router";
 import axios from "axios";
 import "./tweets.css";
 
-const ReplyBox = ({ tweet, setReplies, replies }) => {
+const ReplyBox = ({ tweet, setReplies, replies, grabTweet }) => {
   const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
   const navigate = useNavigate();
   const [hiddenDiv, setHiddenDiv] = useState(true);
@@ -22,6 +22,7 @@ const ReplyBox = ({ tweet, setReplies, replies }) => {
         setReply("");
         setHiddenDiv(true);
         setReplies(replies);
+        grabTweet();
       });
   };
   const takeToProfile = (id) => {

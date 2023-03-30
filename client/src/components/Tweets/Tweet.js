@@ -113,8 +113,6 @@ export default function Tweet({
                 @{tweet.username}
               </p>
             </div>
-
-            <p className="tweetDate">{displayHowOldTweetIs()}</p>
           </div>
           {replyingTo && (
             <p>
@@ -124,14 +122,16 @@ export default function Tweet({
           )}
           <div className="tweetContent">{tweet.content}</div>
         </div>
-
-        {tweet.accounts_id === currentUserId && (
-          <DeleteTweet
-            tweet_id={tweet.id || tweet.tweets_id}
-            fetchAllTweetsForFeed={fetchAllTweetsForFeed}
-            onClick={(event) => event.stopPropagation()}
-          />
-        )}
+        <div className="right-side-of-tweet">
+          <p className="tweetDate">{displayHowOldTweetIs()} ago</p>
+          {tweet.accounts_id === currentUserId && (
+            <DeleteTweet
+              tweet_id={tweet.id || tweet.tweets_id}
+              fetchAllTweetsForFeed={fetchAllTweetsForFeed}
+              onClick={(event) => event.stopPropagation()}
+            />
+          )}
+        </div>
       </div>
       <TweetActions
         tweet={tweet}
