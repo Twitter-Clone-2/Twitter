@@ -18,12 +18,16 @@ const BigTweet = ({
   replyReplies,
   currentUserId,
   setReplies,
+  id,
+  grabTweet,
 }) => {
   const navigate = useNavigate();
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
-
+  const filteredLikes = likes.filter(
+    (like) => like.tweets_id == tweet.id || like.tweets_id == tweet.tweets_id
+  );
   const backToFeed = () => {
     navigate(-1);
   };
@@ -78,14 +82,20 @@ const BigTweet = ({
 
       <TweetActions
         tweet={tweet}
-        likes={likes}
-        displayIconCount={true}
+        likes={filteredLikes}
+        bigTweetView={true}
         replies={replies}
         retweets={retweets}
         currentUserId={currentUserId}
+        id={id}
       />
 
-      <ReplyBox tweet={tweet} setReplies={setReplies} replies={replies} />
+      <ReplyBox
+        tweet={tweet}
+        setReplies={setReplies}
+        replies={replies}
+        grabTweet={grabTweet}
+      />
 
       {replies.map((reply, i) => (
         <Tweet

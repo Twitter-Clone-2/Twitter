@@ -14,7 +14,7 @@ const ViewTweet = () => {
   const [replyReplies, setReplyReplies] = useState([]);
   const [replyRetweets, setReplyRetweets] = useState([]);
 
-  useEffect(() => {
+  function grabTweet() {
     axios.get(route + "/api/view/tweet/" + id).then(({ data }) => {
       setTweet(data.tweet[0]);
       setLikes(data.likes);
@@ -24,7 +24,10 @@ const ViewTweet = () => {
       setReplyReplies(data.replyReplies);
       setReplyRetweets(data.replyRetweets);
     });
-  }, [id, replies]);
+  }
+  useEffect(() => {
+    grabTweet();
+  }, [id]);
 
   const currentUserId = JSON.parse(localStorage.getItem("currUser")).id;
   return (
@@ -40,6 +43,8 @@ const ViewTweet = () => {
           replyRetweets={replyRetweets}
           currentUserId={currentUserId}
           setReplies={setReplies}
+          id={id}
+          grabTweet={grabTweet}
         />
       )}
     </>
