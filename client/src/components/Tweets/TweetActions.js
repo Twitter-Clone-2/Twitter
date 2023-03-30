@@ -38,10 +38,6 @@ export default function TweetActions({
   const [retweetCount, setRetweetCount] = useState(retweets.length || 0);
   const [replyCount, setReplyCount] = useState(replies.length || 0);
 
-  if (tweet.id == 845454548317372417) {
-    console.log("yup");
-    console.log(likes);
-  }
   useEffect(() => {
     setCount(likes.length);
     setLiked(determineTrueOrFalse(likes));
