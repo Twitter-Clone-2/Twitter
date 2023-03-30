@@ -25,7 +25,9 @@ const BigTweet = ({
   const takeToProfile = (id) => {
     navigate("/profile/page/" + id);
   };
-
+  const filteredLikes = likes.filter(
+    (like) => like.tweets_id == tweet.id || like.tweets_id == tweet.tweets_id
+  );
   const backToFeed = () => {
     navigate(-1);
   };
@@ -80,7 +82,7 @@ const BigTweet = ({
 
       <TweetActions
         tweet={tweet}
-        likes={likes}
+        likes={filteredLikes}
         bigTweetView={true}
         replies={replies}
         retweets={retweets}

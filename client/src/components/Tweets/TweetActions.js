@@ -3,7 +3,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CachedIcon from "@mui/icons-material/Cached";
 import axios from "axios";
 import route from "../../utils/server_router";
-import { useParams } from "react-router-dom";
 import ReplyModal from "./ReplyModal";
 import { BarChartOutlined, UploadOutlined } from "@ant-design/icons";
 
@@ -19,6 +18,12 @@ export default function TweetActions({
   id = null,
 }) {
   function determineTrueOrFalse(likesOrRetweets) {
+    if (bigTweetView) {
+      const user = JSON.parse(localStorage.getItem("currUser"));
+      return likesOrRetweets.some(
+        (likeOrRetweet) => likeOrRetweet.id == user.id
+      );
+    }
     return likesOrRetweets.some(
       (likeOrRetweet) =>
         (likeOrRetweet.tweets_id == tweet.id ||
@@ -28,10 +33,15 @@ export default function TweetActions({
   }
   const [count, setCount] = useState(likes.length);
   const [liked, setLiked] = useState(determineTrueOrFalse(likes));
+
   const [retweeted, setRetweeted] = useState(determineTrueOrFalse(retweets));
   const [retweetCount, setRetweetCount] = useState(retweets.length || 0);
   const [replyCount, setReplyCount] = useState(replies.length || 0);
 
+  if (tweet.id == 845454548317372417) {
+    console.log("yup");
+    console.log(likes);
+  }
   useEffect(() => {
     setCount(likes.length);
     setLiked(determineTrueOrFalse(likes));
@@ -97,7 +107,7 @@ export default function TweetActions({
   };
 
   return (
-    <div className="tweet-actions-container">
+    <>
       {bigTweetView && (
         <div className="flex bigTweetCount paddingLeft borderBot">
           {count > 0 && (
@@ -122,71 +132,73 @@ export default function TweetActions({
           )}
         </div>
       )}
-      <div className="buttonsTweet borderBot">
-        <div className="flex likeCol">
-          <FavoriteBorderIcon
-            onClick={(event) => {
-              event.stopPropagation();
-              likeOrRetweetFunction(
-                currentUserId,
-                tweet.id || tweet.tweets_id,
-                "likes"
-              );
-            }}
-            className={`${liked ? "liked" : ""}`}
-          />
-          {!bigTweetView && count > 0 && (
-            <div className={`${liked ? "liked likeCount" : "likeCount"}`}>
+      <div className="tweet-actions-container">
+        <div className="buttonsTweet borderBot">
+          <div className="flex likeCol">
+            <FavoriteBorderIcon
+              onClick={(event) => {
+                event.stopPropagation();
+                likeOrRetweetFunction(
+                  currentUserId,
+                  tweet.id || tweet.tweets_id,
+                  "likes"
+                );
+              }}
+              className={`${liked ? "liked" : ""}`}
+            />
+            {!bigTweetView && count > 0 && (
+              <div className={`${liked ? "liked likeCount" : "likeCount"}`}>
+                {" "}
+                {count}
+              </div>
+            )}
+          </div>
+
+          <div className="flex replyCol">
+            <ReplyModal
+              tweet_id={tweet.id || tweet.tweets_id}
+              first_name={tweet.first_name}
+              last_name={tweet.last_name}
+              username={tweet.username}
+              created_at={tweet.created_at}
+              content={tweet.content}
+            />
+            {!bigTweetView && Boolean(replyCount) && (
+              <div className="replyCount">
+                {replyCount === 0 ? "" : replyCount}
+              </div>
+            )}
+          </div>
+
+          <div className="flex retweetCol">
+            <CachedIcon
+              onClick={(event) => {
+                event.stopPropagation();
+                likeOrRetweetFunction(
+                  currentUserId,
+                  tweet.id || tweet.tweets_id,
+                  "retweets"
+                );
+              }}
+              className={`${retweeted ? "retweeted" : ""}`}
+            />
+            <p
+              className={`${
+                retweeted ? "retweeted retweetCount" : "retweetCount"
+              }`}
+            >
               {" "}
-              {count}
-            </div>
-          )}
-        </div>
-
-        <div className="flex replyCol">
-          <ReplyModal
-            tweet_id={tweet.id || tweet.tweets_id}
-            first_name={tweet.first_name}
-            last_name={tweet.last_name}
-            username={tweet.username}
-            created_at={tweet.created_at}
-            content={tweet.content}
-          />
-          {!bigTweetView && Boolean(replyCount) && (
-            <div className="replyCount">
-              {replyCount === 0 ? "" : replyCount}
-            </div>
-          )}
-        </div>
-
-        <div className="flex retweetCol">
-          <CachedIcon
-            onClick={(event) => {
-              event.stopPropagation();
-              likeOrRetweetFunction(
-                currentUserId,
-                tweet.id || tweet.tweets_id,
-                "retweets"
-              );
-            }}
-            className={`${retweeted ? "retweeted" : ""}`}
-          />
-          <p
-            className={`${
-              retweeted ? "retweeted retweetCount" : "retweetCount"
-            }`}
-          >
-            {" "}
-            {retweetCount === 0 ? "" : retweetCount}{" "}
-          </p>
-        </div>
-        <div>
-          <BarChartOutlined className="tweet-actions-icon" />
-        </div>
-        <div>
-          <UploadOutlined className="tweet-actions-icon" />
+              {retweetCount === 0 ? "" : retweetCount}{" "}
+            </p>
+          </div>
+          <div>
+            <BarChartOutlined className="tweet-actions-icon" />
+          </div>
+          <div>
+            <UploadOutlined className="tweet-actions-icon" />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
