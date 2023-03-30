@@ -8,6 +8,13 @@ import route from "../utils/server_router";
 import InputBase from "@mui/material/InputBase";
 import { useSelector } from "react-redux";
 import { selectUpdateFeedCounter } from "../redux/selectors";
+import {
+  ScheduleOutlined,
+  GifOutlined,
+  SmileOutlined,
+  PictureOutlined,
+  CompassOutlined,
+} from "@ant-design/icons";
 
 const Feed = () => {
   const navigate = useNavigate();
@@ -93,32 +100,46 @@ const Feed = () => {
         <div id="feedContainer">
           <h2 className="mobileRemove">Home</h2>
           <div id="feedCreateTweet" className="mobileRemove">
-            {user.profile_picture ? (
-              <img src={user.profile_picture} className="feedProfilePicture" />
-            ) : (
-              <PersonIcon onClick={takeToProfile} sx={{ fontSize: 100 }} />
-            )}
+            <div id="input-field-and-pic-container" className="flex">
+              {user.profile_picture ? (
+                <img
+                  src={user.profile_picture}
+                  className="feedProfilePicture"
+                />
+              ) : (
+                <PersonIcon onClick={takeToProfile} sx={{ fontSize: 100 }} />
+              )}
 
-            <InputBase
-              placeholder="What's happening?"
-              onChange={(e) => setNewTweet(e.target.value)}
-              value={newTweet}
-              multiline={true}
-              helperText={`5/$100`}
-              sx={{
-                fontSize: "24px",
-                fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
-                width: "100%",
-                flexGrow: "1",
-              }}
-            />
-            <button
-              onClick={createTweet}
-              id="feedTweetButton"
-              className={newTweet.length == 0 ? "incompleteColor" : ""}
-            >
-              Tweet
-            </button>
+              <InputBase
+                placeholder="What's happening?"
+                onChange={(e) => setNewTweet(e.target.value)}
+                value={newTweet}
+                multiline={true}
+                helperText={`5/$100`}
+                sx={{
+                  fontSize: "24px",
+                  fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`,
+                  width: "100%",
+                  flexGrow: "1",
+                }}
+              />
+            </div>
+            <div id="create-tweet-buttons-container">
+              <div id="tiny-icons-container">
+                <PictureOutlined className="tiny-icon" />
+                <GifOutlined className="tiny-icon" />
+                <SmileOutlined className="tiny-icon" />
+                <ScheduleOutlined className="tiny-icon" />
+                <CompassOutlined className="tiny-icon" />
+              </div>
+              <button
+                onClick={createTweet}
+                id="feedTweetButton"
+                className={newTweet.length == 0 ? "incompleteColor" : ""}
+              >
+                Tweet
+              </button>
+            </div>
           </div>
         </div>
 
