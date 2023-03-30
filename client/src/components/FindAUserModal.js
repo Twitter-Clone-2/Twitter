@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import route from "../utils/server_router";
-import axios from "axios";
+import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import "../CSS/followersAndFollowingModal.css";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 
-const FindAUserModal = ({ allAccounts, setAllAccounts }) => {
+const FindAUserModal = ({ allAccounts }) => {
   const [searchArr, setSearchArr] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

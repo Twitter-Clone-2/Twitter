@@ -17,7 +17,6 @@ const Logout = () => {
     setStage(1);
   };
   const [stage, setStage] = useState(1);
-  const [value, setValue] = useState(0);
   const { first_name, last_name, username } = JSON.parse(
     localStorage.getItem("currUser")
   );

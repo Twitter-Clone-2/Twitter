@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import "../CSS/EditProfile.css";
 import AWS from "aws-sdk";
 
-const ImageUploadButton = ({ id, setPicture, user, pictureSubmitCheck }) => {
+const ImageUploadButton = ({ id, setPicture, pictureSubmitCheck }) => {
   useEffect(() => {
     AWS.config.update({
       accessKeyId: process.env.REACT_APP_accessKeyId,
