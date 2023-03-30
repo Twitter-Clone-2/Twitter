@@ -190,13 +190,18 @@ const Profile = () => {
             <img
               src={currentUser.background_picture}
               id="profilePageRealBackgroundImage"
+              alt="Users Background Image"
             />
           ) : (
             <div id="tempImage"></div>
           )}
           <div id="bottomOfPicture">
             {currentUser && currentUser.profile_picture ? (
-              <img src={currentUser.profile_picture} className="userPic" />
+              <img
+                src={currentUser.profile_picture}
+                className="userPic"
+                alt="USers Profile Picture"
+              />
             ) : (
               <PersonIcon sx={{ fontSize: 100 }} className="userPic" />
             )}

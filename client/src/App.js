@@ -8,7 +8,7 @@ import NewsAPI from "./components/NewsAPI";
 import ViewTweet from "./views/ViewTweet";
 import Messages from "./views/Messages";
 import MobileNavbar from "./components/MobileNavbar";
-import React, { useState } from "react";
+import React from "react";
 
 function App() {
   return (

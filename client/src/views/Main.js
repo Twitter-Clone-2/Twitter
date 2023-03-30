@@ -5,7 +5,6 @@ import RegisterModal from "../components/LoginAndReg/RegisterModal";
 import { useNavigate } from "react-router-dom";
 
 const Main = () => {
-  const navigate = useNavigate();
   const [openRegister, setOpenRegister] = useState(false);
   useEffect(() => {
     alert(

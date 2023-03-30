@@ -293,6 +293,7 @@
 .bigTweetProfilePicture {
   border-radius: 50%;
   height: 65px;
+  width: 65px;
   margin-right: 15px;
 }
 
@@ -328,5 +329,8 @@
 
   .tweet3Dots {
     padding: 8px 8px 8px 0px;
+  }
+  .tweet {
+    padding-right: 0px;
   }
 }
