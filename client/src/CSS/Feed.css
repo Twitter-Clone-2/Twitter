@@ -3,6 +3,7 @@
   justify-content: space-between;
   width: 90%;
   flex-grow: 1;
+  max-width: 700px;
 }
 
 .flex {
@@ -21,18 +22,19 @@ input {
 }
 #feedCreateTweet {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: left;
   justify-content: center;
-  padding-bottom: 20px;
+  padding-right: 20px;
 }
 #feedTweetButton {
   background-color: rgb(29, 155, 239);
   color: white;
   border: none;
   border-radius: 25px;
-  padding: 8px 25px;
+  padding: 6px 15px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   margin-right: 20px;
 }
@@ -51,10 +53,39 @@ input {
 
 .feedProfilePicture {
   border-radius: 50%;
-  height: 80px;
+  height: 50px;
+  width: 50px;
   margin-right: 20px;
 }
 
+#feedContainer h2 {
+  margin-bottom: 20px;
+}
+
+#input-field-and-pic-container {
+  margin-bottom: 10px;
+}
+#create-tweet-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgb(239, 243, 244);
+  padding: 10px 0px;
+}
+#tiny-icons-container {
+  display: flex;
+  color: rgb(29, 155, 240);
+  gap: 20px;
+  padding-left: 55px;
+}
+.tiny-icon {
+  padding: 10px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+.tiny-icon:hover {
+  background-color: rgb(229, 248, 255);
+}
 @media (min-width: 0px) and (max-width: 750px) {
   #feed {
     margin-bottom: 80px;
