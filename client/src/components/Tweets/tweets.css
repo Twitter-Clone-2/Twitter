@@ -7,6 +7,7 @@
   border-right: 1px solid rgb(239, 243, 244);
   flex-grow: 1;
   cursor: pointer;
+  padding-right: 20px;
 }
 
 .tweetUserPic {
@@ -30,10 +31,22 @@
 
 .buttonsTweet {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 10px 0 10px 0;
+  width: 70%;
 }
-
+.tweet-actions-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: rgb(145, 156, 164);
+}
+.tweet-actions-icon:hover {
+  color: rgb(29, 155, 239);
+}
+.tweet-actions-icon {
+  font-size: 24px;
+}
 .liked {
   color: red;
 }
@@ -76,7 +89,7 @@
   color: rgb(29, 155, 239);
 }
 .rightTweet {
-  width: 100%;
+  width: 65%;
 }
 .rightTweetHeader {
   display: flex;
@@ -87,6 +100,11 @@
 }
 .tweetDisplayBothNames {
   display: flex;
+  gap: 10px;
+}
+.right-side-of-tweet {
+  display: flex;
+  align-items: flex-start;
 }
 
 /* BIG TWEET */
@@ -181,15 +199,17 @@
   width: 100%;
   margin-right: 10px;
 }
-
+.tweetNames {
+  font-size: 17px !important;
+}
 .tweetNames:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 #tweetRealNames {
   font-weight: 500;
-  font-size: 17px;
 }
+
 .tweetContent {
   color: rgb(15, 20, 26);
   font-size: 18px;

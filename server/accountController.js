@@ -101,39 +101,32 @@ async function register(req, res) {
 
 async function login(req, res) {
   let i = 1;
-  console.log(`This far ${i}`);
   i++;
   const db = await startPool();
-  console.log(`This far ${i}`);
   i++;
   let { email, password } = req.body;
-  console.log(`This far ${i}`);
   i++;
   const queryForUser = `SELECT * FROM accounts WHERE email = '${email}';`;
 
   try {
-    console.log(`This far ${i}`);
     i++;
     const results = await db.query(queryForUser);
-    console.log(`This far ${i}`);
+
     i++;
     let user = results.rows[0];
     if (!user) {
-      console.log(`This far, if check no user`);
-
       endPool(db);
       return res.send(false);
     }
-    console.log(`This far ${i}`);
+
     i++;
     const passwordCheck = password == user.password;
     if (!passwordCheck) {
-      console.log(`This far ${i}, if password is wrong`);
       i++;
       endPool(db);
       return res.send(false);
     }
-    console.log(`This far ${i}`);
+
     i++;
     res.json({
       user: user,
@@ -141,7 +134,6 @@ async function login(req, res) {
     });
     endPool(db);
   } catch (e) {
-    console.log(`This far ${i}, in the catch`);
     i++;
     console.error(e.stack);
     res.status(400);

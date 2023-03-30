@@ -18,6 +18,8 @@ const BigTweet = ({
   replyReplies,
   currentUserId,
   setReplies,
+  id,
+  grabTweet,
 }) => {
   const navigate = useNavigate();
   const takeToProfile = (id) => {
@@ -79,13 +81,19 @@ const BigTweet = ({
       <TweetActions
         tweet={tweet}
         likes={likes}
-        displayIconCount={true}
+        bigTweetView={true}
         replies={replies}
         retweets={retweets}
         currentUserId={currentUserId}
+        id={id}
       />
 
-      <ReplyBox tweet={tweet} setReplies={setReplies} replies={replies} />
+      <ReplyBox
+        tweet={tweet}
+        setReplies={setReplies}
+        replies={replies}
+        grabTweet={grabTweet}
+      />
 
       {replies.map((reply, i) => (
         <Tweet
